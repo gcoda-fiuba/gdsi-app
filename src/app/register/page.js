@@ -1,4 +1,5 @@
 'use client'
+
 import {
   Button,
   Card,
@@ -11,6 +12,8 @@ import {
 } from '@mui/material';
 import React, {useState} from 'react';
 import {Visibility, VisibilityOff} from "@mui/icons-material";
+import {register} from "@/app/services/auth"
+import {redirect, RedirectType} from "next/navigation";
 
 export default function Register() {
 
@@ -29,9 +32,17 @@ export default function Register() {
   const handlePasswordChange = (event) => setPassword(event.target.value);
   const handlePasswordConfirmationChange = (event) => setPasswordConfirmation(event.target.value);
 
-  const submit = (event) => {
+  const submit = async (event)=> {
     event.preventDefault();
-    console.log('Name:', name, 'Username:', lastName, 'Email:', email, 'Password:', password);
+
+    await register({
+      name,
+      lastName,
+      email,
+      emailConfirmation,
+      password,
+      passwordConfirmation
+    });
   }
 
   return (

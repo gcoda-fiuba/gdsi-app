@@ -1,18 +1,25 @@
 import axios from "./axios";
-import cache from "@/app/services/cache"
+import cache from "@/app/services/cache";
+import {redirect} from "next/navigation";
 
 export const login = async (args = {}) => {
-  return axios.post('/auth/login', args, {
-    headers: {
-      "Content-type": 'application/x-www-form-urlencoded'
-    }
-  })
+  return axios.post('/auth/login', args)
     .then(response => {
-      console.log("Response es", response)
-      cache.set('token', '6359a97b1ba5b3666098d6cfc521933c')
-      return response
+      cache.set('token', response.data.token);
+      // redirect('/dashboard')
     })
     .catch(error => {
-      return error.response.data
-    })
+      return error.response.data;
+    });
+}
+
+export const register = async (args = {}) => {
+    return axios.post('/register', args)
+        .then(response => {
+            cache.set('token', response.data.token);
+            // redirect('/dashboard');
+        })
+        .catch(error => {
+            return error.response.data;
+        });
 }
