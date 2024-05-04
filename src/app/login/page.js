@@ -13,8 +13,9 @@ import {
   IconButton, FormControl
 } from '@mui/material';
 import {Visibility, VisibilityOff} from "@mui/icons-material";
+import {login} from "@/app/services/auth"
 
-function LoginForm() {
+export default function LoginForm() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -27,11 +28,17 @@ function LoginForm() {
     setPassword(event.target.value);
   };
 
-  const handleClickShowPassword = () => setShowPassword((show) => !show);
+  const handleClickShowPassword = () => {
+    setShowPassword((show) => !show);
+  };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log('Email:', email, 'Password:', password);
+
+    await login({
+      email,
+      password
+    })
   };
 
   return (
@@ -76,11 +83,9 @@ function LoginForm() {
               Iniciar sesión
             </Button>
           </form>
-          <p style={{ marginTop: 20 }}>¿Aún no tienes una cuenta? <Link href="#">Registrarse</Link></p>
+          <p style={{ marginTop: 20 }}>¿Aún no tienes una cuenta? <Link href="/register">Registrarse</Link></p>
         </Card>
       </Grid>
     </Grid>
   );
 }
-
-export default LoginForm;

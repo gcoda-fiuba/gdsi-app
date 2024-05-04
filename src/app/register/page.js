@@ -5,40 +5,33 @@ import {
   FormControl,
   Grid,
   IconButton,
-  InputAdornment,
   InputLabel, Link,
   OutlinedInput,
   TextField
 } from '@mui/material';
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {Visibility, VisibilityOff} from "@mui/icons-material";
 
 export default function Register() {
 
-  const [originURL, setOriginURL] = useState('');
-
-  useEffect(() => {
-    setOriginURL(window.location.origin);
-  }, []);
-
   const [name, setName] = useState('');
-  const [userName, setUserName] = useState('');
+  const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [emailConfirmation, setEmailConfirmation] = useState('');
   const [password, setPassword] = useState('');
   const [passwordConfirmation, setPasswordConfirmation] = useState('');
   const [showPassword, setShowPassword] = useState(false);
 
-  const handleNameChange = (event) => setEmail(event.target.value);
-  const handleUserNameChange = (event) => setEmail(event.target.value);
+  const handleNameChange = (event) => setName(event.target.value);
+  const handleLastNameChange = (event) => setLastName(event.target.value);
   const handleEmailChange = (event) => setEmail(event.target.value);
-  const handleEmailConfirmationChange = (event) => setEmail(event.target.value);
+  const handleEmailConfirmationChange = (event) => setEmailConfirmation(event.target.value);
   const handlePasswordChange = (event) => setPassword(event.target.value);
-  const handlePasswordConfirmationChange = (event) => setPassword(event.target.value);
+  const handlePasswordConfirmationChange = (event) => setPasswordConfirmation(event.target.value);
 
   const submit = (event) => {
     event.preventDefault();
-    console.log('Name:', name, 'Username:', userName, 'Email:', email, 'Password:', password);
+    console.log('Name:', name, 'Username:', lastName, 'Email:', email, 'Password:', password);
   }
 
   return (
@@ -64,11 +57,11 @@ export default function Register() {
               <Grid item>
                 <TextField
                     label="Usuario"
-                    type="userName"
+                    type="lastName"
                     margin="normal"
                     variant="outlined"
-                    value={userName}
-                    onChange={handleUserNameChange}
+                    value={lastName}
+                    onChange={handleLastNameChange}
                     required
                 />
               </Grid>
@@ -149,7 +142,7 @@ export default function Register() {
               Registrar
             </Button>
           </form>
-          <p style={{ marginTop: 20 }}>¿Ya tienes una cuenta? <Link href={originURL+"/login"}>Login</Link></p>
+          <p style={{ marginTop: 20 }}>¿Ya tienes una cuenta? <Link href="/login">Login</Link></p>
         </Card>
 
       </Grid>
