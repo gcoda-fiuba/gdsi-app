@@ -124,14 +124,14 @@ export default function Register() {
               <Grid item xs={10}>
                 {/*Repeat password input*/}
                 <FormControl fullWidth variant="outlined">
-                  <InputLabel htmlFor="outlined-adornment-password">Contraseña</InputLabel>
+                  <InputLabel htmlFor="outlined-adornment-confirm-password">Confirmar contraseña</InputLabel>
                   <OutlinedInput
-                      id="outlined-adornment-password"
+                      id="outlined-adornment-confirm-password"
                       type={showPassword ? 'text' : 'password'}
                       value={passwordConfirmation}
                       onChange={handlePasswordConfirmationChange}
                       required
-                      label="Contraseña"
+                      label="Confirmar contraseña"
                   />
                 </FormControl>
               </Grid>
