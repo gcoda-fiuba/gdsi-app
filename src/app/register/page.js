@@ -34,7 +34,7 @@ export default function Register() {
 
   const [snackBar, setSnackBar] = useState(false);
   const [responseInfo, setResponseInfo] = useState('');
-  const [severity, setSeverity] = useState('success');
+  const [severity, setSeverity] = useState('');
 
   useEffect(() => {
     if(snackBar) {
@@ -65,9 +65,6 @@ export default function Register() {
         setSeverity('error');
         setSnackBar(true);
     } else {
-
-      //  IMPORTANTE, NOE STA HACIENDO EL CATCH DE ERRORES!
-
         await register({
           email: email,
           first_name: name,
@@ -75,11 +72,9 @@ export default function Register() {
           password: password
         })
           .then(response => {
-            console.log(response);
-        setResponseInfo('Usuario registrado correctamente');
-        setSeverity('success');
-        setSnackBar(true);
-        // redirect('/dashboard')
+            setResponseInfo('Usuario registrado correctamente');
+            setSeverity('success');
+            setSnackBar(true);
         })
           .catch(error => {
             setResponseInfo("Ha habido un problma :(");
