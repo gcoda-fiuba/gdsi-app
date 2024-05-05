@@ -16,7 +16,6 @@ export default function SnackBar({info, severity}) {
         if (reason === 'clickaway') {
             return;
         }
-
         setOpen(false);
     };
 

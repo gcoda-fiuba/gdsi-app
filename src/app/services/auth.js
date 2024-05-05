@@ -6,22 +6,23 @@ export const login = async (args = {}) => {
   return axios.post('/auth/login', args)
     .then(response => {
         cache.set('token', response.data.token);
+      // redirect('/dashboard');
         return response.data;
-      // redirect('/dashboard')
     })
     .catch(error => {
         return error.response.data;
     });
 }
 
+//  IMPORTANTE, NOE STA HACIENDO EL CATCH DE ERRORES!
 export const register = async (args = {}) => {
     return axios.post('/register', args)
         .then(response => {
             cache.set('token', response.data.token);
             // redirect('/dashboard');
-            return response.data;
+            return response;
         })
         .catch(error => {
-            return error.response.data;
+            return error;
         });
 }

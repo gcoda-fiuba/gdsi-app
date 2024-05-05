@@ -10,7 +10,7 @@ import {
   OutlinedInput,
   TextField
 } from '@mui/material';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Visibility, VisibilityOff} from "@mui/icons-material";
 import {register} from "@/app/services/auth"
 import SnackBar from "@/app/components/snackBar";
@@ -36,26 +36,58 @@ export default function Register() {
   const [responseInfo, setResponseInfo] = useState('');
   const [severity, setSeverity] = useState('success');
 
+  useEffect(() => {
+    if(snackBar) {
+      setTimeout(() => {
+        setSnackBar(false);
+      }, 3000);
+    }
+  }, [snackBar]);
+
+  function passwordSecurity(password) {
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,}$/;
+    return passwordRegex.test(password);
+  }
+
   const submit = async (event)=> {
     event.preventDefault();
 
-    if (email === emailConfirmation && password === passwordConfirmation) {
-      await register({
-        email: email,
-        first_name: name,
-        last_name: lastName,
-        password: password
-      }).then(response=> {
-        setResponseInfo(response.message);
-        setSeverity('success');
-        setSnackBar(true);
-      }).catch(error => {
-        setResponseInfo(error.message);
+    if (email !== emailConfirmation) {
+        setResponseInfo('Los correos no coinciden');
         setSeverity('error');
         setSnackBar(true);
+    } else if (password !== passwordConfirmation) {
+        setResponseInfo('Las contraseñas no coinciden');
+        setSeverity('error');
+        setSnackBar(true);
+    } else if (!passwordSecurity(password)) {
+        setResponseInfo('La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula y un número');
+        setSeverity('error');
+        setSnackBar(true);
+    } else {
 
-      })
+      //  IMPORTANTE, NOE STA HACIENDO EL CATCH DE ERRORES!
+
+        await register({
+          email: email,
+          first_name: name,
+          last_name: lastName,
+          password: password
+        })
+          .then(response => {
+            console.log(response);
+        setResponseInfo('Usuario registrado correctamente');
+        setSeverity('success');
+        setSnackBar(true);
+        // redirect('/dashboard')
+        })
+          .catch(error => {
+            setResponseInfo("Ha habido un problma :(");
+            setSeverity('error');
+            setSnackBar(true);
+      });
     }
+
   }
 
   return (
