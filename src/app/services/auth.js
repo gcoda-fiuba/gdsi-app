@@ -5,11 +5,12 @@ import {redirect} from "next/navigation";
 export const login = async (args = {}) => {
   return axios.post('/auth/login', args)
     .then(response => {
-      cache.set('token', response.data.token);
+        cache.set('token', response.data.token);
+        return response.data;
       // redirect('/dashboard')
     })
     .catch(error => {
-      return error.response.data;
+        return error.response.data;
     });
 }
 
@@ -18,6 +19,7 @@ export const register = async (args = {}) => {
         .then(response => {
             cache.set('token', response.data.token);
             // redirect('/dashboard');
+            return response.data;
         })
         .catch(error => {
             return error.response.data;

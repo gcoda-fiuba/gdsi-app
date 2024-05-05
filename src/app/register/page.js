@@ -36,12 +36,10 @@ export default function Register() {
     event.preventDefault();
 
     await register({
-      name,
-      lastName,
-      email,
-      emailConfirmation,
-      password,
-      passwordConfirmation
+      email: email,
+      first_name: name,
+      last_name: lastName,
+      password: password
     });
   }
 
