@@ -13,7 +13,7 @@ import {
 import React, {useState} from 'react';
 import {Visibility, VisibilityOff} from "@mui/icons-material";
 import {register} from "@/app/services/auth"
-import {redirect, RedirectType} from "next/navigation";
+import SnackBar from "@/app/components/snackBar";
 
 export default function Register() {
 
@@ -32,21 +32,36 @@ export default function Register() {
   const handlePasswordChange = (event) => setPassword(event.target.value);
   const handlePasswordConfirmationChange = (event) => setPasswordConfirmation(event.target.value);
 
+  const [snackBar, setSnackBar] = useState(false);
+  const [responseInfo, setResponseInfo] = useState('');
+  const [severity, setSeverity] = useState('success');
+
   const submit = async (event)=> {
     event.preventDefault();
 
-    await register({
-      email: email,
-      first_name: name,
-      last_name: lastName,
-      password: password
-    });
+    if (email === emailConfirmation && password === passwordConfirmation) {
+      await register({
+        email: email,
+        first_name: name,
+        last_name: lastName,
+        password: password
+      }).then(response=> {
+        setResponseInfo(response.message);
+        setSeverity('success');
+        setSnackBar(true);
+      }).catch(error => {
+        setResponseInfo(error.message);
+        setSeverity('error');
+        setSnackBar(true);
+
+      })
+    }
   }
 
   return (
       <Grid container alignItems="center" justifyContent="center" style={{ height: '100vh' }}>
-
-        <Card variant="outlined" sx={{ p: 4}}>
+        {snackBar ? <SnackBar info={responseInfo} severity={severity}/> : null}
+        <Card variant="outlined" sx={{p: 4}}>
           <h2>Registrate</h2>
           <form onSubmit={submit}>
             <Grid container spacing={2}>
