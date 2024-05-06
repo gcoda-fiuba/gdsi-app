@@ -10,10 +10,12 @@ import {
   OutlinedInput,
   TextField
 } from '@mui/material';
-import React, {useEffect, useState} from 'react';
 import {Visibility, VisibilityOff} from "@mui/icons-material";
 import {register} from "@/app/services/auth"
+
 import SnackBar from "@/app/components/snackBar";
+
+import React, {useEffect, useState} from 'react';
 
 export default function Register() {
 
@@ -40,7 +42,7 @@ export default function Register() {
     if(snackBar) {
       setTimeout(() => {
         setSnackBar(false);
-      }, 3000);
+      }, 6000);
     }
   }, [snackBar]);
 
@@ -75,9 +77,12 @@ export default function Register() {
             setResponseInfo('Usuario registrado correctamente');
             setSeverity('success');
             setSnackBar(true);
+            // This redirect method is not recommended, it errors in console REPLACE
+            window.location.replace('/groups');
         })
           .catch(error => {
-            setResponseInfo("Ha habido un problma :(");
+            console.log(error)
+            setResponseInfo("Error al registrar usuario ): ");
             setSeverity('error');
             setSnackBar(true);
       });

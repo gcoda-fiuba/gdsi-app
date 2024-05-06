@@ -17,6 +17,7 @@ import {login} from "@/app/services/auth"
 import SnackBar from "@/app/components/snackBar";
 
 export default function LoginForm() {
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -29,7 +30,7 @@ export default function LoginForm() {
     if(snackBar) {
       setTimeout(() => {
         setSnackBar(false);
-      }, 3000);
+      }, 6000);
     }
   }, [snackBar]);
 
@@ -55,7 +56,8 @@ export default function LoginForm() {
       setResponseInfo('Inicio de sesión exitoso!');
       setSeverity('success');
       setSnackBar(true);
-      // redirect('/dashboard')
+      // This redirect method is not recommended, it errors in console REPLACE
+      window.location.replace('/groups');
     })
         .catch(error => {
             setResponseInfo(error.response.data);
