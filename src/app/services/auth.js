@@ -4,6 +4,7 @@ import cache from "@/app/services/cache";
 export const login = async (args = {}) => {
   try{
     const response = await axios.post('/auth/login', args)
+    cache.set('token', response.data.hash);
     return response.data
   }catch (error) {
     throw error;
