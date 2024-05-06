@@ -1,6 +1,6 @@
 'use client'
 
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {
   Button,
   TextField,
@@ -14,25 +14,15 @@ import {
 } from '@mui/material';
 import {Visibility, VisibilityOff} from "@mui/icons-material";
 import {login} from "@/app/services/auth"
-import SnackBar from "@/app/components/snackBar";
+import {useSnackbar} from "@/app/context/SnackbarContext";
 
 export default function LoginForm() {
+
+  const { showSnackbar } = useSnackbar();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-
-  const [snackBar, setSnackBar] = useState(false);
-  const [responseInfo, setResponseInfo] = useState('');
-  const [severity, setSeverity] = useState('');
-
-  useEffect(() => {
-    if(snackBar) {
-      setTimeout(() => {
-        setSnackBar(false);
-      }, 6000);
-    }
-  }, [snackBar]);
 
   const handleEmailChange = (event) => {
     setEmail(event.target.value);
@@ -49,27 +39,20 @@ export default function LoginForm() {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    await login({
-      email,
-      password
-    }).then(response => {
-      setResponseInfo('Inicio de sesión exitoso!');
-      setSeverity('success');
-      setSnackBar(true);
-      // This redirect method is not recommended, it errors in console REPLACE
-      window.location.replace('/groups');
-    })
-        .catch(error => {
-            setResponseInfo(error.response.data);
-              setSeverity('error');
-              setSnackBar(true);
-        });
+    try{
+      await login({
+        email,
+        password
+      })
 
+      window.location.replace('/groups');
+    } catch (error) {
+      showSnackbar(error.response.data.error, 'error');
+    }
   };
 
   return (
     <Grid container alignItems="center" justifyContent="center" style={{ height: '100vh' }}>
-      {snackBar ? <SnackBar info={responseInfo} severity={severity}/> : null}
       <Grid item xs={12} sm={6} md={4}>
         <Card variant="outlined" sx={{ p: 4}}>
           <h2>Login</h2>

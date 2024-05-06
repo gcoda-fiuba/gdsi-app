@@ -1,40 +1,44 @@
 'use client'
 
+import { useEffect, useState } from "react";
+import { useSnackbar } from '@/app/context/SnackbarContext';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
-import {useEffect, useState} from "react";
 
-export default function SnackBar({info, severity}) {
+export default function SnackBar() {
+  const { message, severity, closeSnackbar } = useSnackbar();
+  const [open, setOpen] = useState(false);
 
-    const [open, setOpen] = useState(false);
+  useEffect(() => {
+    if (message) {
+      setOpen(true);
+    }
+  }, [message]);
 
-    const openSnackBar = () => {
-        setOpen(true);
-    };
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpen(false);
+    closeSnackbar();
+  };
 
-    const handleClose = (event, reason) => {
-        if (reason === 'clickaway') {
-            return;
-        }
-        setOpen(false);
-    };
-
-    useEffect(() => {
-        openSnackBar();
-    }, []);
-
-    return (
-        <div>
-            <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-                <Alert
-                    onClose={handleClose}
-                    severity={severity}
-                    variant="filled"
-                    sx={{ width: '100%' }}
-                >
-                    {info}
-                </Alert>
-            </Snackbar>
-        </div>
-    );
+  return (
+    <Snackbar
+      open={open}
+      autoHideDuration={6000}
+      onClose={handleClose}
+      anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+    >
+      <Alert
+        onClose={handleClose}
+        severity={severity}
+        variant="filled"
+        sx={{ width: '100%' }}
+      >
+        {message}
+      </Alert>
+    </Snackbar>
+  );
 }
+

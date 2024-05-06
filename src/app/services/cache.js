@@ -1,16 +1,22 @@
-//const adapter = sessionStorage
-const adapter = localStorage
+const isBrowser = typeof window !== 'undefined';
+
+//const adapter = isBrowser ? sessionStorage : null;
+const adapter = isBrowser ? localStorage : null;
 
 const get = (key) => {
-  return adapter.getItem(key)
+  return isBrowser ? adapter.getItem(key) : null;
 }
 
 const set = (key, value) => {
-  adapter.setItem(key, value)
+  if (isBrowser) {
+    adapter.setItem(key, value);
+  }
 }
 
 const remove = (key) => {
-  adapter.removeItem(key)
+  if (isBrowser) {
+    adapter.removeItem(key);
+  }
 }
 
 export default {

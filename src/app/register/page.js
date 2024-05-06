@@ -12,12 +12,13 @@ import {
 } from '@mui/material';
 import {Visibility, VisibilityOff} from "@mui/icons-material";
 import {register} from "@/app/services/auth"
+import {useSnackbar} from "@/app/context/SnackbarContext";
 
-import SnackBar from "@/app/components/snackBar";
-
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 
 export default function Register() {
+
+  const { showSnackbar } = useSnackbar();
 
   const [name, setName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -34,18 +35,6 @@ export default function Register() {
   const handlePasswordChange = (event) => setPassword(event.target.value);
   const handlePasswordConfirmationChange = (event) => setPasswordConfirmation(event.target.value);
 
-  const [snackBar, setSnackBar] = useState(false);
-  const [responseInfo, setResponseInfo] = useState('');
-  const [severity, setSeverity] = useState('');
-
-  useEffect(() => {
-    if(snackBar) {
-      setTimeout(() => {
-        setSnackBar(false);
-      }, 6000);
-    }
-  }, [snackBar]);
-
   function passwordSecurity(password) {
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,}$/;
     return passwordRegex.test(password);
@@ -55,44 +44,36 @@ export default function Register() {
     event.preventDefault();
 
     if (email !== emailConfirmation) {
-        setResponseInfo('Los correos no coinciden');
-        setSeverity('error');
-        setSnackBar(true);
+        showSnackbar('Los correos no coinciden', 'error');
     } else if (password !== passwordConfirmation) {
-        setResponseInfo('Las contraseñas no coinciden');
-        setSeverity('error');
-        setSnackBar(true);
+      showSnackbar('Las contraseñas no coinciden', 'error');
     } else if (!passwordSecurity(password)) {
-        setResponseInfo('La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula y un número');
-        setSeverity('error');
-        setSnackBar(true);
+      showSnackbar(
+        'La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula y un número',
+        'error'
+      );
     } else {
+
+      try {
         await register({
           email: email,
           first_name: name,
           last_name: lastName,
           password: password
-        })
-          .then(response => {
-            setResponseInfo('Usuario registrado correctamente');
-            setSeverity('success');
-            setSnackBar(true);
-            // This redirect method is not recommended, it errors in console REPLACE
-            window.location.replace('/groups');
-        })
-          .catch(error => {
-            console.log(error)
-            setResponseInfo("Error al registrar usuario ): ");
-            setSeverity('error');
-            setSnackBar(true);
-      });
-    }
+        });
 
+        showSnackbar('Usuario registrado correctamente', 'success');
+        // This redirect method is not recommended, it errors in console REPLACE
+        window.location.replace('/groups');
+      } catch (error) {
+        console.error(error);
+        showSnackbar('Error al registrar usuario', 'error');
+      }
+    }
   }
 
   return (
       <Grid container alignItems="center" justifyContent="center" style={{ height: '100vh' }}>
-        {snackBar ? <SnackBar info={responseInfo} severity={severity}/> : null}
         <Card variant="outlined" sx={{p: 4}}>
           <h2>Registrate</h2>
           <form onSubmit={submit}>
