@@ -1,50 +1,80 @@
 'use client'
+
 import {
   Button,
   Card,
   FormControl,
   Grid,
   IconButton,
-  InputAdornment,
   InputLabel, Link,
   OutlinedInput,
   TextField
 } from '@mui/material';
-import React, {useEffect, useState} from 'react';
 import {Visibility, VisibilityOff} from "@mui/icons-material";
+import {register} from "@/app/services/auth"
+import {useSnackbar} from "@/app/context/SnackbarContext";
+
+import React, {useState} from 'react';
 
 export default function Register() {
 
-  const [originURL, setOriginURL] = useState('');
-
-  useEffect(() => {
-    setOriginURL(window.location.origin);
-  }, []);
+  const { showSnackbar } = useSnackbar();
 
   const [name, setName] = useState('');
-  const [userName, setUserName] = useState('');
+  const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [emailConfirmation, setEmailConfirmation] = useState('');
   const [password, setPassword] = useState('');
   const [passwordConfirmation, setPasswordConfirmation] = useState('');
   const [showPassword, setShowPassword] = useState(false);
 
-  const handleNameChange = (event) => setEmail(event.target.value);
-  const handleUserNameChange = (event) => setEmail(event.target.value);
+  const handleNameChange = (event) => setName(event.target.value);
+  const handleLastNameChange = (event) => setLastName(event.target.value);
   const handleEmailChange = (event) => setEmail(event.target.value);
-  const handleEmailConfirmationChange = (event) => setEmail(event.target.value);
+  const handleEmailConfirmationChange = (event) => setEmailConfirmation(event.target.value);
   const handlePasswordChange = (event) => setPassword(event.target.value);
-  const handlePasswordConfirmationChange = (event) => setPassword(event.target.value);
+  const handlePasswordConfirmationChange = (event) => setPasswordConfirmation(event.target.value);
 
-  const submit = (event) => {
+  function passwordSecurity(password) {
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,}$/;
+    return passwordRegex.test(password);
+  }
+
+  const submit = async (event)=> {
     event.preventDefault();
-    console.log('Name:', name, 'Username:', userName, 'Email:', email, 'Password:', password);
+
+    if (email !== emailConfirmation) {
+        showSnackbar('Los correos no coinciden', 'error');
+    } else if (password !== passwordConfirmation) {
+      showSnackbar('Las contraseñas no coinciden', 'error');
+    } else if (!passwordSecurity(password)) {
+      showSnackbar(
+        'La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula y un número',
+        'error'
+      );
+    } else {
+
+      try {
+        await register({
+          email: email,
+          first_name: name,
+          last_name: lastName,
+          password: password
+        });
+
+        showSnackbar('Usuario registrado correctamente', 'success');
+        // This redirect method is not recommended, it errors in console REPLACE
+        window.location.replace('/groups');
+      } catch (error) {
+        console.error(error);
+        showSnackbar('Error al registrar usuario', 'error');
+      }
+    }
   }
 
   return (
       <Grid container alignItems="center" justifyContent="center" style={{ height: '100vh' }}>
-
-        <Card variant="outlined" sx={{ p: 4}}>
+        <Card variant="outlined" sx={{p: 4}}>
           <h2>Registrate</h2>
           <form onSubmit={submit}>
             <Grid container spacing={2}>
@@ -64,11 +94,11 @@ export default function Register() {
               <Grid item>
                 <TextField
                     label="Usuario"
-                    type="userName"
+                    type="lastName"
                     margin="normal"
                     variant="outlined"
-                    value={userName}
-                    onChange={handleUserNameChange}
+                    value={lastName}
+                    onChange={handleLastNameChange}
                     required
                 />
               </Grid>
@@ -149,7 +179,7 @@ export default function Register() {
               Registrar
             </Button>
           </form>
-          <p style={{ marginTop: 20 }}>¿Ya tienes una cuenta? <Link href={originURL+"/login"}>Login</Link></p>
+          <p style={{ marginTop: 20 }}>¿Ya tienes una cuenta? <Link href="/login">Login</Link></p>
         </Card>
 
       </Grid>
