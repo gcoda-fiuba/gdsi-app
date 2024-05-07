@@ -63,11 +63,10 @@ export default function Register() {
         });
 
         showSnackbar('Usuario registrado correctamente', 'success');
-        // This redirect method is not recommended, it errors in console REPLACE
         window.location.replace('/groups');
       } catch (error) {
         console.error(error);
-        showSnackbar('Error al registrar usuario', 'error');
+        showSnackbar(error.response.data.error, 'error');
       }
     }
   }

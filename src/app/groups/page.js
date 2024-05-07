@@ -13,18 +13,16 @@ export default function Group() {
   const [groups, setGroups] = useState([])
 
   useEffect (() => {
+    if(!cache.get('token')){
+      window.location.replace('/');
+    }
     async function fetchData() {
-      if(!cache.get('token')){
-        window.location.replace('/')
-      }
-
       try{
         setGroups(await fetch())
       }catch(error){
         showSnackbar('Error al obtener los grupos', 'error');
       }
     }
-
     fetchData();
   },[])
 
@@ -43,7 +41,7 @@ export default function Group() {
           </TableHead>
           <TableBody>
             {groups.map((row) => (
-              <TableRow key={row.name}>
+              <TableRow key={row.id}>
                 <TableCell component="th" scope="row">
                   {row.id}
                 </TableCell>
