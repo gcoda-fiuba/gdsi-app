@@ -8,3 +8,12 @@ export const fetch = async () => {
     throw error;
   }
 }
+
+export const create = async (args) => {
+  try {
+    const response = await axios.post('/groups', args);
+    return response.data;
+  } catch(error) {
+    throw error;
+  }
+}
