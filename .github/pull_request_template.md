@@ -5,14 +5,3 @@ Closes #
 
 ## Summary of changes
 <!-- Describe the changes you are making -->
-
-## Checklist
-#### For the author
-- [ ] Tested the changes locally.
-- [ ] This change requires new documentation.
-
-#### For the reviewer
-- [ ] Reviewed the changes on GitHub, line by line.
-
-#### Anyone
-- [ ] Documentation has been added/updated.

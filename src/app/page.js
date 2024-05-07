@@ -19,17 +19,17 @@ import cache from "@/app/services/cache";
 
 export default function Home() {
 
-  useEffect(() => {
-    if(cache.get('token')){
-      window.location.replace('/groups')
-    }
-  },[])
-
   const { showSnackbar } = useSnackbar();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+
+  useEffect(() => {
+    if(cache.get('token')){
+      window.location.replace('/groups');
+    }
+  }, []);
 
   const handleEmailChange = (event) => {
     setEmail(event.target.value);
