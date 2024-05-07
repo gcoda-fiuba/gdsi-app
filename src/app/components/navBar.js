@@ -13,12 +13,12 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 
-import {useEffect, useState} from "react";
 import cache from "@/app/services/cache";
+import {useEffect, useState} from "react";
 
 export default function NavBar() {
 
-    const pages = ['Mis grupos', 'Crear Grupo'];
+    const pages = ['Mis grupos'];
     const settings = ['Log out'];
 
     const [anchorElNav, setAnchorElNav] = useState(null);
@@ -54,7 +54,7 @@ export default function NavBar() {
                 window.location.replace('/groups');
                 break;
             case pages[1]:
-                console.log('crear grupo');
+                console.log('Create group');
                 break;
         }
         handleCloseNavMenu();

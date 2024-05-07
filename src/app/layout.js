@@ -17,13 +17,13 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <SnackbarProvider>
-      <html lang="es">
-        <body className={montserrat.className}>
-          <NavBar />
-          {children}
-          <SnackbarComponent />
-        </body>
-      </html>
+        <html lang="es">
+          <body className={montserrat.className}>
+            <NavBar />
+              {children}
+            <SnackbarComponent />
+          </body>
+        </html>
     </SnackbarProvider>
   );
 }
