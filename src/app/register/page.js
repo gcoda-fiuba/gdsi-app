@@ -178,7 +178,7 @@ export default function Register() {
               Registrar
             </Button>
           </form>
-          <p style={{ marginTop: 20 }}>¿Ya tienes una cuenta? <Link href="/login">Login</Link></p>
+          <p style={{ marginTop: 20 }}>¿Ya tienes una cuenta? <Link href="/">Login</Link></p>
         </Card>
 
       </Grid>
