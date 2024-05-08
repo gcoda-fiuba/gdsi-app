@@ -20,3 +20,11 @@ export const register = async (args = {}) => {
     throw error;
   }
 }
+
+export const logOut = async () => {
+  try{
+    cache.remove('token');
+  }catch (error) {
+    throw error;
+  }
+}

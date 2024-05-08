@@ -27,7 +27,7 @@ export default function CreateGroup({fetchData}) {
     return (
         <Fragment>
             <Button variant="outlined" onClick={handleClickOpen} style={{margin: '2%'}}>
-                Crear nuevo grupo
+                Create Group
             </Button>
             <Dialog
                 open={open}

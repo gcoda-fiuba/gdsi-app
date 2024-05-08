@@ -10,12 +10,13 @@ import {
   OutlinedInput,
   InputLabel,
   InputAdornment,
-  IconButton, FormControl
+  IconButton, FormControl, Box
 } from '@mui/material';
 import {Visibility, VisibilityOff} from "@mui/icons-material";
 import {login} from "@/app/services/auth"
 import {useSnackbar} from "@/app/context/SnackbarContext";
 import cache from "@/app/services/cache";
+import {LoadingButton} from "@mui/lab";
 
 export default function Home() {
 
@@ -24,6 +25,7 @@ export default function Home() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if(cache.get('token')){
@@ -45,6 +47,7 @@ export default function Home() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setLoading(true)
 
     try{
       await login({
@@ -96,10 +99,19 @@ export default function Home() {
                 label="Contraseña"
               />
             </FormControl>
-            <Button type="submit" color="primary" variant="contained" fullWidth style={{ marginTop: 20 }}>
-              Iniciar sesión
-            </Button>
+            <Box display="flex" justifyContent="center" marginTop={2} marginBottom={2}>
+              <LoadingButton
+                size="large"
+                loading={loading}
+                variant="contained"
+                color="primary"
+                type="submit"
+              >
+                <span>Iniciar sesión</span>
+              </LoadingButton>
+            </Box>
           </form>
+          <hr />
           <p style={{ marginTop: 20 }}>¿Aún no tienes una cuenta? <Link href="/register">Registrarse</Link></p>
         </Card>
       </Grid>

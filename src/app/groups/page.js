@@ -1,70 +1,79 @@
 'use client'
 
-import {Suspense, useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 import cache from "@/app/services/cache";
-import {Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@mui/material";
-import {fetch} from "@/app/services/groups"
-import {useSnackbar} from "@/app/context/SnackbarContext";
+import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, Box } from "@mui/material";
+import { fetch } from "@/app/services/groups";
+import { useSnackbar } from "@/app/context/SnackbarContext";
 import CreateGroup from "@/app/components/createGroup";
 import Loading from "@/app/groups/loading";
+import GroupModal from "@/app/components/memberModal";
 
 export default function Group() {
   const { showSnackbar } = useSnackbar();
   const [groups, setGroups] = useState([])
   const [loading, setLoading] = useState(false);
-
-  const [openCreateGroup, setOpenCreateGroup] = useState(false);
+  const [selectedGroup, setSelectedGroup] = useState(null);
+  const [memberModalOpen, setMemberModalOpen] = useState(false);
 
   async function fetchData() {
-    try{
+    try {
       setLoading(true);
       setGroups(await fetch())
       setLoading(false);
-    }catch(error){
+    } catch (error) {
       showSnackbar('Error al obtener los grupos', 'error');
     }
   }
 
-  useEffect (() => {
+  useEffect(() => {
     setLoading(true);
 
-    if(!cache.get('token')){
+    if (!cache.get('token')) {
       window.location.replace('/');
     }
 
     fetchData();
-  },[])
+  }, [])
 
-  const headers = ['ID', 'Nombre']
+  const headers = ['ID', 'Nombre'];
+
+  const handleRowClick = (group) => {
+    setSelectedGroup(group);
+    setMemberModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setMemberModalOpen(false);
+  };
 
   return (
-
-        loading
-          ?
-            <Loading />
-          :
-            <section style={{display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
-              <CreateGroup fetchData={fetchData}/>
-              <TableContainer component={Paper}>
-                <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                  <TableHead>
-                    <TableRow>
-                      {headers.map((header) => <TableCell key={header}>{header}</TableCell>)}
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {groups.map((row) =>
-                        <TableRow key={row.id}>
-                          <TableCell component="th" scope="row">
-                            {row.id}
-                          </TableCell>
-                          <TableCell>{row.name}</TableCell>
-                        </TableRow>
-                    )}
-                  </TableBody>
-                </Table>
-              </TableContainer>
-            </section>
-
+    loading ? <Loading /> :
+      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', p: 2 }}>
+        <Typography variant="h4" gutterBottom>
+          Group List
+        </Typography>
+        <CreateGroup fetchData={fetchData} />
+        <TableContainer component={Paper} sx={{ maxWidth: 800, mt: 2, mb: 2 }}>
+          <Table sx={{ minWidth: 500 }} aria-label="simple table">
+            <TableHead>
+              <TableRow>
+                {headers.map((header) => <TableCell key={header}>{header}</TableCell>)}
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {groups.map((group) =>
+                <TableRow key={group.id} hover onClick={() => handleRowClick(group)} sx={{ cursor: 'pointer' }}>
+                  <TableCell component="th" scope="row">
+                    {group.id}
+                  </TableCell>
+                  <TableCell>{group.name}</TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </TableContainer>
+        <GroupModal group={selectedGroup} open={memberModalOpen} onClose={closeModal} />
+      </Box>
   );
 }
