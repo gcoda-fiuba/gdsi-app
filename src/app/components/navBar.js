@@ -14,7 +14,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
-import {Badge, Link, Menu, MenuItem} from "@mui/material";
+import {Avatar, Badge, Link, Menu, MenuItem} from "@mui/material";
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import MoreIcon from '@mui/icons-material/MoreVert';
@@ -31,6 +31,7 @@ function DrawerAppBar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
+  const [notificationAnchorEl, setNotificationAnchorEl] = useState(null);
   const [notifications, setNotifications] = useState([]);
 
   useEffect(() => {
@@ -79,13 +80,13 @@ function DrawerAppBar() {
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
     <Menu
+      sx={{ mt: '30px' }}
       anchorEl={anchorEl}
       anchorOrigin={{
         vertical: 'top',
         horizontal: 'right',
       }}
       id={menuId}
-      keepMounted
       transformOrigin={{
         vertical: 'top',
         horizontal: 'right',
@@ -97,7 +98,7 @@ function DrawerAppBar() {
     </Menu>
   );
 
-  const mobileMenuId = 'primary-search-account-menu-mobile';
+  const mobileMenuId = 'account-menu-mobile';
   const renderMobileMenu = (
     <Menu
       anchorEl={mobileMoreAnchorEl}
@@ -149,34 +150,40 @@ function DrawerAppBar() {
     </Box>
   );
 
+  const notificationMenuId = 'notification-menu';
+
   const renderNotificationsMenu = (notifications.length > 0 &&
     <Menu
-      anchorEl={mobileMoreAnchorEl}
+      sx={{ mt: '30px' }}
+      anchorEl={notificationAnchorEl}
       anchorOrigin={{
         vertical: 'top',
         horizontal: 'right',
       }}
-      id="notifications-menu"
+      id={notificationMenuId}
       keepMounted
       transformOrigin={{
         vertical: 'top',
         horizontal: 'right',
       }}
-      open={Boolean(mobileMoreAnchorEl)}
-      onClose={() => setMobileMoreAnchorEl(null)}
+      open={Boolean(notificationAnchorEl)}
+      onClose={() => setNotificationAnchorEl(null)}
     >
       {notifications.map((notification) => (
-        <MenuItem key={notification.id}>
-          <Typography variant="body1">{notification.message}</Typography>
-          <Typography variant="body2" color="textSecondary">
-            {new Date(notification.createdAt).toLocaleString()}
-          </Typography>
+        <MenuItem key={notification.id} sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+          <Avatar>
+            <AccountCircle />
+          </Avatar>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
+            <Typography variant="body1">{notification.message}</Typography>
+            <Typography variant="body2" sx={{ fontWeight: 'bold', fontStyle: 'italic', color: 'text.secondary' }}>
+              {new Date(notification.createdAt).toLocaleString()}
+            </Typography>
+          </div>
         </MenuItem>
       ))}
     </Menu>
   );
-
-  const container = window.document.body;
 
   return (auth &&
     <Box sx={{ display: 'flex' }}>
@@ -201,18 +208,18 @@ function DrawerAppBar() {
             ))}
           </Box>
           <Box sx={{ flexGrow: 1 }} />
+          <IconButton
+            size="large"
+            aria-label="show notifications"
+            aria-controls={notificationMenuId}
+            color="inherit"
+            onClick={(event) => setNotificationAnchorEl(event.currentTarget)}
+          >
+            <Badge badgeContent={countUnreadNotifications()} color="error">
+              <NotificationsIcon />
+            </Badge>
+          </IconButton>
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-            <IconButton
-              size="large"
-              aria-label="show notifications"
-              aria-controls="notifications-menu"
-              color="inherit"
-              onClick={(event) => setMobileMoreAnchorEl(event.currentTarget)}
-            >
-              <Badge badgeContent={countUnreadNotifications()} color="error">
-                <NotificationsIcon />
-              </Badge>
-            </IconButton>
             <IconButton
               size="large"
               edge="end"
@@ -244,7 +251,6 @@ function DrawerAppBar() {
       {renderNotificationsMenu}
       <nav>
         <Drawer
-          container={container}
           variant="temporary"
           open={mobileOpen}
           onClose={handleDrawerToggle}
