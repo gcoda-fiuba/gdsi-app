@@ -12,28 +12,25 @@ import GroupModal from "@/app/components/memberModal";
 export default function Group() {
   const { showSnackbar } = useSnackbar();
   const [groups, setGroups] = useState([])
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [selectedGroup, setSelectedGroup] = useState(null);
   const [memberModalOpen, setMemberModalOpen] = useState(false);
 
   async function fetchData() {
     try {
-      setLoading(true);
       setGroups(await fetch())
-      setLoading(false);
     } catch (error) {
       showSnackbar('Error al obtener los grupos', 'error');
     }
   }
 
   useEffect(() => {
-    setLoading(true);
-
     if (!cache.get('token')) {
       window.location.replace('/');
     }
 
     fetchData();
+    setLoading(false);
   }, [])
 
   const headers = ['ID', 'Nombre'];
