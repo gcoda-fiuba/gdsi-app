@@ -17,3 +17,30 @@ export const create = async (args) => {
     throw error;
   }
 }
+
+export const getMembers = async (id) => {
+  try{
+    const response = await axios.get(`/groups/${id}/integrant`)
+    return response.data
+  }catch (error) {
+    throw error;
+  }
+}
+
+export const addMember = async (args = {}) => {
+  try{
+    const response = await axios.post(`/groups/${args.id}/integrant`, {params: {email: args.email}})
+    return response.data
+  }catch (error) {
+    throw error;
+  }
+}
+
+export const removeMember = async (args = {}) => {
+  try{
+    const response = await axios.delete(`/groups/${args.id}/integrant`, {data: {email: args.email}})
+    return response.data
+  }catch (error) {
+    throw error;
+  }
+}
