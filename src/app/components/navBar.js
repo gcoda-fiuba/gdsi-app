@@ -35,7 +35,12 @@ function DrawerAppBar() {
   const [notifications, setNotifications] = useState([]);
 
   useEffect(() => {
-    cache.get('token') ? setAuth(true) : setAuth(false)
+    if(!cache.get('token')){
+      setAuth(false)
+      return;
+    }
+
+    setAuth(true)
 
     async function loadNotifications() {
       setNotifications(await getNotifications());

@@ -92,7 +92,7 @@ export default function Register() {
               {/*Username input*/}
               <Grid item>
                 <TextField
-                    label="Usuario"
+                    label="Apellido"
                     type="lastName"
                     margin="normal"
                     variant="outlined"
