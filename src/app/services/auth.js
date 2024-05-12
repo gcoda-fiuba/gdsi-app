@@ -32,7 +32,7 @@ export const verifyAccount = async (args = {}) => {
   try{
     console.log(args);
     const response = await axios.get(`/register/confirm?token=${args.token}`);
-    cache.set('token', response.data.hash);
+    await cache.set('token', args.token);
     return response.data
   }catch (error) {
     throw error;
