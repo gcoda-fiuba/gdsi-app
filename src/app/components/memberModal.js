@@ -11,25 +11,41 @@ import {
   ListItem,
   ListItemText,
   IconButton,
-  TextField
+  TextField,
+  Autocomplete
 } from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useEffect, useState } from 'react';
 import {getMembers, addMember, removeMember} from "@/app/services/groups";
+import {fetchUsers} from "@/app/services/users";
 
 export default function GroupModal({ group, open, onClose }) {
   const [members, setMembers] = useState([]);
-  const [newMemberEmail, setNewMemberEmail] = useState("");
+  const [newMemberId, setNewMemberId] = useState("");
+
+  const [users, setUsers] = useState([]);
+  const [usersFetched, setUsersFetched] = useState(false);
 
   useEffect(() => {
-    if (open && group) {
-      handleFetchMembers();
-    }
+    if (open && group) handleFetchMembers();
+    if (!usersFetched) handleFetchUsers();
   }, [open, group]);
 
   const handleFetchMembers = async () => {
     setMembers(await getMembers(group.id));
   };
+  const handleFetchUsers = async () => {
+    const fetchUsersResponse = await fetchUsers().then(response => {
+      response.map(userData => {
+        console.log({name: `${userData.first_name} ${userData.last_name}`});
+        setUsers([...users, `${userData.id} - ${userData.first_name} ${userData.last_name}`]);
+      });
+      console.log(response);
+      console.log(users);
+    });
+
+    setUsersFetched(true);
+  }
 
   const handleRemoveMember = async (memberEmail) => {
     await removeMember({
@@ -40,12 +56,12 @@ export default function GroupModal({ group, open, onClose }) {
   };
 
   const handleAddMember = async () => {
-    if (newMemberEmail) {
+    if (newMemberId) {
       await addMember({
         id: group.id,
-        email: newMemberEmail
+        email: newMemberId
       });
-      setNewMemberEmail("");
+      setNewMemberId("");
       handleFetchMembers();
     }
   };
@@ -68,16 +84,25 @@ export default function GroupModal({ group, open, onClose }) {
             </ListItem>
           ))}
         </List>
-        <TextField
-          label="New member email"
-          type="email"
-          fullWidth
-          value={newMemberEmail}
-          onChange={(e) => setNewMemberEmail(e.target.value)}
-          variant="outlined"
-          margin="normal"
+
+        <Autocomplete
+            style={{ width: '300px' }}
+            id="free-solo-demo"
+            freeSolo
+            options={[users.map(user => user)]}
+            renderInput={(params) => <TextField {...params} label="freeSolo" />}
         />
-        <Button onClick={handleAddMember} variant="contained" color="primary">Add member</Button>
+
+        {/*<TextField*/}
+        {/*  label="New member email"*/}
+        {/*  type="email"*/}
+        {/*  fullWidth*/}
+        {/*  value={newMemberEmail}*/}
+        {/*  onChange={(e) => setNewMemberEmail(e.target.value)}*/}
+        {/*  variant="outlined"*/}
+        {/*  margin="normal"*/}
+        {/*/>*/}
+        <Button onClick={handleAddMember} variant="contained" color="primary" style={{ marginTop: '2%' }}>Add member</Button>
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose}>Close</Button>
