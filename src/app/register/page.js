@@ -35,6 +35,8 @@ export default function Register() {
   const handlePasswordChange = (event) => setPassword(event.target.value);
   const handlePasswordConfirmationChange = (event) => setPasswordConfirmation(event.target.value);
 
+  const [registered, setRegistered] = useState(false);
+
   function passwordSecurity(password) {
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,}$/;
     return passwordRegex.test(password);
@@ -62,8 +64,7 @@ export default function Register() {
           password: password
         });
 
-        showSnackbar('Usuario registrado correctamente', 'success');
-        window.location.replace('/groups');
+        setRegistered(true);
       } catch (error) {
         console.error(error);
         showSnackbar(error.response.data.error, 'error');
@@ -72,6 +73,14 @@ export default function Register() {
   }
 
   return (
+      registered ?
+      <Grid container alignItems="center" justifyContent="center" style={{ height: '100vh' }}>
+        <Card variant="outlined" style={{ alignItems: 'center', justifyContent: 'center' }} sx={{p: 4}}>
+          <h2>¡Registrado!</h2>
+          <p>Revisa tu correo para verificar tu cuenta</p>
+        </Card>
+      </Grid>
+      :
       <Grid container alignItems="center" justifyContent="center" style={{ height: '100vh' }}>
         <Card variant="outlined" sx={{p: 4}}>
           <h2>Registrate</h2>
