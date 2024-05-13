@@ -18,10 +18,12 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { useEffect, useState } from 'react';
 import {getMembers, addMember, removeMember} from "@/app/services/groups";
 import {fetchUsers} from "@/app/services/users";
+import {useSnackbar} from "@/app/context/SnackbarContext";
 
 export default function GroupModal({ group, open, onClose }) {
   const [members, setMembers] = useState([]);
-  const [newMemberId, setNewMemberId] = useState("");
+  const [newMember, setNewMember] = useState("");
+  const {showSnackbar} = useSnackbar();
 
   const [users, setUsers] = useState([]);
   const [usersFetched, setUsersFetched] = useState(false);
@@ -36,14 +38,8 @@ export default function GroupModal({ group, open, onClose }) {
   };
   const handleFetchUsers = async () => {
     const fetchUsersResponse = await fetchUsers().then(response => {
-      response.map(userData => {
-        console.log({name: `${userData.first_name} ${userData.last_name}`});
-        setUsers([...users, `${userData.id} - ${userData.first_name} ${userData.last_name}`]);
-      });
-      console.log(response);
-      console.log(users);
+      setUsers(response.map(user => user));
     });
-
     setUsersFetched(true);
   }
 
@@ -56,13 +52,28 @@ export default function GroupModal({ group, open, onClose }) {
   };
 
   const handleAddMember = async () => {
-    if (newMemberId) {
+    const newUser = document.getElementById('auto-complete-users').value;
+    setNewMember(newUser);
+
+    const newUserId = parseInt(newMember.split(' ')[0]);
+    const newUserEmail = users.find(user => user.id === newUserId)?.email
+    console.log(`newUserId: ${newUserId}, newUserEmail: ${newUserEmail}, groupId: ${group.id}`);
+
+    if (newUserId && newUserEmail !== undefined) {
       await addMember({
-        id: group.id,
-        email: newMemberId
+        groupId: group.id,
+        email: newUserEmail,
+        userId: newUserId
+      }).then( () => {
+        setNewMember("");
+        handleFetchMembers();
+        showSnackbar('Listo, nuevo miembrao agregado', 'success')
+      }).catch( error => {
+        console.log(error);
+        showSnackbar(error.response.data.error, 'error')
       });
-      setNewMemberId("");
-      handleFetchMembers();
+    } else {
+      showSnackbar('Hubo un error agregando este usuario', 'error')
     }
   };
 
@@ -87,21 +98,12 @@ export default function GroupModal({ group, open, onClose }) {
 
         <Autocomplete
             style={{ width: '300px' }}
-            id="free-solo-demo"
+            id="auto-complete-users"
             freeSolo
-            options={[users.map(user => user)]}
-            renderInput={(params) => <TextField {...params} label="freeSolo" />}
+            options={users.map(user => `${user.id} - ${user.first_name} ${user.last_name}`)}
+            renderInput={(params) => <TextField {...params} label="Nombre y apellido" value={newMember} />}
         />
 
-        {/*<TextField*/}
-        {/*  label="New member email"*/}
-        {/*  type="email"*/}
-        {/*  fullWidth*/}
-        {/*  value={newMemberEmail}*/}
-        {/*  onChange={(e) => setNewMemberEmail(e.target.value)}*/}
-        {/*  variant="outlined"*/}
-        {/*  margin="normal"*/}
-        {/*/>*/}
         <Button onClick={handleAddMember} variant="contained" color="primary" style={{ marginTop: '2%' }}>Add member</Button>
       </DialogContent>
       <DialogActions>

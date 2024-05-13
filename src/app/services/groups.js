@@ -29,7 +29,7 @@ export const getMembers = async (id) => {
 
 export const addMember = async (args = {}) => {
   try{
-    const response = await axios.post(`/groups/${args.id}/integrant`, {email: args.email})
+    const response = await axios.post(`/groups/${args.groupId}/integrant`, {email: args.email})
     return response.data
   }catch (error) {
     throw error;
