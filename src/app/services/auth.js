@@ -30,7 +30,6 @@ export const logOut = async () => {
 
 export const verifyAccount = async (args = {}) => {
   try{
-    console.log(args);
     const response = await axios.get(`/register/confirm?token=${args.token}`);
     await cache.set('token', args.token);
     return response.data

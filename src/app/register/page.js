@@ -64,7 +64,6 @@ export default function Register() {
           password: password
         });
 
-        showSnackbar('Usuario registrado correctamente', 'success');
         setRegistered(true);
       } catch (error) {
         console.error(error);
