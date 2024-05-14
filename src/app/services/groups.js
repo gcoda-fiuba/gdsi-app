@@ -44,3 +44,19 @@ export const removeMember = async (args = {}) => {
     throw error;
   }
 }
+
+export const getExpenses = async (id) => {
+  const mockExpenses = [
+    { id: 1, description: 'Pizza for the meeting', amount: 25.00 },
+    { id: 2, description: 'Office supplies', amount: 40.00 },
+    { id: 3, description: 'Projector rental', amount: 100.00 },
+  ];
+
+  try{
+    /*const response = await axios.get(`/groups/${id}/expenses`)
+    return response.data*/
+    return mockExpenses
+  }catch (error) {
+    throw error;
+  }
+}

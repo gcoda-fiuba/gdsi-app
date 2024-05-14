@@ -16,7 +16,7 @@ import {
 } from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useEffect, useState } from 'react';
-import { getMembers, addMember, removeMember } from "@/app/services/groups";
+import { getMembers, addMember, removeMember, getExpenses } from "@/app/services/groups";
 import { getUsers } from "@/app/services/user";
 
 export default function GroupModal({ group, open, onClose }) {
@@ -24,11 +24,13 @@ export default function GroupModal({ group, open, onClose }) {
   const [users, setUsers] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
   const [autocompleteValue, setAutocompleteValue] = useState(null);
+  const [expenses, setExpenses] = useState([]);
 
   useEffect(() => {
     if (open && group) {
       handleFetchUsers();
       handleFetchMembers();
+      handleFetchExpenses();
     }
   }, [open, group]);
 
@@ -38,6 +40,10 @@ export default function GroupModal({ group, open, onClose }) {
 
   const handleFetchMembers = async () => {
     setMembers(await getMembers(group.id));
+  };
+
+  const handleFetchExpenses = async () => {
+    setExpenses(await getExpenses(group.id));
   };
 
   const handleRemoveMember = async (memberEmail) => {
@@ -75,6 +81,17 @@ export default function GroupModal({ group, open, onClose }) {
               </IconButton>
             }>
               <ListItemText primary={`${member.first_name} ${member.last_name}`} />
+            </ListItem>
+          ))}
+        </List>
+
+        <DialogContentText>
+          Expenses
+        </DialogContentText>
+        <List>
+          {expenses.map(expense => (
+            <ListItem key={expense.id}>
+              <ListItemText primary={`${expense.description}: $${expense.amount}`} />
             </ListItem>
           ))}
         </List>

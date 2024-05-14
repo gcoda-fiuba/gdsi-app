@@ -7,14 +7,14 @@ import { fetch } from "@/app/services/groups";
 import { useSnackbar } from "@/app/context/SnackbarContext";
 import CreateGroup from "@/app/components/createGroup";
 import Loading from "@/app/groups/loading";
-import GroupModal from "@/app/components/memberModal";
+import GroupModal from "@/app/components/groupModal";
 
 export default function Group() {
   const { showSnackbar } = useSnackbar();
   const [groups, setGroups] = useState([])
   const [loading, setLoading] = useState(true);
   const [selectedGroup, setSelectedGroup] = useState(null);
-  const [memberModalOpen, setMemberModalOpen] = useState(false);
+  const [groupModalOpen, setGroupModalOpen] = useState(false);
 
   async function fetchData() {
     try {
@@ -37,11 +37,11 @@ export default function Group() {
 
   const handleRowClick = (group) => {
     setSelectedGroup(group);
-    setMemberModalOpen(true);
+    setGroupModalOpen(true);
   };
 
   const closeModal = () => {
-    setMemberModalOpen(false);
+    setGroupModalOpen(false);
   };
 
   return (
@@ -70,7 +70,7 @@ export default function Group() {
             </TableBody>
           </Table>
         </TableContainer>
-        <GroupModal group={selectedGroup} open={memberModalOpen} onClose={closeModal} />
+        <GroupModal group={selectedGroup} open={groupModalOpen} onClose={closeModal} />
       </Box>
   );
 }
