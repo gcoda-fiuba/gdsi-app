@@ -11,21 +11,30 @@ import {
   ListItem,
   ListItemText,
   IconButton,
-  TextField
+  TextField,
+  Autocomplete
 } from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useEffect, useState } from 'react';
-import {getMembers, addMember, removeMember} from "@/app/services/groups";
+import { getMembers, addMember, removeMember } from "@/app/services/groups";
+import { getUsers } from "@/app/services/user";
 
 export default function GroupModal({ group, open, onClose }) {
   const [members, setMembers] = useState([]);
-  const [newMemberEmail, setNewMemberEmail] = useState("");
+  const [users, setUsers] = useState([]);
+  const [selectedUser, setSelectedUser] = useState(null);
+  const [autocompleteValue, setAutocompleteValue] = useState(null);
 
   useEffect(() => {
     if (open && group) {
+      handleFetchUsers();
       handleFetchMembers();
     }
   }, [open, group]);
+
+  const handleFetchUsers = async () => {
+    setUsers(await getUsers());
+  };
 
   const handleFetchMembers = async () => {
     setMembers(await getMembers(group.id));
@@ -40,22 +49,23 @@ export default function GroupModal({ group, open, onClose }) {
   };
 
   const handleAddMember = async () => {
-    if (newMemberEmail) {
+    if (selectedUser) {
       await addMember({
         id: group.id,
-        email: newMemberEmail
+        userId: selectedUser
       });
-      setNewMemberEmail("");
+      setSelectedUser(null);
+      setAutocompleteValue(null);
       handleFetchMembers();
     }
   };
 
   return (
     <Dialog open={open} onClose={onClose}>
-      <DialogTitle>Grupo {group?.name}</DialogTitle>
+      <DialogTitle>Group: {group?.name}</DialogTitle>
       <DialogContent>
         <DialogContentText>
-          Details of group {group?.name}
+          Members
         </DialogContentText>
         <List>
           {members.map(member => (
@@ -64,19 +74,38 @@ export default function GroupModal({ group, open, onClose }) {
                 <DeleteIcon />
               </IconButton>
             }>
-              <ListItemText primary={member.first_name + ' ' + member.last_name} />
+              <ListItemText primary={`${member.first_name} ${member.last_name}`} />
             </ListItem>
           ))}
         </List>
-        <TextField
-          label="New member email"
-          type="email"
-          fullWidth
-          value={newMemberEmail}
-          onChange={(e) => setNewMemberEmail(e.target.value)}
-          variant="outlined"
-          margin="normal"
+
+        <Autocomplete
+          id="combo-box-users"
+          options={users}
+          getOptionLabel={(option) => `${option.first_name} ${option.last_name}`}
+          onChange={(event, value) => {
+            setSelectedUser(value ? value.id : null);
+            setAutocompleteValue(value);
+          }}
+          value={autocompleteValue}
+          sx={{ width: 250, marginBottom: 2 }}
+          renderOption={(props, option) => (
+            <li {...props} key={option.id}>
+              {option.first_name} {option.last_name}
+            </li>
+          )}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              label="User"
+              inputProps={{
+                ...params.inputProps,
+                autoComplete: 'new-password',
+              }}
+            />
+          )}
         />
+
         <Button onClick={handleAddMember} variant="contained" color="primary">Add member</Button>
       </DialogContent>
       <DialogActions>
