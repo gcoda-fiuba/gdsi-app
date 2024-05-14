@@ -55,7 +55,7 @@ export const getExpenses = async (id) => {
   try{
     /*const response = await axios.get(`/groups/${id}/expenses`)
     return response.data*/
-    return mockExpenses
+    return []
   }catch (error) {
     throw error;
   }
