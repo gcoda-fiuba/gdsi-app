@@ -20,7 +20,9 @@ export default function Verify() {
             } catch (error) {
                 setVerifying(false);
                 showSnackbar("Hubo un error al verificar tu cuenta :(", 'error');
-                window.location.replace('/');
+                setTimeout(() => {
+                    window.location.replace('/');
+                }, 2000);
             }
         }
 
