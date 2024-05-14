@@ -20,7 +20,7 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import {useEffect, useState} from "react";
 import {logOut} from "@/app/services/auth";
-import {getNotifications} from "@/app/services/notification";
+import {getNotifications, readNotification} from "@/app/services/notification";
 import cache from "@/app/services/cache";
 
 const drawerWidth = 240;
@@ -172,10 +172,15 @@ function DrawerAppBar() {
         horizontal: 'right',
       }}
       open={Boolean(notificationAnchorEl)}
-      onClose={() => setNotificationAnchorEl(null)}
+      onClose={() => {
+          setNotificationAnchorEl(null);
+          setNotifications(notifications.map(notification => ({...notification, read: true})));
+          notifications.map(notification => readNotification({id: notification.id}));
+        }
+      }
     >
-      {notifications.map((notification) => (
-        <MenuItem key={notification.id} sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+      {notifications.toReversed().map((notification) => (
+        <MenuItem key={notification.id} sx={{ display: 'flex', alignItems: 'center', gap: 1, backgroundColor: notification.read ? null : '#c8c8c8' }}>
           <Avatar>
             <AccountCircle />
           </Avatar>

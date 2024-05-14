@@ -8,3 +8,11 @@ export const getNotifications = async () => {
     throw error;
   }
 }
+
+export const readNotification = async (args = {}) => {
+  try {
+    await axios.patch(`/notifications/${args.id}`);
+  } catch (error) {
+    throw error;
+  }
+}
