@@ -24,7 +24,7 @@ import {
   Select,
   MenuItem,
   InputLabel,
-  FormControl
+  FormControl, Backdrop, CircularProgress
 } from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
@@ -45,7 +45,7 @@ export default function GroupModal({ group, open, onClose }) {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [newBill, setNewBill] = useState({ bill_amount: 0, category_id: 0 });
-  const [divisionMode, setDivisionMode] = useState("");
+  const [divisionMode, setDivisionMode] = useState([""]);
 
   useEffect(() => {
     if (open && group) {
@@ -104,10 +104,18 @@ export default function GroupModal({ group, open, onClose }) {
       showSnackbar('The amount must be greater than 0', 'error');
       return
     }
+    if (parseInt(params.category_id) <= 0) {
+      showSnackbar('You must choose a category', 'error');
+      return
+    }
+    if (params.mode === ""){
+      showSnackbar('You must choose a division mode', 'error');
+      return
+    }
 
-    try{
+    try {
       const response = await addBill(params)
-      //TODO: Add new bill to bills
+      handleFetchBills();
       showSnackbar('The bill was added successfully', 'success');
     }catch(error){
       showSnackbar(error.response.data.message, 'error');
@@ -115,7 +123,7 @@ export default function GroupModal({ group, open, onClose }) {
   };
 
   return (
-    <Dialog open={open} onClose={onClose}>
+      <Dialog open={open} onClose={onClose}>
       <DialogTitle>Group: {group?.name}</DialogTitle>
       {!loading && (
         <DialogContent>
@@ -187,7 +195,8 @@ export default function GroupModal({ group, open, onClose }) {
               </Grid>
               {bills.map(expense => (
                 <Grid container key={expense.id}>
-                  <Grid item xs={6}>
+                  <Grid item xs={6} style={{ display: 'flex', flexDirection: 'row' }}>
+                    <Typography variant="body1">{expense.category?.icon}</Typography>
                     <Typography variant="body1">{expense.category?.name}</Typography>
                   </Grid>
                   <Grid item xs={6}>
@@ -197,33 +206,32 @@ export default function GroupModal({ group, open, onClose }) {
               ))}
             </>
           )}
-
-          <Accordion sx={{ marginTop: 2 }}>
+            <Accordion sx={{ marginTop: 2 }}>
             <AccordionSummary
-              expandIcon={<ExpandMoreIcon />}
-              aria-controls="add-expense-content"
-              id="add-expense-header"
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls="add-expense-content"
+                id="add-expense-header"
             >
               <DialogContentText>Add bill</DialogContentText>
             </AccordionSummary>
             <AccordionDetails>
               <Box>
                 <TextField
-                  label="Amount"
-                  value={newBill.bill_amount}
-                  onChange={(e) => setNewBill({ ...newBill, bill_amount: e.target.value })}
-                  type="number"
-                  fullWidth
-                  margin="normal"
+                    label="Amount"
+                    value={newBill.bill_amount}
+                    onChange={(e) => setNewBill({ ...newBill, bill_amount: e.target.value })}
+                    type="number"
+                    fullWidth
+                    margin="normal"
                 />
                 <FormControl fullWidth margin="normal">
                   <InputLabel>Category</InputLabel>
                   <Select
-                    value={newBill.category_id}
-                    onChange={(e) => setNewBill({ ...newBill, category_id: e.target.value })}
+                      value={newBill.category_id}
+                      onChange={(e) => setNewBill({ ...newBill, category_id: e.target.value })}
                   >
                     {categories.map((category) => (
-                      <MenuItem key={category.id} value={category.id}>{category.icon + ' ' + category.name}</MenuItem>
+                        <MenuItem key={category.id} value={category.id}>{category.icon + ' ' + category.name}</MenuItem>
                     ))}
                   </Select>
                 </FormControl>
@@ -231,8 +239,8 @@ export default function GroupModal({ group, open, onClose }) {
                 <FormControl fullWidth margin="normal">
                   <InputLabel>Division Mode</InputLabel>
                   <Select
-                    value={divisionMode}
-                    onChange={(e) => setDivisionMode(e.target.value)}
+                      value={divisionMode}
+                      onChange={(e) => setDivisionMode(e.target.value)}
                   >
                     <MenuItem value="equitative">Equitative</MenuItem>
                     {/*<MenuItem value="percentage">Percentage</MenuItem>
@@ -246,7 +254,7 @@ export default function GroupModal({ group, open, onClose }) {
             </AccordionDetails>
           </Accordion>
         </DialogContent>
-      )}
+        )}
       <DialogActions>
         <Button onClick={onClose}>Close</Button>
       </DialogActions>
