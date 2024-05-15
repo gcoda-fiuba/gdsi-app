@@ -45,17 +45,28 @@ export const removeMember = async (args = {}) => {
   }
 }
 
-export const getExpenses = async (id) => {
-  const mockExpenses = [
-    { id: 1, description: 'Pizza for the meeting', amount: 25.00 },
-    { id: 2, description: 'Office supplies', amount: 40.00 },
-    { id: 3, description: 'Projector rental', amount: 100.00 },
-  ];
-
+export const getBills = async (id) => {
   try{
-    /*const response = await axios.get(`/groups/${id}/expenses`)
-    return response.data*/
-    return []
+    const response = await axios.get(`/groups/${id}/bills`)
+    return response.data
+  }catch (error) {
+    throw error;
+  }
+}
+
+export const addBill = async (args = {}) => {
+  try{
+    const response = await axios.post('/groups/bill', args)
+    return response.data
+  }catch (error) {
+    throw error;
+  }
+}
+
+export const getCategories = async () => {
+  try{
+    const response = await axios.get('/categories')
+    return response.data
   }catch (error) {
     throw error;
   }

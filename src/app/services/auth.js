@@ -30,8 +30,8 @@ export const logOut = async () => {
 
 export const verifyAccount = async (args = {}) => {
   try{
-    const response = await axios.get(`/register/confirm?token=${args.token}`);
-    await cache.set('token', args.token);
+    const response = await axios.get(`/register/verify?token=${args.token}`);
+    cache.set('token', args.token);
     return response.data
   }catch (error) {
     throw error;
