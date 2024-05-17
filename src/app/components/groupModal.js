@@ -24,17 +24,26 @@ import {
   Select,
   MenuItem,
   InputLabel,
-  FormControl, Backdrop, CircularProgress
+  FormControl
 } from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useEffect, useState } from 'react';
-import { getMembers, addMember, removeMember, getBills, getCategories, addBill } from "@/app/services/groups";
-import { getUsers } from "@/app/services/user";
 import { useSnackbar } from "@/app/context/SnackbarContext";
+import useGroupStore from "@/app/store/groups";
+import useUserStore from "@/app/store/user";
 
 export default function GroupModal({ group, open, onClose }) {
 
+  const {
+    getMembers,
+    addMember,
+    removeMember,
+    getBills,
+    getCategories,
+    addBill
+  } = useGroupStore()
+  const { getUsers } = useUserStore()
   const { showSnackbar } = useSnackbar();
 
   const [members, setMembers] = useState([]);

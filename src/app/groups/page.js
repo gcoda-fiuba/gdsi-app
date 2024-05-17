@@ -3,14 +3,19 @@
 import { useEffect, useState } from "react";
 import cache from "@/app/services/cache";
 import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, Box } from "@mui/material";
-import { fetch } from "@/app/services/groups";
 import { useSnackbar } from "@/app/context/SnackbarContext";
 import CreateGroup from "@/app/components/createGroup";
 import Loading from "@/app/groups/loading";
 import GroupModal from "@/app/components/groupModal";
+import useGroupStore from "@/app/store/groups";
+import { useRouter } from 'next/navigation'
 
 export default function Group() {
+
+  const router = useRouter();
+  const { fetch } = useGroupStore()
   const { showSnackbar } = useSnackbar();
+
   const [groups, setGroups] = useState([])
   const [loading, setLoading] = useState(true);
   const [selectedGroup, setSelectedGroup] = useState(null);
@@ -26,7 +31,7 @@ export default function Group() {
 
   useEffect(() => {
     if (!cache.get('token')) {
-      window.location.replace('/');
+      router.replace('/');
     }
 
     fetchData();

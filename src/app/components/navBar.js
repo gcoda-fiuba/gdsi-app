@@ -14,19 +14,26 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
-import {Avatar, Badge, Link, Menu, MenuItem} from "@mui/material";
+import Link from 'next/link';
+import {Avatar, Badge, Menu, MenuItem} from "@mui/material";
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import {useEffect, useState} from "react";
-import {logOut} from "@/app/services/auth";
-import {getNotifications, readNotification} from "@/app/services/notification";
+import useAuthStore from "@/app/store/auth";
+import { useRouter } from 'next/navigation'
+import useNotificationStore from "@/app/store/notification";
 import cache from "@/app/services/cache";
 
 const drawerWidth = 240;
 const pages = [{ name: 'Groups', path: '/groups' }];
 
 function DrawerAppBar() {
+
+  const router = useRouter();
+  const { user, logout } = useAuthStore();
+  const {getNotifications, readNotification} = useNotificationStore()
+
   const [auth, setAuth] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -35,8 +42,7 @@ function DrawerAppBar() {
   const [notifications, setNotifications] = useState([]);
 
   useEffect(() => {
-    if(!cache.get('token')){
-      setAuth(false)
+    if(!user && !cache.get('token')){
       return;
     }
 
@@ -78,8 +84,8 @@ function DrawerAppBar() {
   };
 
   const handleLogOut = async () => {
-    await logOut()
-    window.location.replace('/');
+    await logout()
+    router.replace('/');
   }
 
   const menuId = 'primary-search-account-menu';
@@ -195,7 +201,7 @@ function DrawerAppBar() {
     </Menu>
   );
 
-  return (auth &&
+  return ((user || cache.get('token')) &&
     <Box sx={{ display: 'flex' }}>
       <AppBar component="nav" position="static" color="primary">
         <Toolbar sx={{ minHeight: 'auto' }}>

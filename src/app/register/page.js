@@ -11,13 +11,14 @@ import {
   TextField
 } from '@mui/material';
 import {Visibility, VisibilityOff} from "@mui/icons-material";
-import {register} from "@/app/services/auth"
+import useAuthStore from "@/app/store/auth";
 import {useSnackbar} from "@/app/context/SnackbarContext";
 
 import React, {useState} from 'react';
 
 export default function Register() {
 
+  const { register } = useAuthStore();
   const { showSnackbar } = useSnackbar();
 
   const [name, setName] = useState('');
