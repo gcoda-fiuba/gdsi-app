@@ -1,9 +1,11 @@
 'use client'
 import {Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField} from "@mui/material";
 import {Fragment, useState} from "react";
-import {create} from "@/app/services/groups";
+import useGroupStore from "@/app/store/groups";
 
 export default function CreateGroup({fetchData}) {
+
+    const {create} = useGroupStore()
 
     const [groupName, setGroupName] = useState('');
     const [open, setOpen] = useState(false);

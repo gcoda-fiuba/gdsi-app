@@ -1,8 +1,7 @@
-'use client'
+'use client';
 
 import React, {useEffect, useState} from 'react';
 import {
-  Button,
   TextField,
   Grid,
   Link,
@@ -13,14 +12,17 @@ import {
   IconButton, FormControl, Box
 } from '@mui/material';
 import {Visibility, VisibilityOff} from "@mui/icons-material";
-import {login} from "@/app/services/auth"
+import useAuthStore from "@/app/store/auth";
 import {useSnackbar} from "@/app/context/SnackbarContext";
 import cache from "@/app/services/cache";
 import {LoadingButton} from "@mui/lab";
+import { useRouter } from 'next/navigation'
 
 export default function Home() {
 
   const { showSnackbar } = useSnackbar();
+  const { login } = useAuthStore();
+  const router = useRouter();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -28,10 +30,10 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if(cache.get('token')){
-      window.location.replace('/groups');
+    if (cache.get('token')) {
+      router.replace('/groups');
     }
-  }, []);
+  }, [router]);
 
   const handleEmailChange = (event) => {
     setEmail(event.target.value);
@@ -53,11 +55,12 @@ export default function Home() {
       await login({
         email,
         password
-      })
+      });
 
-      window.location.replace('/groups');
+      await router.push('/groups');
     } catch (error) {
       showSnackbar(error.response.data.error, 'error');
+      setLoading(false);
     }
   };
 
