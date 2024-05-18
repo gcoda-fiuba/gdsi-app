@@ -64,7 +64,7 @@ export default function Group() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {groups.map((group) =>
+              {Array.isArray(groups) && groups.map((group) =>
                 <TableRow key={group.id} hover onClick={() => handleRowClick(group)} sx={{ cursor: 'pointer' }}>
                   <TableCell component="th" scope="row">
                     {group.id}
