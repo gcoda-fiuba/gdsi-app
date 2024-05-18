@@ -152,7 +152,9 @@ function DrawerAppBar() {
           <ListItem key={item.name} disablePadding >
             <Link href={item.path}>
               <ListItemButton sx={{ textAlign: 'center' }}>
-                <ListItemText primary={item.name} />
+                <ListItemText classes="tertiary">
+                  {item.name}
+                </ListItemText>
               </ListItemButton>
             </Link>
           </ListItem>
