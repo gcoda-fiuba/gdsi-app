@@ -1,6 +1,6 @@
 'use client';
 
-import {Card, Typography, Grid} from "@mui/material";
+import {Card, Typography, Grid, Button} from "@mui/material";
 import { useEffect, useState } from 'react';
 import MembersList from '@/app/components/MembersList';
 import AddMemberSection from '@/app/components/AddMemberSection';
@@ -13,48 +13,62 @@ import {useSearchParams} from "next/navigation";
 import Loading from "@/app/groups/loading";
 
 export default function GroupView() {
-    const { getMembers, getBills, getCategories } = useGroupStore();
+    const { getMembers, getBills, getCategories, getDebts } = useGroupStore();
     const { getUsers } = useUserStore();
     const searchParams = useSearchParams()
+    const groupId = Number(searchParams.get('id'));
 
-    // const [searchParams.get('id'), setGroupId] = useState();
     const [members, setMembers] = useState([]);
     const [users, setUsers] = useState([]);
     const [bills, setBills] = useState([]);
     const [categories, setCategories] = useState([]);
+    const [debts, setDebts] = useState([]);
+
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(false);
 
     useEffect(() => {
 
-        if (searchParams.get('id')) {
+        if (groupId) {
             fetchInitialData();
         } else {
-            console.log('Else')
             setLoading(false);
         }
     }, []);
 
     const fetchInitialData = async () => {
         try {
-            const [usersData, membersData, billsData, categoriesData] = await Promise.all([
+            const [usersData, membersData, billsData, categoriesData, debtsData] = await Promise.all([
                 getUsers(),
-                getMembers(searchParams.get('id')),
-                getBills(searchParams.get('id')),
+                getMembers(groupId),
+                getBills(groupId),
                 getCategories(),
+                getDebts(groupId),
             ]);
             setUsers(usersData);
             setMembers(membersData);
             setBills(billsData);
             setCategories(categoriesData);
+            setDebts(debtsData);
         } catch (error) {
-            console.error("Failed to fetch initial data", error);
+            setError(true)
         } finally {
             setLoading(false);
         }
     };
 
+    const errorView =
+        <>
+            <Grid container alignItems="center" justifyContent="center" style={{height: '100vh'}}>
+                <Grid item>
+                    <h2>Hubo un error cargando este grupo</h2>
+                </Grid>
+            </Grid>
+        </>
+    ;
     return (
-            loading ? <Loading></Loading> :
+            loading ? <Loading /> :
+                error ? errorView :
                 <Grid container alignItems="center" justifyContent="center" style={{ height: '100vh' }}>
                     <Grid item>
                         <h2>GroupName</h2>
@@ -63,16 +77,16 @@ export default function GroupView() {
                             <h3>Activities: </h3>
 
                             <Grid item>
-                                <MembersList members={members} groupId={searchParams.get('id')} refreshMembers={fetchInitialData}/>
+                                <MembersList members={members} groupId={groupId} refreshMembers={fetchInitialData}/>
                             </Grid>
                             <Grid item>
-                                <AddMemberSection users={users} groupId={searchParams.get('id')} refreshMembers={fetchInitialData}/>
+                                <AddMemberSection users={users} groupId={groupId} refreshMembers={fetchInitialData}/>
                             </Grid>
                             <Grid item>
                                 <BillsList bills={bills}/>
                             </Grid>
                             <Grid item>
-                                <AddExpenseSection groupId={searchParams.get('id')} categories={categories} refreshBills={fetchInitialData}/>
+                                <AddExpenseSection groupId={groupId} categories={categories} refreshBills={fetchInitialData}/>
                             </Grid>
                         </Card>
                     </Grid>
@@ -81,7 +95,7 @@ export default function GroupView() {
                             <h2>My debts:</h2>
 
                             <Grid item>
-                                <DebtList members={members} groupId={searchParams.get('id')} refreshMembers={fetchInitialData}/>
+                                <DebtList debts={debts} />
                             </Grid>
                         </Card>
                     </Grid>

@@ -2,20 +2,25 @@ import { List, ListItem, ListItemText, IconButton } from "@mui/material";
 import PaymentsOutlinedIcon from '@mui/icons-material/PaymentsOutlined';
 
 
-export default function MembersList({ members, groupId, refreshMembers }) {
+export default function MembersList({ debts }) {
 
     const handlePayment = () => {}
+
+    const getUserById = (id) => {
+        return 'Nombre y apellido';
+    }
 
     return (
         <>
             <List>
-                {members.map(member => (
-                    <ListItem key={member.id} secondaryAction={
+                {debts.map(userIOwe => (
+                    <ListItem key={userIOwe.id} secondaryAction={
                         <IconButton edge="end" onClick={handlePayment}>
                             <PaymentsOutlinedIcon fontSize="medium" />
                         </IconButton>
                     }>
-                        <ListItemText primary={`${member.first_name} ${member.last_name}`} />
+                        <ListItemText primary={`${getUserById(userIOwe.id)}`} />
+                        <ListItemText primary={`$${userIOwe.amountDebt}`} />
                     </ListItem>
                 ))}
             </List>

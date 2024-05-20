@@ -59,10 +59,18 @@ const useGroupStore = create((set) => ({
     }
   },
   getCategories: async (args = {}) => {
-    try{
+    try {
       const response = await axios.get('/categories')
       return response.data
-    }catch (error) {
+    } catch (error) {
+      throw error;
+    }
+  },
+  getDebts: async (id)=> {
+    try {
+      const response = await axios.get(`/groups/debts/${id}`);
+      return response.data;
+    } catch (error) {
       throw error;
     }
   }
