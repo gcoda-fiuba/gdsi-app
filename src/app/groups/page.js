@@ -52,7 +52,7 @@ export default function Group() {
   return (
     loading ? <Loading /> :
       <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', p: 2 }}>
-        <Typography variant="h4" gutterBottom>
+        <Typography color = "secondary" variant="h4" gutterBottom>
           Group List
         </Typography>
         <CreateGroup fetchData={fetchData} />
