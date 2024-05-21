@@ -4,7 +4,9 @@ import cache from "@/app/services/cache";
 
 export default function MembersList({debts, userToNames}) {
 
-    const handlePayment = () => {}
+    const handlePayment = (debt) => {
+
+    }
 
     return (
         <>
@@ -12,7 +14,7 @@ export default function MembersList({debts, userToNames}) {
                 {debts.map((debt, index) => (
                     cache.get('Id') === `${debt.userFromId}` ? null :
                     <ListItem key={index} secondaryAction={
-                        <IconButton edge="end" onClick={handlePayment}>
+                        <IconButton edge="end" onClick={() => handlePayment(debt)}>
                             <PaymentsOutlinedIcon fontSize="medium" />
                         </IconButton>
                     }>
