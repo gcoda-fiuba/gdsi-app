@@ -136,7 +136,7 @@ function DrawerAppBar() {
         >
           <AccountCircle />
         </IconButton>
-        <p>Profile</p>
+        <p>{cache.get('Name')}</p>
       </MenuItem>
     </Menu>
   );
@@ -237,17 +237,18 @@ function DrawerAppBar() {
               <NotificationsIcon />
             </Badge>
           </IconButton>
-          <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+          <Box style={{ alignItems: 'center' }} sx={{ display: { xs: 'none', md: 'flex' } }}>
+            <Typography>{cache.get('Name')} </Typography>
             <IconButton
-              size="large"
-              edge="end"
-              aria-label="account of current user"
-              aria-controls={menuId}
-              aria-haspopup="true"
-              onClick={handleProfileMenuOpen}
-              color="inherit"
+                size="large"
+                edge="end"
+                aria-label="account of current user"
+                aria-controls={menuId}
+                aria-haspopup="true"
+                onClick={handleProfileMenuOpen}
+                color="inherit"
             >
-              <AccountCircle />
+              <AccountCircle/>
             </IconButton>
           </Box>
           <Box sx={{ display: { xs: 'flex', md: 'none' } }}>

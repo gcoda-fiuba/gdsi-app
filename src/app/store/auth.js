@@ -9,6 +9,7 @@ const useAuthStore = create((set) => ({
       const response = await axios.post('/auth/login', args)
       cache.set('token', response.data.hash);
       cache.set('Name', response.data.first_name + " " + response.data.last_name);
+      cache.set('Id', response.data.id);
       set({ user: response.data });
       return response.data
     }catch (error) {

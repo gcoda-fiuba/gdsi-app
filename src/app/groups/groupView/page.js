@@ -13,8 +13,8 @@ import {useSearchParams} from "next/navigation";
 import Loading from "@/app/groups/loading";
 
 export default function GroupView() {
-    const { getMembers, getBills, getCategories, getDebts } = useGroupStore();
-    const { getUsers } = useUserStore();
+    const { getMembers, getBills, getCategories,getDebts } = useGroupStore();
+    const { getUsers, getUserById } = useUserStore();
     const searchParams = useSearchParams()
     const groupId = Number(searchParams.get('id'));
 
@@ -22,19 +22,20 @@ export default function GroupView() {
     const [users, setUsers] = useState([]);
     const [bills, setBills] = useState([]);
     const [categories, setCategories] = useState([]);
+
     const [debts, setDebts] = useState([]);
+    const [usersToNames, setUsersToNames] = useState([]);
 
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
 
     useEffect(() => {
-
         if (groupId) {
             fetchInitialData();
         } else {
             setLoading(false);
         }
-    }, []);
+    }, [loading]);
 
     const fetchInitialData = async () => {
         try {
@@ -43,13 +44,20 @@ export default function GroupView() {
                 getMembers(groupId),
                 getBills(groupId),
                 getCategories(),
-                getDebts(groupId),
+                getDebts(groupId)
             ]);
             setUsers(usersData);
             setMembers(membersData);
             setBills(billsData);
             setCategories(categoriesData);
             setDebts(debtsData);
+
+            debts.map(async debt => {
+                await getUserById(debt.userToId).then(user => {
+                    setUsersToNames([...usersToNames, user.first_name + ' ' + user.last_name]);
+                });
+            });
+
         } catch (error) {
             setError(true)
         } finally {
@@ -69,7 +77,7 @@ export default function GroupView() {
     return (
             loading ? <Loading /> :
                 error ? errorView :
-                <Grid container alignItems="center" justifyContent="center" style={{ height: '100vh' }}>
+                <Grid container alignItems="center" justifyContent="center" style={{ height: '100vh', gap: '2%' }}>
                     <Grid item>
                         <h2>GroupName</h2>
                         <Card variant="outlined" sx={{p: 4}}>
@@ -95,7 +103,7 @@ export default function GroupView() {
                             <h2>My debts:</h2>
 
                             <Grid item>
-                                <DebtList debts={debts} />
+                                <DebtList debts={debts} userToNames={usersToNames} />
                             </Grid>
                         </Card>
                     </Grid>

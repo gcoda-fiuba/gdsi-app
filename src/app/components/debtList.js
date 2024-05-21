@@ -1,26 +1,26 @@
 import { List, ListItem, ListItemText, IconButton } from "@mui/material";
 import PaymentsOutlinedIcon from '@mui/icons-material/PaymentsOutlined';
+import cache from "@/app/services/cache";
 
-
-export default function MembersList({ debts }) {
+export default function MembersList({debts, userToNames}) {
 
     const handlePayment = () => {}
 
-    const getUserById = (id) => {
-        return 'Nombre y apellido';
-    }
-
+    console.log('names ', userToNames);
+    // git commit -m "mostly everything working now - still not finished"
     return (
         <>
             <List>
-                {debts.map(userIOwe => (
-                    <ListItem key={userIOwe.id} secondaryAction={
+                {debts.map((debt, index) => (
+                    cache.get('Id') === `${debt.userFromId}` ? null :
+                    <ListItem key={index} secondaryAction={
                         <IconButton edge="end" onClick={handlePayment}>
                             <PaymentsOutlinedIcon fontSize="medium" />
                         </IconButton>
                     }>
-                        <ListItemText primary={`${getUserById(userIOwe.id)}`} />
-                        <ListItemText primary={`$${userIOwe.amountDebt}`} />
+                        <ListItemText primary={`${userToNames[index]}`} />
+                        <ListItemText primary=" $" />
+                        <ListItemText primary={`${debt.amountDebt}`} />
                     </ListItem>
                 ))}
             </List>

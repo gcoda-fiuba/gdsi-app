@@ -66,9 +66,9 @@ const useGroupStore = create((set) => ({
       throw error;
     }
   },
-  getDebts: async (id)=> {
+  getDebts: async (groupId)=> {
     try {
-      const response = await axios.get(`/groups/debts/${id}`);
+      const response = await axios.get(`/groups/debts/${groupId}`);
       return response.data;
     } catch (error) {
       throw error;
