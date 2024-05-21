@@ -11,6 +11,7 @@ import useGroupStore from "@/app/store/groups";
 import useUserStore from "@/app/store/user";
 import {useSearchParams} from "next/navigation";
 import Loading from "@/app/groups/loading";
+import Divider from "@mui/material/Divider";
 
 export default function GroupView() {
     const { getMembers, getBills, getCategories,getDebts } = useGroupStore();
@@ -66,44 +67,45 @@ export default function GroupView() {
     };
 
     const errorView =
-        <>
+        (<>
             <Grid container alignItems="center" justifyContent="center" style={{height: '100vh'}}>
                 <Grid item>
                     <h2>Hubo un error cargando este grupo</h2>
                 </Grid>
             </Grid>
-        </>
-    ;
+        </>);
+
     return (
             loading ? <Loading /> :
                 error ? errorView :
-                <Grid container alignItems="center" justifyContent="center" style={{ height: '100vh', gap: '2%' }}>
+                <Grid container alignItems="start" justifyContent="center" style={{ height: '100vh', gap: '2%' }}>
+
+                    <Grid item>
+                        <h2>My debts:</h2>
+                        <Card variant="outlined" alignItems="start" justifyContent="center" sx={{p: 4}}>
+                            <Grid item>
+                                <DebtList debts={debts} userToNames={usersToNames} />
+                            </Grid>
+                        </Card>
+                    </Grid>
+
                     <Grid item>
                         <h2>GroupName</h2>
                         <Card variant="outlined" sx={{p: 4}}>
-
                             <h3>Activities: </h3>
 
-                            <Grid item>
-                                <MembersList members={members} groupId={groupId} refreshMembers={fetchInitialData}/>
-                            </Grid>
-                            <Grid item>
-                                <AddMemberSection users={users} groupId={groupId} refreshMembers={fetchInitialData}/>
-                            </Grid>
                             <Grid item>
                                 <BillsList bills={bills}/>
                             </Grid>
                             <Grid item>
                                 <AddExpenseSection groupId={groupId} categories={categories} refreshBills={fetchInitialData}/>
                             </Grid>
-                        </Card>
-                    </Grid>
-                    <Grid item>
-                        <Card variant="outlined" sx={{p: 4}}>
-                            <h2>My debts:</h2>
-
+                            <Divider  style={{ marginTop: '2%', marginBottom: '2%' }} />
                             <Grid item>
-                                <DebtList debts={debts} userToNames={usersToNames} />
+                                <AddMemberSection users={users} groupId={groupId} refreshMembers={fetchInitialData}/>
+                            </Grid>
+                            <Grid item>
+                                <MembersList members={members} groupId={groupId} refreshMembers={fetchInitialData}/>
                             </Grid>
                         </Card>
                     </Grid>

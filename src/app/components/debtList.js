@@ -6,8 +6,6 @@ export default function MembersList({debts, userToNames}) {
 
     const handlePayment = () => {}
 
-    console.log('names ', userToNames);
-    // git commit -m "mostly everything working now - still not finished"
     return (
         <>
             <List>
