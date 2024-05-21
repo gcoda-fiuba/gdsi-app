@@ -9,7 +9,7 @@ import AddExpenseSection from './AddExpenseSection';
 import useGroupStore from "@/app/store/groups";
 import useUserStore from "@/app/store/user";
 
-export default function GroupModal({ debt, open, onClose }) {
+export default function PaymentModal({ debt, open, onClose }) {
     const { patchBill } = useGroupStore();
 
     return (

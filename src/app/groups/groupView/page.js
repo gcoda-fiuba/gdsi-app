@@ -27,6 +27,8 @@ export default function GroupView() {
     const [debts, setDebts] = useState([]);
     const [usersToNames, setUsersToNames] = useState([]);
 
+    const [openPaymentModal, setOpenPaymentModal] = useState(false);
+
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
 
@@ -65,6 +67,10 @@ export default function GroupView() {
             setLoading(false);
         }
     };
+
+    const closePaymentModal = () => {
+        setOpenPaymentModal(false);
+    }
 
     const errorView =
         (<>
