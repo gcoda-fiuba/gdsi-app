@@ -12,6 +12,7 @@ import useUserStore from "@/app/store/user";
 import {useSearchParams} from "next/navigation";
 import Loading from "@/app/groups/loading";
 import Divider from "@mui/material/Divider";
+import PaymentModal from "@/app/components/PaymentModal";
 
 export default function GroupView() {
     const { getMembers, getBills, getCategories,getDebts } = useGroupStore();
@@ -28,6 +29,7 @@ export default function GroupView() {
     const [usersToNames, setUsersToNames] = useState([]);
 
     const [openPaymentModal, setOpenPaymentModal] = useState(false);
+    const [debtToPay, setDebtToPay] = useState({});
 
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
@@ -55,6 +57,9 @@ export default function GroupView() {
             setCategories(categoriesData);
             setDebts(debtsData);
 
+            // Provisorio hasta que arreglen el back
+            debts.map((debt, index) => debt['debtId'] = index)
+
             debts.map(async debt => {
                 await getUserById(debt.userToId).then(user => {
                     setUsersToNames([...usersToNames, user.first_name + ' ' + user.last_name]);
@@ -68,8 +73,12 @@ export default function GroupView() {
         }
     };
 
-    const closePaymentModal = () => {
+    const handleClosePaymentModal = () => {
         setOpenPaymentModal(false);
+    }
+    const handleOpenPaymentModal = (debt) => {
+        setDebtToPay(debt);
+        setOpenPaymentModal(true);
     }
 
     const errorView =
@@ -90,7 +99,7 @@ export default function GroupView() {
                         <h2>My debts:</h2>
                         <Card variant="outlined" alignItems="start" justifyContent="center" sx={{p: 4}}>
                             <Grid item>
-                                <DebtList debts={debts} userToNames={usersToNames} />
+                                <DebtList debts={debts} userToNames={usersToNames} handleOpenPaymentModal={handleOpenPaymentModal} />
                             </Grid>
                         </Card>
                     </Grid>
@@ -115,6 +124,7 @@ export default function GroupView() {
                             </Grid>
                         </Card>
                     </Grid>
+                    <PaymentModal debt={debtToPay} open={openPaymentModal} onClose={handleClosePaymentModal} />
                 </Grid>
     );
 }

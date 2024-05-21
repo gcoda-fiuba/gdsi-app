@@ -1,27 +1,26 @@
-import { List, ListItem, ListItemText, IconButton } from "@mui/material";
+import {List, ListItem, ListItemText, IconButton, Grid} from "@mui/material";
 import PaymentsOutlinedIcon from '@mui/icons-material/PaymentsOutlined';
 import cache from "@/app/services/cache";
 
-export default function MembersList({debts, userToNames}) {
+export default function MembersList({debts, userToNames, handleOpenPaymentModal}) {
 
-    const handlePayment = (debt) => {
-
+    const handlePayment = (debtToPay) => {
+        handleOpenPaymentModal({debtId: debtToPay.debtId, userToId: debtToPay.userToId, amountDebt: debtToPay.amountDebt});
     }
 
     return (
         <>
             <List>
-                {debts.map((debt, index) => (
-                    cache.get('Id') === `${debt.userFromId}` ? null :
-                    <ListItem key={index} secondaryAction={
-                        <IconButton edge="end" onClick={() => handlePayment(debt)}>
-                            <PaymentsOutlinedIcon fontSize="medium" />
-                        </IconButton>
-                    }>
-                        <ListItemText primary={`${userToNames[index]}`} />
-                        <ListItemText primary=" $" />
-                        <ListItemText primary={`${debt.amountDebt}`} />
-                    </ListItem>
+                {debts.map((debtToPay, index) => (
+                    cache.get('Id') === `${debtToPay.userFromId}` ? null :
+                        <ListItem style={{ gap: '2%' }} key={index} secondaryAction={
+                            <IconButton edge="end" onClick={() => handlePayment(debtToPay)}>
+                                <PaymentsOutlinedIcon fontSize="medium" />
+                            </IconButton>
+                        }>
+                            <ListItemText primary={`${userToNames[index]}`} />
+                            <ListItemText primary={`$${debtToPay.amountDebt}`} />
+                        </ListItem>
                 ))}
             </List>
         </>

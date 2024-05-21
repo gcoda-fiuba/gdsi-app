@@ -61,8 +61,10 @@ const useGroupStore = create((set) => ({
   patchBill: async (id, args = {}) => {
     try{
       const response = await axios.patch(`/groups/bill/${id}`, args)
+      console.log('response ', response.data)
       return response.data
     }catch (error) {
+      console.log('error ', error)
       throw error;
     }
   },
