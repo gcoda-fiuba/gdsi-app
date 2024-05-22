@@ -79,6 +79,7 @@ function DrawerAppBar() {
       />
       <NotificationMenu
         notifications={notifications}
+        setNotifications={setNotifications}
         notificationAnchorEl={notificationAnchorEl}
         setNotificationAnchorEl={setNotificationAnchorEl}
         readNotification={readNotification}

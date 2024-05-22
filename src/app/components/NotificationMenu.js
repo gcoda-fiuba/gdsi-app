@@ -5,7 +5,7 @@ import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 
-const NotificationMenu = ({ notifications, notificationAnchorEl, setNotificationAnchorEl, readNotification }) => {
+const NotificationMenu = ({ notifications, setNotifications, notificationAnchorEl, setNotificationAnchorEl, readNotification }) => {
   const handleReadNotification = () => {
     setNotificationAnchorEl(null);
     setNotifications(notifications.map(notification => ({ ...notification, read: true })));
