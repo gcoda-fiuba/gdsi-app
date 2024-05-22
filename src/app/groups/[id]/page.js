@@ -113,7 +113,7 @@ export default function GroupView({ params: {id} }) {
                             </Grid>
                         </Card>
                     </Grid>
-                    <PaymentModal debt={debtToPay} open={openPaymentModal} onClose={handleClosePaymentModal} />
+                    <PaymentModal debt={debtToPay} open={openPaymentModal} onClose={handleClosePaymentModal} refreshDebts={fetchInitialData} />
                 </Grid>
     );
 }
