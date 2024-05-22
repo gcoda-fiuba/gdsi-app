@@ -57,6 +57,14 @@ const useGroupStore = create((set) => ({
       throw error;
     }
   },
+  addExpense: async (args = {}) => {
+    try {
+        const response = await axios.post('/groups/bill', args);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+  },
   getBills: async (id) => {
     try{
       const response = await axios.get(`/groups/${id}/bills`)

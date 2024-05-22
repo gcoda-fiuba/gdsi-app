@@ -46,14 +46,6 @@ export default function GroupView({ params: {id} }) {
         }
     }, [loading]);
 
-    const fetchDebtsdata = async () => {
-        try {
-            await getDebts(groupId);
-        } catch (error) {
-            setError(true);
-        }
-    }
-
     const fetchInitialData = async () => {
         try {
             await Promise.all([
@@ -62,7 +54,7 @@ export default function GroupView({ params: {id} }) {
                 getMembers(groupId),
                 getBills(groupId),
                 getCategories(),
-                fetchDebtsdata(),
+                getDebts(groupId)
             ]);
         } catch (error) {
             setError(true)
@@ -121,7 +113,7 @@ export default function GroupView({ params: {id} }) {
                             </Grid>
                         </Card>
                     </Grid>
-                    <PaymentModal debt={debtToPay} open={openPaymentModal} onClose={handleClosePaymentModal} updateDebtsData={fetchDebtsdata} />
+                    <PaymentModal debt={debtToPay} open={openPaymentModal} onClose={handleClosePaymentModal} refreshDebts={fetchInitialData} />
                 </Grid>
     );
 }

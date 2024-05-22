@@ -4,7 +4,7 @@ import {Dialog, DialogContent, DialogActions, Button, Typography, DialogTitle} f
 import useGroupStore from "@/app/store/groups";
 import {useSnackbar} from "@/app/context/SnackbarContext";
 
-export default function PaymentModal({ debt, open, onClose, updateDebtsData }) {
+export default function PaymentModal({ debt, open, onClose, refreshDebts }) {
     const { patchBill } = useGroupStore();
     const { showSnackbar } = useSnackbar();
 
