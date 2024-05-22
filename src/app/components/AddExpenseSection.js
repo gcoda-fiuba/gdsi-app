@@ -22,7 +22,7 @@ export default function AddExpenseSection({ groupId, categories, refreshExpenses
     const { addExpense, getExpenses } = useGroupStore();
     const { showSnackbar } = useSnackbar();
   
-    const [newExpense, setNewExpense] = useState({ expense_amount: 0, category_id: 0 });
+    const [newExpense, setNewExpense] = useState({ bill_amount: 0, category_id: 0 });
     const [divisionMode, setDivisionMode] = useState("");
   
     const handleAddExpense = async () => {
@@ -32,7 +32,7 @@ export default function AddExpenseSection({ groupId, categories, refreshExpenses
           mode: divisionMode,
         };
     
-        if (parseInt(params.expense_amount) <= 0) {
+        if (parseInt(params.bill_amount) <= 0) {
           showSnackbar('The amount must be greater than 0', 'error');
           return;
         }
@@ -47,7 +47,7 @@ export default function AddExpenseSection({ groupId, categories, refreshExpenses
     
         try {
           await addExpense(params);
-          setNewExpense({ expense_amount: 0, category_id: 0 })
+          setNewExpense({ bill_amount: 0, category_id: 0 })
           await refreshExpenses();
           showSnackbar('The expense was added successfully', 'success');
         } catch (error) {
@@ -68,8 +68,8 @@ export default function AddExpenseSection({ groupId, categories, refreshExpenses
         <Box>
           <TextField
             label="Amount"
-            value={newExpense.expense_amount}
-            onChange={(e) => setNewExpense({ ...newExpense, expense_amount: e.target.value })}
+            value={newExpense.bill_amount}
+            onChange={(e) => setNewExpense({ ...newExpense, bill_amount: e.target.value })}
             type="number"
             fullWidth
             margin="normal"

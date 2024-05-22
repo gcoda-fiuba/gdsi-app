@@ -2,11 +2,22 @@
 
 import { useEffect, useState } from "react";
 import cache from "@/app/services/cache";
-import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, Box } from "@mui/material";
+import {
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Typography,
+  Box,
+  Button
+} from "@mui/material";
 import { useSnackbar } from "@/app/context/SnackbarContext";
 import CreateGroup from "@/app/components/createGroup";
 import Loading from "@/app/groups/loading";
-import GroupModal from "@/app/components/groupModal";
+
 import useGroupStore from "@/app/store/groups";
 import { useRouter } from 'next/navigation'
 
@@ -18,8 +29,6 @@ export default function Group() {
 
   const [groups, setGroups] = useState([])
   const [loading, setLoading] = useState(true);
-  const [selectedGroup, setSelectedGroup] = useState(null);
-  const [groupModalOpen, setGroupModalOpen] = useState(false);
 
   async function fetchData() {
     try {
@@ -40,13 +49,8 @@ export default function Group() {
 
   const headers = ['ID', 'Nombre'];
 
-  const handleRowClick = (group) => {
-    setSelectedGroup(group);
-    setGroupModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setGroupModalOpen(false);
+  const handleRowClick = (idx) => {
+    router.push(`/groups/${groups.at(idx).id}`);
   };
 
   return (
@@ -64,8 +68,8 @@ export default function Group() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {Array.isArray(groups) && groups.map((group) =>
-                <TableRow key={group.id} hover onClick={() => handleRowClick(group)} sx={{ cursor: 'pointer' }}>
+              {Array.isArray(groups) && groups.map((group, idx) =>
+                <TableRow key={group.id} hover onClick={() => handleRowClick(idx)} sx={{ cursor: 'pointer' }}>
                   <TableCell component="th" scope="row">
                     {group.id}
                   </TableCell>
@@ -75,7 +79,6 @@ export default function Group() {
             </TableBody>
           </Table>
         </TableContainer>
-        <GroupModal group={selectedGroup} open={groupModalOpen} onClose={closeModal} />
       </Box>
   );
 }
