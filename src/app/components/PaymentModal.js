@@ -3,30 +3,23 @@
 import {Dialog, DialogContent, DialogActions, Button, Typography, DialogTitle} from "@mui/material";
 import useGroupStore from "@/app/store/groups";
 import {useSnackbar} from "@/app/context/SnackbarContext";
-import {useState} from "react";
 
 export default function PaymentModal({ debt, open, onClose }) {
     const { patchBill } = useGroupStore();
     const { showSnackbar } = useSnackbar();
 
-    const [amount, setAmount] = useState(0);
-    const [debtId, setDebtId] = useState(0);
-
     const handlePayBill = async (debt) => {
         console.log('debt ', debt);
-        setAmount(debt.amountDebt);
-        setDebtId(debt.debtId);
         try {
-            console.log('debtID', debt.debtId)
+            console.log('debtID', debt.id)
             console.log('amount ', debt.amount)
 
-            const response = await patchBill(debtId, {amount})
+            const response = await patchBill(debt.id, {amount: debt.amount})
             showSnackbar('Payment registered');
             console.log('Payment registered ', response);
             onClose();
         } catch (error) {
-            showSnackbar(error.response.data.error, 'error');
-            console.error('Error paying bill', error);
+            showSnackbar('There was an error on the payment', 'error');
             onClose();
         }
     }
@@ -37,9 +30,9 @@ export default function PaymentModal({ debt, open, onClose }) {
 
                 <DialogContent>
                     <Typography variant="subtitle1">Pay to</Typography>
-                    <Typography>{debt.userToId}</Typography>
+                    <Typography>{debt.user}</Typography>
                     <Typography variant="subtitle1">Amount</Typography>
-                    <Typography>${amount}</Typography>
+                    <Typography>${debt.amount}</Typography>
                 </DialogContent>
 
             <DialogActions>

@@ -1,37 +1,39 @@
 'use client';
 
-import {Card, Typography, Grid, Button} from "@mui/material";
+import {Card, Grid} from "@mui/material";
 import { useEffect, useState } from 'react';
 import MembersList from '@/app/components/MembersList';
 import AddMemberSection from '@/app/components/AddMemberSection';
 import BillsList from '@/app/components/BillsList';
 import AddExpenseSection from '@/app/components/AddExpenseSection';
-import DebtList from '@/app/components/DebtList';
+import DebtList from '@/app/components/debtList';
 import useGroupStore from "@/app/store/groups";
 import useUserStore from "@/app/store/user";
-import {useSearchParams} from "next/navigation";
 import Loading from "@/app/groups/loading";
 import Divider from "@mui/material/Divider";
 import PaymentModal from "@/app/components/PaymentModal";
 
-export default function GroupView() {
-    const { getMembers, getBills, getCategories,getDebts } = useGroupStore();
-    const { getUsers, getUserById } = useUserStore();
-    const searchParams = useSearchParams()
-    const groupId = Number(searchParams.get('id'));
+export default function GroupView({ params: {id} }) {
 
-    const [members, setMembers] = useState([]);
-    const [users, setUsers] = useState([]);
-    const [bills, setBills] = useState([]);
-    const [categories, setCategories] = useState([]);
+    const groupId = id;
 
-    const [debts, setDebts] = useState([]);
-    const [usersToNames, setUsersToNames] = useState([]);
+    const {
+        getMembers,
+        getBills,
+        getCategories,
+        getDebts,
+        members,
+        bills,
+        categories,
+        debts
+    } = useGroupStore();
 
+    const { getUsers, users } = useUserStore();
+
+    const [loading, setLoading] = useState(true);
     const [openPaymentModal, setOpenPaymentModal] = useState(false);
     const [debtToPay, setDebtToPay] = useState({});
 
-    const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
 
     useEffect(() => {
@@ -44,27 +46,22 @@ export default function GroupView() {
 
     const fetchInitialData = async () => {
         try {
-            const [usersData, membersData, billsData, categoriesData, debtsData] = await Promise.all([
+            await Promise.all([
                 getUsers(),
                 getMembers(groupId),
                 getBills(groupId),
                 getCategories(),
                 getDebts(groupId)
             ]);
-            setUsers(usersData);
-            setMembers(membersData);
-            setBills(billsData);
-            setCategories(categoriesData);
-            setDebts(debtsData);
 
             // Provisorio hasta que arreglen el back
-            debts.map((debt, index) => debt['debtId'] = index)
+            /*debts.map((debt, index) => debt['debtId'] = index)
 
             debts.map(async debt => {
                 await getUserById(debt.userToId).then(user => {
-                    setUsersToNames([...usersToNames, user.first_name + ' ' + user.last_name]);
+                    setUsersToNames(prevState => [...prevState, user.first_name + ' ' + user.last_name]);
                 });
-            });
+            });*/
 
         } catch (error) {
             setError(true)
@@ -91,15 +88,15 @@ export default function GroupView() {
         </>);
 
     return (
-            loading ? <Loading /> :
-                error ? errorView :
+        loading ? <Loading /> :
+            error ? errorView :
                 <Grid container alignItems="start" justifyContent="center" style={{ height: '100vh', gap: '2%' }}>
 
                     <Grid item>
                         <h2>My debts:</h2>
                         <Card variant="outlined" alignItems="start" justifyContent="center" sx={{p: 4}}>
                             <Grid item>
-                                <DebtList debts={debts} userToNames={usersToNames} handleOpenPaymentModal={handleOpenPaymentModal} />
+                                <DebtList debts={debts} users={users} handleOpenPaymentModal={handleOpenPaymentModal} />
                             </Grid>
                         </Card>
                     </Grid>

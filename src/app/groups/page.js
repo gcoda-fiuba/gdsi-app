@@ -50,7 +50,7 @@ export default function Group() {
   const headers = ['ID', 'Nombre'];
 
   const handleRowClick = (idx) => {
-    router.replace(`/groups/groupView?id=${groups.at(idx).id}`);
+    router.push(`/groups/${groups.at(idx).id}`);
   };
 
   return (

@@ -18,16 +18,16 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
     return (
-        <SnackbarProvider>
-            <html lang="es">
-            <ThemeProvider theme={theme}>
+        <ThemeProvider theme={theme}>
+            <SnackbarProvider>
+                <html lang="es">
                 <body className={montserrat.className}>
                 <NavBar />
                 {children}
                 <SnackbarComponent />
                 </body>
-            </ThemeProvider>
-            </html>
-        </SnackbarProvider>
+                </html>
+            </SnackbarProvider>
+        </ThemeProvider>
     );
 }

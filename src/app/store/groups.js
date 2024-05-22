@@ -2,6 +2,10 @@ import axios from "@/app/services/axios";
 import { create } from 'zustand'
 
 const useGroupStore = create((set) => ({
+  members: null,
+  categories: null,
+  bills: null,
+  debts: null,
   fetch: async () => {
     try{
       const response = await axios.get('/groups')
@@ -21,6 +25,7 @@ const useGroupStore = create((set) => ({
   getMembers: async (id) => {
     try{
       const response = await axios.get(`/groups/${id}/integrant`)
+      set({ members: response.data });
       return response.data
     }catch (error) {
       throw error;
@@ -45,6 +50,7 @@ const useGroupStore = create((set) => ({
   getBills: async (id) => {
     try{
       const response = await axios.get(`/groups/${id}/bills`)
+      set({ bills: response.data });
       return response.data
     }catch (error) {
       throw error;
@@ -61,16 +67,15 @@ const useGroupStore = create((set) => ({
   patchBill: async (id, args = {}) => {
     try{
       const response = await axios.patch(`/groups/bill/${id}`, args)
-      console.log('response ', response.data)
       return response.data
     }catch (error) {
-      console.log('error ', error)
       throw error;
     }
   },
   getCategories: async (args = {}) => {
     try {
       const response = await axios.get('/categories')
+      set({ categories: response.data });
       return response.data
     } catch (error) {
       throw error;
@@ -79,6 +84,7 @@ const useGroupStore = create((set) => ({
   getDebts: async (groupId)=> {
     try {
       const response = await axios.get(`/groups/debts/${groupId}`);
+      set({ debts: response.data });
       return response.data;
     } catch (error) {
       throw error;
