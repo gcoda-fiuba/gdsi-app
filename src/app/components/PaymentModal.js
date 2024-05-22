@@ -12,7 +12,7 @@ export default function PaymentModal({ debt, open, onClose, refreshDebts }) {
         try {
             const response = await patchBill(debt.id, {amount: debt.amount})
             showSnackbar('Payment registered');
-            updateDebtsData();
+            refreshDebts();
             onClose();
         } catch (error) {
             showSnackbar('There was an error on the payment', 'error');

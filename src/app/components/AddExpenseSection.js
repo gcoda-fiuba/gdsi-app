@@ -18,8 +18,8 @@ import useGroupStore from "@/app/store/groups";
 import { useSnackbar } from "@/app/context/SnackbarContext";
 
 
-export default function AddExpenseSection({ groupId, categories, refreshExpenses }) {
-    const { addExpense, getExpenses } = useGroupStore();
+export default function AddExpenseSection({ groupId, categories, refreshBills }) {
+    const { addBill } = useGroupStore();
     const { showSnackbar } = useSnackbar();
   
     const [newExpense, setNewExpense] = useState({ bill_amount: 0, category_id: 0 });
@@ -46,12 +46,12 @@ export default function AddExpenseSection({ groupId, categories, refreshExpenses
         }
     
         try {
-          await addExpense(params);
+          await addBill(params);
           setNewExpense({ bill_amount: 0, category_id: 0 })
-          await refreshExpenses();
+          await refreshBills();
           showSnackbar('The expense was added successfully', 'success');
         } catch (error) {
-          showSnackbar(error.response.data.message, 'error');
+          showSnackbar('Hubo un error', 'error');
         }
       };
 
