@@ -56,7 +56,7 @@ export default function AddMemberSection({ users, groupId, refreshMembers }) {
         />
       </Grid>
       <Grid item xs={4}>
-        <Button onClick={handleAddMember} variant="contained" color="primary" fullWidth>Add member</Button>
+        <Button onClick={handleAddMember} variant="outlined" color="secondary" fullWidth>Add member</Button>
       </Grid>
     </Grid>
   );

@@ -39,7 +39,7 @@ export default function CreateGroup({fetchData}) {
                     onSubmit: handleSubmit,
                 }}
             >
-                <DialogTitle>Crea un nuevo grupo</DialogTitle>
+                <DialogTitle color = "secondary">Crea un nuevo grupo</DialogTitle>
                 <DialogContent>
                     <DialogContentText>
                         ¡Se creativo! Este va a ser el nombre del grupo.
@@ -58,8 +58,8 @@ export default function CreateGroup({fetchData}) {
                     />
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleClose}>Cancel</Button>
-                    <Button type="submit">Crear</Button>
+                    <Button variant="outlined" color="secondary" onClick={handleClose}>Cancel</Button>
+                    <Button variant="outlined" color="secondary" type="submit">Crear</Button>
                 </DialogActions>
             </Dialog>
         </Fragment>

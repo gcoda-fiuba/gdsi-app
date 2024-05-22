@@ -106,8 +106,8 @@ export default function Home() {
               <LoadingButton
                 size="large"
                 loading={loading}
-                variant="contained"
-                color="primary"
+                variant="outlined"
+                color="secondary"
                 type="submit"
               >
                 <span>Iniciar sesión</span>
@@ -115,7 +115,7 @@ export default function Home() {
             </Box>
           </form>
           <hr />
-          <p style={{ marginTop: 20 }}>¿Aún no tienes una cuenta? <Link href="/register">Registrarse</Link></p>
+          <p style={{ marginTop: 20 }}>¿Aún no tienes una cuenta? <Link color = "secondary" href="/register">Registrarse</Link></p>
         </Card>
       </Grid>
     </Grid>

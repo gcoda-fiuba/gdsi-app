@@ -1,39 +1,23 @@
-'use client'
+'use client';
 
-import * as React from 'react';
-import AppBar from '@mui/material/AppBar';
+import React, { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
-import Divider from '@mui/material/Divider';
-import Drawer from '@mui/material/Drawer';
-import IconButton from '@mui/material/IconButton';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemText from '@mui/material/ListItemText';
-import MenuIcon from '@mui/icons-material/Menu';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
-import Link from 'next/link';
-import {Avatar, Badge, Menu, MenuItem} from "@mui/material";
-import NotificationsIcon from '@mui/icons-material/Notifications';
-import AccountCircle from '@mui/icons-material/AccountCircle';
-import MoreIcon from '@mui/icons-material/MoreVert';
-import {useEffect, useState} from "react";
+import AppBarComponent from './AppBarComponent';
+import DrawerComponent from './DrawerComponent';
+import MobileMenu from './MobileMenu';
+import ProfileMenu from './ProfileMenu';
+import NotificationMenu from './NotificationMenu';
 import useAuthStore from "@/app/store/auth";
-import { useRouter } from 'next/navigation'
 import useNotificationStore from "@/app/store/notification";
 import cache from "@/app/services/cache";
+import { useRouter } from 'next/navigation';
 
-const drawerWidth = 240;
 const pages = [{ name: 'Groups', path: '/groups' }];
 
 function DrawerAppBar() {
-
   const router = useRouter();
   const { user, logout } = useAuthStore();
-  const {getNotifications, readNotification} = useNotificationStore()
-
+  const { getNotifications, readNotification } = useNotificationStore();
   const [auth, setAuth] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -42,247 +26,69 @@ function DrawerAppBar() {
   const [notifications, setNotifications] = useState([]);
 
   useEffect(() => {
-    if(!user && !cache.get('token')){
+    if (!user && !cache.get('token')) {
       return;
     }
-
-    setAuth(true)
-
+    setAuth(true);
     async function loadNotifications() {
       setNotifications(await getNotifications());
     }
-
     loadNotifications();
-  }, [])
+  }, []);
 
-  const isMenuOpen = Boolean(anchorEl);
-  const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
-
-  const handleMobileMenuClose = () => {
-    setMobileMoreAnchorEl(null);
-  };
-
-  const countUnreadNotifications = () => {
-    return notifications.filter(notification => !notification.read).length;
+  const handleDrawerToggle = () => {
+    setMobileOpen((prevState) => !prevState);
   };
 
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleMenuClose = () => {
-    setAnchorEl(null);
-    handleMobileMenuClose();
-  };
-
   const handleMobileMenuOpen = (event) => {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
-  const handleDrawerToggle = () => {
-    setMobileOpen((prevState) => !prevState);
+  const handleNotificationsMenuOpen = (event) => {
+    setNotificationAnchorEl(event.currentTarget);
   };
 
   const handleLogOut = async () => {
-    await logout()
+    await logout();
     router.replace('/');
-  }
-
-  const menuId = 'primary-search-account-menu';
-  const renderMenu = (
-    <Menu
-      sx={{ mt: '30px' }}
-      anchorEl={anchorEl}
-      anchorOrigin={{
-        vertical: 'top',
-        horizontal: 'right',
-      }}
-      id={menuId}
-      transformOrigin={{
-        vertical: 'top',
-        horizontal: 'right',
-      }}
-      open={isMenuOpen}
-      onClose={handleMenuClose}
-    >
-      <MenuItem onClick={handleLogOut}>Log out</MenuItem>
-    </Menu>
-  );
-
-  const mobileMenuId = 'account-menu-mobile';
-  const renderMobileMenu = (
-    <Menu
-      anchorEl={mobileMoreAnchorEl}
-      anchorOrigin={{
-        vertical: 'top',
-        horizontal: 'right',
-      }}
-      id={mobileMenuId}
-      keepMounted
-      transformOrigin={{
-        vertical: 'top',
-        horizontal: 'right',
-      }}
-      open={isMobileMenuOpen}
-      onClose={handleMobileMenuClose}
-    >
-      <MenuItem onClick={handleProfileMenuOpen}>
-        <IconButton
-          size="large"
-          aria-label="account of current user"
-          aria-controls="primary-search-account-menu"
-          aria-haspopup="true"
-          color="inherit"
-        >
-          <AccountCircle />
-        </IconButton>
-        <p>Profile</p>
-      </MenuItem>
-    </Menu>
-  );
-
-  const drawer = (
-    <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
-      <Typography variant="h6" sx={{ my: 1 }}>
-        BillBuddies
-      </Typography>
-      <Divider />
-      <List>
-        {pages.map((item) => (
-          <ListItem key={item.name} disablePadding >
-            <Link href={item.path}>
-              <ListItemButton sx={{ textAlign: 'center' }}>
-                <ListItemText classes="tertiary">
-                  {item.name}
-                </ListItemText>
-              </ListItemButton>
-            </Link>
-          </ListItem>
-        ))}
-      </List>
-    </Box>
-  );
-
-  const notificationMenuId = 'notification-menu';
-
-  const renderNotificationsMenu = (notifications.length > 0 &&
-    <Menu
-      sx={{ mt: '30px' }}
-      anchorEl={notificationAnchorEl}
-      anchorOrigin={{
-        vertical: 'top',
-        horizontal: 'right',
-      }}
-      id={notificationMenuId}
-      keepMounted
-      transformOrigin={{
-        vertical: 'top',
-        horizontal: 'right',
-      }}
-      open={Boolean(notificationAnchorEl)}
-      onClose={() => {
-          setNotificationAnchorEl(null);
-          setNotifications(notifications.map(notification => ({...notification, read: true})));
-          notifications.map(notification => readNotification({id: notification.id}));
-        }
-      }
-    >
-      {notifications.toReversed().map((notification) => (
-        <MenuItem key={notification.id} sx={{ display: 'flex', alignItems: 'center', gap: 1, backgroundColor: notification.read ? null : '#c8c8c8' }}>
-          <Avatar>
-            <AccountCircle />
-          </Avatar>
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
-            <Typography variant="body1">{notification.message}</Typography>
-            <Typography variant="body2" sx={{ fontWeight: 'bold', fontStyle: 'italic', color: 'text.secondary' }}>
-              {new Date(notification.createdAt).toLocaleString()}
-            </Typography>
-          </div>
-        </MenuItem>
-      ))}
-    </Menu>
-  );
+  };
 
   return ((user || cache.get('token')) &&
     <Box sx={{ display: 'flex' }}>
-      <AppBar component="nav" position="static" color="primary">
-        <Toolbar sx={{ minHeight: 'auto' }}>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            edge="start"
-            onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { sm: 'none' } }}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {pages.map((item) => (
-              <Link key={item.name} href={item.path}>
-                <Button sx={{ color: '#fff' }}>
-                  {item.name}
-                </Button>
-              </Link>
-            ))}
-          </Box>
-          <Box sx={{ flexGrow: 1 }} />
-          <IconButton
-            size="large"
-            aria-label="show notifications"
-            aria-controls={notificationMenuId}
-            color="inherit"
-            onClick={(event) => setNotificationAnchorEl(event.currentTarget)}
-          >
-            <Badge badgeContent={countUnreadNotifications()} color="error">
-              <NotificationsIcon />
-            </Badge>
-          </IconButton>
-          <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-            <IconButton
-              size="large"
-              edge="end"
-              aria-label="account of current user"
-              aria-controls={menuId}
-              aria-haspopup="true"
-              onClick={handleProfileMenuOpen}
-              color="inherit"
-            >
-              <AccountCircle />
-            </IconButton>
-          </Box>
-          <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
-            <IconButton
-              size="large"
-              aria-label="show more"
-              aria-controls={mobileMenuId}
-              aria-haspopup="true"
-              onClick={handleMobileMenuOpen}
-              color="inherit"
-            >
-              <MoreIcon />
-            </IconButton>
-          </Box>
-        </Toolbar>
-      </AppBar>
-      {renderMobileMenu}
-      {renderMenu}
-      {renderNotificationsMenu}
-      <nav>
-        <Drawer
-          variant="temporary"
-          open={mobileOpen}
-          onClose={handleDrawerToggle}
-          ModalProps={{
-            keepMounted: true, // Better open performance on mobile.
-          }}
-          sx={{
-            display: { xs: 'block', sm: 'none' },
-            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
-          }}
-        >
-          {drawer}
-        </Drawer>
-      </nav>
+      <AppBarComponent
+        pages={pages}
+        handleDrawerToggle={handleDrawerToggle}
+        handleProfileMenuOpen={handleProfileMenuOpen}
+        handleMobileMenuOpen={handleMobileMenuOpen}
+        handleNotificationsMenuOpen={handleNotificationsMenuOpen}
+        notifications={notifications}
+      />
+      <ProfileMenu
+        anchorEl={anchorEl}
+        setAnchorEl={setAnchorEl}
+        handleLogOut={handleLogOut}
+      />
+      <MobileMenu
+        mobileMoreAnchorEl={mobileMoreAnchorEl}
+        setMobileMoreAnchorEl={setMobileMoreAnchorEl}
+        handleProfileMenuOpen={handleProfileMenuOpen}
+      />
+      <NotificationMenu
+        notifications={notifications}
+        setNotifications={setNotifications}
+        notificationAnchorEl={notificationAnchorEl}
+        setNotificationAnchorEl={setNotificationAnchorEl}
+        readNotification={readNotification}
+      />
+      <DrawerComponent
+        mobileOpen={mobileOpen}
+        handleDrawerToggle={handleDrawerToggle}
+        pages={pages}
+      />
     </Box>
   );
 }

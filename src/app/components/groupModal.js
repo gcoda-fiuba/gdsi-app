@@ -4,18 +4,18 @@ import { Dialog, DialogTitle, DialogContent, DialogActions, Button } from "@mui/
 import { useEffect, useState } from 'react';
 import MembersList from './MembersList';
 import AddMemberSection from './AddMemberSection';
-import BillsList from './BillsList';
+import ExpensesList from './ExpensesList';
 import AddExpenseSection from './AddExpenseSection';
 import useGroupStore from "@/app/store/groups";
 import useUserStore from "@/app/store/user";
 
 export default function GroupModal({ group, open, onClose }) {
-  const { getMembers, getBills, getCategories } = useGroupStore();
+  const { getMembers, getExpenses, getCategories } = useGroupStore();
   const { getUsers } = useUserStore();
 
   const [members, setMembers] = useState([]);
   const [users, setUsers] = useState([]);
-  const [bills, setBills] = useState([]);
+  const [expenses, setExpenses] = useState([]);
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -29,15 +29,15 @@ export default function GroupModal({ group, open, onClose }) {
 
   const fetchInitialData = async () => {
     try {
-      const [usersData, membersData, billsData, categoriesData] = await Promise.all([
+      const [usersData, membersData, expensesData, categoriesData] = await Promise.all([
         getUsers(),
         getMembers(group.id),
-        getBills(group.id),
+        getExpenses(group.id),
         getCategories(),
       ]);
       setUsers(usersData);
       setMembers(membersData);
-      setBills(billsData);
+      setExpenses(expensesData);
       setCategories(categoriesData);
     } catch (error) {
       console.error("Failed to fetch initial data", error);
@@ -53,12 +53,12 @@ export default function GroupModal({ group, open, onClose }) {
         <DialogContent>
           <MembersList members={members} groupId={group?.id} refreshMembers={fetchInitialData} />
           <AddMemberSection users={users} groupId={group?.id} refreshMembers={fetchInitialData} />
-          <BillsList bills={bills} />
-          <AddExpenseSection groupId={group?.id} categories={categories} refreshBills={fetchInitialData} />
+          <ExpensesList expenses={expenses} />
+          <AddExpenseSection groupId={group?.id} categories={categories} refreshExpenses={fetchInitialData} />
         </DialogContent>
       )}
       <DialogActions>
-        <Button onClick={onClose}>Close</Button>
+        <Button variant = "outlined" color = "secondary" onClick={onClose}>Close</Button>
       </DialogActions>
     </Dialog>
   );
