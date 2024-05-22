@@ -91,7 +91,6 @@ export default function GroupView({ params: {id} }) {
         loading ? <Loading /> :
             error ? errorView :
                 <Grid container alignItems="start" justifyContent="center" style={{ height: '100vh', gap: '2%' }}>
-
                     <Grid item>
                         <h2>My debts:</h2>
                         <Card variant="outlined" alignItems="start" justifyContent="center" sx={{p: 4}}>
