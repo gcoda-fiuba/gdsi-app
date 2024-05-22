@@ -4,7 +4,7 @@ import {Dialog, DialogContent, DialogActions, Button, Typography, DialogTitle} f
 import useGroupStore from "@/app/store/groups";
 import {useSnackbar} from "@/app/context/SnackbarContext";
 
-export default function PaymentModal({ debt, open, onClose }) {
+export default function PaymentModal({ debt, open, onClose, updateDebtsData }) {
     const { patchBill } = useGroupStore();
     const { showSnackbar } = useSnackbar();
 
@@ -12,6 +12,7 @@ export default function PaymentModal({ debt, open, onClose }) {
         try {
             const response = await patchBill(debt.id, {amount: debt.amount})
             showSnackbar('Payment registered');
+            updateDebtsData();
             onClose();
         } catch (error) {
             showSnackbar('There was an error on the payment', 'error');
