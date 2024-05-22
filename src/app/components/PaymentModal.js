@@ -9,14 +9,9 @@ export default function PaymentModal({ debt, open, onClose }) {
     const { showSnackbar } = useSnackbar();
 
     const handlePayBill = async (debt) => {
-        console.log('debt ', debt);
         try {
-            console.log('debtID', debt.id)
-            console.log('amount ', debt.amount)
-
             const response = await patchBill(debt.id, {amount: debt.amount})
             showSnackbar('Payment registered');
-            console.log('Payment registered ', response);
             onClose();
         } catch (error) {
             showSnackbar('There was an error on the payment', 'error');

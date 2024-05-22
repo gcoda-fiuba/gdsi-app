@@ -18,16 +18,16 @@ import useGroupStore from "@/app/store/groups";
 import { useSnackbar } from "@/app/context/SnackbarContext";
 
 
-export default function AddExpenseSection({ groupId, categories, refreshBills }) {
-    const { addBill, getBills } = useGroupStore();
+export default function AddExpenseSection({ groupId, categories, refreshExpenses }) {
+    const { addExpense, getExpenses } = useGroupStore();
     const { showSnackbar } = useSnackbar();
   
-    const [newBill, setNewBill] = useState({ bill_amount: 0, category_id: 0 });
+    const [newExpense, setNewExpense] = useState({ bill_amount: 0, category_id: 0 });
     const [divisionMode, setDivisionMode] = useState("");
   
     const handleAddExpense = async () => {
         const params = {
-          ...newBill,
+          ...newExpense,
           group_id: groupId,
           mode: divisionMode,
         };
@@ -46,10 +46,10 @@ export default function AddExpenseSection({ groupId, categories, refreshBills })
         }
     
         try {
-          await addBill(params);
-          setNewBill({ bill_amount: 0, category_id: 0 })
-          await refreshBills();
-          showSnackbar('The bill was added successfully', 'success');
+          await addExpense(params);
+          setNewExpense({ bill_amount: 0, category_id: 0 })
+          await refreshExpenses();
+          showSnackbar('The expense was added successfully', 'success');
         } catch (error) {
           showSnackbar(error.response.data.message, 'error');
         }
@@ -62,14 +62,14 @@ export default function AddExpenseSection({ groupId, categories, refreshBills })
         aria-controls="add-expense-content"
         id="add-expense-header"
       >
-        <DialogContentText>Add bill</DialogContentText>
+        <DialogContentText>Add Expense</DialogContentText>
       </AccordionSummary>
       <AccordionDetails>
         <Box>
           <TextField
             label="Amount"
-            value={newBill.bill_amount}
-            onChange={(e) => setNewBill({ ...newBill, bill_amount: e.target.value })}
+            value={newExpense.bill_amount}
+            onChange={(e) => setNewExpense({ ...newExpense, bill_amount: e.target.value })}
             type="number"
             fullWidth
             margin="normal"
@@ -77,8 +77,8 @@ export default function AddExpenseSection({ groupId, categories, refreshBills })
           <FormControl fullWidth margin="normal">
             <InputLabel>Category</InputLabel>
             <Select
-              value={newBill.category_id}
-              onChange={(e) => setNewBill({ ...newBill, category_id: e.target.value })}
+              value={newExpense.category_id}
+              onChange={(e) => setNewExpense({ ...newExpense, category_id: e.target.value })}
             >
               {categories.map((category) => (
                 <MenuItem key={category.id} value={category.id}>{category.icon + ' ' + category.name}</MenuItem>
@@ -95,7 +95,7 @@ export default function AddExpenseSection({ groupId, categories, refreshBills })
               <MenuItem value="equitative">Equitative</MenuItem>
             </Select>
           </FormControl>
-          <Button onClick={handleAddExpense} variant="contained" color="primary" fullWidth>
+          <Button onClick={handleAddExpense} variant="outlined" color="secondary" fullWidth>
             Add Expense
           </Button>
         </Box>

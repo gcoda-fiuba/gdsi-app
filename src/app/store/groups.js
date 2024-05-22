@@ -4,11 +4,21 @@ import { create } from 'zustand'
 const useGroupStore = create((set) => ({
   members: null,
   categories: null,
-  bills: null,
+  expenses: null,
   debts: null,
+  current: null,
   fetch: async () => {
     try{
       const response = await axios.get('/groups')
+      return response.data
+    }catch (error) {
+      throw error;
+    }
+  },
+  getGroupById: async (id) => {
+    try{
+      const response = await axios.get(`/groups/${id}`)
+      set({ current: response.data });
       return response.data
     }catch (error) {
       throw error;
@@ -50,7 +60,7 @@ const useGroupStore = create((set) => ({
   getBills: async (id) => {
     try{
       const response = await axios.get(`/groups/${id}/bills`)
-      set({ bills: response.data });
+      set({ expenses: response.data });
       return response.data
     }catch (error) {
       throw error;
@@ -66,7 +76,7 @@ const useGroupStore = create((set) => ({
   },
   patchBill: async (id, args = {}) => {
     try{
-      const response = await axios.patch(`/groups/bill/${id}`, args)
+      const response = await axios.patch(`/debts/${id}`, args)
       return response.data
     }catch (error) {
       throw error;

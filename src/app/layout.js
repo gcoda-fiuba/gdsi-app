@@ -1,10 +1,10 @@
-import {Montserrat} from "next/font/google";
+import { Montserrat } from "next/font/google";
 import "./globals.css";
-import theme from "./theme"
+import theme from "./theme";
 import { SnackbarProvider } from './context/SnackbarContext';
 import SnackbarComponent from './components/snackBar';
 import NavBar from "@/app/components/navBar";
-import {ThemeProvider} from "@mui/material";
+import { ThemeProvider } from "@mui/material";
 
 const montserrat = Montserrat({ subsets: ["latin"] });
 
@@ -18,16 +18,18 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
     return (
+        <html lang="es" className={montserrat.className}>
+        <body>
         <ThemeProvider theme={theme}>
             <SnackbarProvider>
-                <html lang="es">
-                <body className={montserrat.className}>
                 <NavBar />
-                {children}
+                <div>
+                    {children}
+                </div>
                 <SnackbarComponent />
-                </body>
-                </html>
             </SnackbarProvider>
         </ThemeProvider>
+        </body>
+        </html>
     );
 }

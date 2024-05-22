@@ -1,11 +1,11 @@
 import { Grid, Typography } from "@mui/material";
 
-export default function BillsList({ bills }) {
+export default function ExpensesList({ expenses }) {
   return (
     <>
-      {bills.length === 0 ? (
+      {expenses.length === 0 ? (
         <Typography variant="body2" color="textSecondary">
-          No bills have been added yet.
+          No expenses have been added yet.
         </Typography>
       ) : (
         <>
@@ -17,7 +17,7 @@ export default function BillsList({ bills }) {
               <Typography variant="subtitle1" fontWeight="bold">Amount</Typography>
             </Grid>
           </Grid>
-          {bills.map(expense => (
+          {expenses.map(expense => (
             <Grid container key={expense.id}>
               <Grid item xs={6} style={{ display: 'flex', flexDirection: 'row' }}>
                 <Typography variant="body1">{expense.category?.icon}</Typography>

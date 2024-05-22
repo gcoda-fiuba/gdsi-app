@@ -4,7 +4,7 @@ import {Card, Grid} from "@mui/material";
 import { useEffect, useState } from 'react';
 import MembersList from '@/app/components/MembersList';
 import AddMemberSection from '@/app/components/AddMemberSection';
-import BillsList from '@/app/components/BillsList';
+import ExpensesList from '@/app/components/ExpensesList';
 import AddExpenseSection from '@/app/components/AddExpenseSection';
 import DebtList from '@/app/components/debtList';
 import useGroupStore from "@/app/store/groups";
@@ -18,12 +18,14 @@ export default function GroupView({ params: {id} }) {
     const groupId = id;
 
     const {
+        getGroupById,
         getMembers,
         getBills,
         getCategories,
         getDebts,
+        current,
         members,
-        bills,
+        expenses,
         categories,
         debts
     } = useGroupStore();
@@ -47,22 +49,13 @@ export default function GroupView({ params: {id} }) {
     const fetchInitialData = async () => {
         try {
             await Promise.all([
+                getGroupById(groupId),
                 getUsers(),
                 getMembers(groupId),
                 getBills(groupId),
                 getCategories(),
                 getDebts(groupId)
             ]);
-
-            // Provisorio hasta que arreglen el back
-            /*debts.map((debt, index) => debt['debtId'] = index)
-
-            debts.map(async debt => {
-                await getUserById(debt.userToId).then(user => {
-                    setUsersToNames(prevState => [...prevState, user.first_name + ' ' + user.last_name]);
-                });
-            });*/
-
         } catch (error) {
             setError(true)
         } finally {
@@ -90,7 +83,7 @@ export default function GroupView({ params: {id} }) {
     return (
         loading ? <Loading /> :
             error ? errorView :
-                <Grid container alignItems="start" justifyContent="center" style={{ height: '100vh', gap: '2%' }}>
+                <Grid container alignItems="start" justifyContent="center" style={{ height: '100vh', gap: '2%', marginTop: 20 }}>
                     <Grid item>
                         <h2>My debts:</h2>
                         <Card variant="outlined" alignItems="start" justifyContent="center" sx={{p: 4}}>
@@ -101,12 +94,12 @@ export default function GroupView({ params: {id} }) {
                     </Grid>
 
                     <Grid item>
-                        <h2>GroupName</h2>
+                        <h2>{current.name}</h2>
                         <Card variant="outlined" sx={{p: 4}}>
                             <h3>Activities: </h3>
 
                             <Grid item>
-                                <BillsList bills={bills}/>
+                                <ExpensesList expenses={expenses}/>
                             </Grid>
                             <Grid item>
                                 <AddExpenseSection groupId={groupId} categories={categories} refreshBills={fetchInitialData}/>
