@@ -16,31 +16,38 @@ export default function Debt() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
 
-    const {getDebts, debts, getMembers, members, fetch, groups} = useGroupStore();
+    const { getDebts, debts, getMembers, members, fetch, groups } = useGroupStore();
     const { getUsers, users } = useUserStore();
 
-    useEffect(() => {
-        fetchInitialData();
-    }, []);
+    const [initialized, setInitialized] = useState(false);
 
-    const mapGroups = async () => {
-        console.log('GROUPS', groups);
-        groups.map(async group => await Promise.all([getDebts(1),getMembers(1)]));
+    useEffect(() => {
+        fetchInitialData()
+    }, [groups]);
+
+    const getGroupsData = async () => {
+        groups.map(async group => await Promise.all([getDebts(group.id),getMembers(group.id)]));
     }
 
     const fetchInitialData = async () => {
         try {
-            await fetch().then(async response=> {
-                setGroups(response.data)
-                await mapGroups();
-            });
-            await getUsers();
+            if (!initialized) {
+                await fetch();
+                await getUsers();
+                setInitialized(true);
+            }
+            if (groups !== null) {
+                await getGroupsData();
+                setLoading(false);
+            }
         } catch (error) {
             setError(true)
         } finally {
-            setLoading(false);
+            if (groups !== null && debts !== null) {
+                console.log('DEBTS', debts)
+                setLoading(false)
+            }
         }
-
     }
 
     const handleClosePaymentModal = () => {
@@ -53,19 +60,19 @@ export default function Debt() {
 
     const errorView =
         (<>
-            <Grid container alignItems="center" justifyContent="center" style={{height: '100vh'}}>
+            <Grid container style={{height: '100vh'}}>
                 <Grid item>
                     <h2>Hubo un error cargando este grupo</h2>
                 </Grid>
             </Grid>
         </>);
 
-    return (loading ? <Loading /> : error ? errorView :
+    return ((loading || debts)? <Loading /> : error ? errorView :
         <Card variant="outlined" sx={{p: 4}}>
             <h3>Debts: </h3>
             <Grid item>
                 <h2>My debts:</h2>
-                <Card variant="outlined" alignItems="start" justifyContent="center" sx={{p: 4}}>
+                <Card variant="outlined" sx={{p: 4}}>
                     <Grid item>
                         <DebtList debts={debts} users={users} handleOpenPaymentModal={handleOpenPaymentModal} />
                     </Grid>
