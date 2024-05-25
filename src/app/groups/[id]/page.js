@@ -80,20 +80,22 @@ export default function GroupView({ params: {id} }) {
             </Grid>
         </>);
 
+    const debtsList = (
+        <Grid item>
+            <h2>My debts:</h2>
+            <Card variant="outlined" alignItems="start" justifyContent="center" sx={{p: 4}}>
+                <Grid item>
+                    <DebtList debts={debts} users={users} handleOpenPaymentModal={handleOpenPaymentModal} />
+                </Grid>
+            </Card>
+        </Grid>
+    );
+
     return (
         loading ? <Loading /> :
             error ? errorView :
-                <Grid container alignItems="start" justifyContent="center" style={{ height: '100vh', gap: '2%', marginTop: 20 }}>
-                    <Grid item>
-                        <h2>My debts:</h2>
-                        <Card variant="outlined" alignItems="start" justifyContent="center" sx={{p: 4}}>
-                            <Grid item>
-                                <DebtList debts={debts} users={users} handleOpenPaymentModal={handleOpenPaymentModal} />
-                            </Grid>
-                        </Card>
-                    </Grid>
-
-                    <Grid item>
+                <Grid container alignItems="start" justifyContent="center" style={{ height: '100vh', marginTop: 20 }}>
+                    <Grid item style={{ width: '100vh' }}>
                         <h2>{current.name}</h2>
                         <Card variant="outlined" sx={{p: 4}}>
                             <h3>Activities: </h3>

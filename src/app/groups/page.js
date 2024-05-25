@@ -12,7 +12,6 @@ import {
   TableRow,
   Typography,
   Box,
-  Button
 } from "@mui/material";
 import { useSnackbar } from "@/app/context/SnackbarContext";
 import CreateGroup from "@/app/components/createGroup";
@@ -56,12 +55,12 @@ export default function Group() {
   return (
     loading ? <Loading /> :
       <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', p: 2 }}>
-        <Typography color = "secondary" variant="h4" gutterBottom>
+        <Typography color="white" variant="h4" gutterBottom>
           Group List
         </Typography>
         <CreateGroup fetchData={fetchData} />
         <TableContainer component={Paper} sx={{ maxWidth: 800, mt: 2, mb: 2 }}>
-          <Table sx={{ minWidth: 500 }} aria-label="simple table">
+          <Table sx={{ minWidth: 500 }} aria-label="simple table" className="MuiTable-root">
             <TableHead>
               <TableRow>
                 {headers.map((header) => <TableCell key={header}>{header}</TableCell>)}

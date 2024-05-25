@@ -12,7 +12,7 @@ import useNotificationStore from "@/app/store/notification";
 import cache from "@/app/services/cache";
 import { useRouter } from 'next/navigation';
 
-const pages = [{ name: 'Groups', path: '/groups' }];
+const pages = [{ name: 'Groups', path: '/groups' }, {name: 'Debts', path: '/debts'}];
 
 function DrawerAppBar() {
   const router = useRouter();
@@ -57,7 +57,7 @@ function DrawerAppBar() {
     router.replace('/');
   };
 
-  return ((user || cache.get('token')) &&
+  return (auth &&
     <Box sx={{ display: 'flex' }}>
       <AppBarComponent
         pages={pages}
