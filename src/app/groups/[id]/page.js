@@ -22,20 +22,15 @@ export default function GroupView({ params: {id} }) {
         getMembers,
         getBills,
         getCategories,
-        getDebts,
         current,
         members,
         expenses,
-        categories,
-        debts
+        categories
     } = useGroupStore();
 
     const { getUsers, users } = useUserStore();
 
     const [loading, setLoading] = useState(true);
-    const [openPaymentModal, setOpenPaymentModal] = useState(false);
-    const [debtToPay, setDebtToPay] = useState({});
-
     const [error, setError] = useState(false);
 
     useEffect(() => {
@@ -54,7 +49,6 @@ export default function GroupView({ params: {id} }) {
                 getMembers(groupId),
                 getBills(groupId),
                 getCategories(),
-                getDebts(groupId)
             ]);
         } catch (error) {
             setError(true)
@@ -62,14 +56,6 @@ export default function GroupView({ params: {id} }) {
             setLoading(false);
         }
     };
-
-    const handleClosePaymentModal = () => {
-        setOpenPaymentModal(false);
-    }
-    const handleOpenPaymentModal = (debt) => {
-        setDebtToPay(debt);
-        setOpenPaymentModal(true);
-    }
 
     const errorView =
         (<>
@@ -79,17 +65,6 @@ export default function GroupView({ params: {id} }) {
                 </Grid>
             </Grid>
         </>);
-
-    const debtsList = (
-        <Grid item>
-            <h2>My debts:</h2>
-            <Card variant="outlined" alignItems="start" justifyContent="center" sx={{p: 4}}>
-                <Grid item>
-                    <DebtList debts={debts} users={users} handleOpenPaymentModal={handleOpenPaymentModal} />
-                </Grid>
-            </Card>
-        </Grid>
-    );
 
     return (
         loading ? <Loading /> :
@@ -115,7 +90,6 @@ export default function GroupView({ params: {id} }) {
                             </Grid>
                         </Card>
                     </Grid>
-                    <PaymentModal debt={debtToPay} open={openPaymentModal} onClose={handleClosePaymentModal} refreshDebts={fetchInitialData} />
                 </Grid>
     );
 }

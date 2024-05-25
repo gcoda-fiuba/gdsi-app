@@ -1,4 +1,4 @@
-import {Grid, Icon, IconButton, Typography} from "@mui/material";
+import {Grid, IconButton, Typography} from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
 
 export default function ExpensesList({ expenses }) {
