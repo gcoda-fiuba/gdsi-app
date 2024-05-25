@@ -2,11 +2,11 @@ import axios from "@/app/services/axios";
 import { create } from 'zustand'
 
 const useGroupStore = create((set) => ({
-  groups: null,
+  groups: [],
   members: null,
   categories: null,
   expenses: null,
-  debts: null,
+  debts: [],
   current: null,
   fetch: async () => {
     try{

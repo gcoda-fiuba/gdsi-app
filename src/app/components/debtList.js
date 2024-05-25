@@ -4,8 +4,8 @@ import cache from "@/app/services/cache";
 
 export default function DebtList({debts, users, handleOpenPaymentModal}) {
     const findUserById = (userId) => {
+        console.log('debts', debts)
         const result = users.find(user => user.id === userId)
-
         return result.first_name + ' ' + result.last_name
     }
 
@@ -20,7 +20,7 @@ export default function DebtList({debts, users, handleOpenPaymentModal}) {
     return (
         <List>
             {debts.map((debtToPay, index) => (
-                cache.get('Id') !== `${debtToPay.userToId}` &&
+                // cache.get('Id') !== `${debtToPay.userToId}` &&
                     <ListItem style={{ gap: '2%' }} key={index} secondaryAction={
                         <IconButton edge="end" onClick={() => handlePayment(debtToPay)}>
                             <PaymentsOutlinedIcon fontSize="medium" />

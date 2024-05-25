@@ -34,19 +34,15 @@ export default function Debt() {
             if (!initialized) {
                 await fetch();
                 await getUsers();
-                setInitialized(true);
             }
-            if (groups !== null) {
+            if (initialized) {
                 await getGroupsData();
                 setLoading(false);
             }
         } catch (error) {
             setError(true)
         } finally {
-            if (groups !== null && debts !== null) {
-                console.log('DEBTS', debts)
-                setLoading(false)
-            }
+            setInitialized(true);
         }
     }
 
@@ -67,11 +63,11 @@ export default function Debt() {
             </Grid>
         </>);
 
-    return ((loading || debts)? <Loading /> : error ? errorView :
+    return (
+        loading ? <Loading /> : error ? errorView :
         <Card variant="outlined" sx={{p: 4}}>
-            <h3>Debts: </h3>
+            <h3>My debts: </h3>
             <Grid item>
-                <h2>My debts:</h2>
                 <Card variant="outlined" sx={{p: 4}}>
                     <Grid item>
                         <DebtList debts={debts} users={users} handleOpenPaymentModal={handleOpenPaymentModal} />
