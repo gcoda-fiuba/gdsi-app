@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { Grid, Card } from '@mui/material';
-import RegisterForm from './RegisterForm';
+import RegisterForm from './registerForm';
 import passwordSecurity from './passwordSecurity';
 import useAuthStore from '@/app/store/auth';
 import { useSnackbar } from '@/app/context/SnackbarContext';
