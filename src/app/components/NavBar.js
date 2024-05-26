@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import AppBarComponent from './AppBarComponent';
 import DrawerComponent from './DrawerComponent';
@@ -18,8 +18,8 @@ function DrawerAppBar() {
   const router = useRouter();
   const { user, logout } = useAuthStore();
   const { getNotifications, readNotification } = useNotificationStore();
-  const [auth, setAuth] = useState(false);
-  const [mobileOpen, setMobileOpen] = useState(false);
+  const [isAuth, setIsAuth] = useState(false);
+  const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
   const [notificationAnchorEl, setNotificationAnchorEl] = useState(null);
@@ -29,7 +29,7 @@ function DrawerAppBar() {
     if (!user && !cache.get('token')) {
       return;
     }
-    setAuth(true);
+    setIsAuth(true);
     async function loadNotifications() {
       setNotifications(await getNotifications());
     }
@@ -37,7 +37,7 @@ function DrawerAppBar() {
   }, [user]);
 
   const handleDrawerToggle = () => {
-    setMobileOpen((prevState) => !prevState);
+    setIsMobileOpen((prevState) => !prevState);
   };
 
   const handleProfileMenuOpen = (event) => {
@@ -55,11 +55,11 @@ function DrawerAppBar() {
   const handleLogOut = async () => {
     await logout();
     setAnchorEl(null);
-    setAuth(false);
+    setIsAuth(false);
     router.replace('/');
   };
 
-  return (auth &&
+  return (isAuth &&
     <Box sx={{ display: 'flex' }}>
       <AppBarComponent
         pages={pages}
@@ -87,7 +87,7 @@ function DrawerAppBar() {
         readNotification={readNotification}
       />
       <DrawerComponent
-        mobileOpen={mobileOpen}
+        mobileOpen={isMobileOpen}
         handleDrawerToggle={handleDrawerToggle}
         pages={pages}
       />

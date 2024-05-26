@@ -27,7 +27,7 @@ export default function Group() {
   const { showSnackbar } = useSnackbar();
 
   const [groups, setGroups] = useState([])
-  const [loading, setLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
 
   async function fetchData() {
     try {
@@ -43,7 +43,7 @@ export default function Group() {
     }
 
     fetchData();
-    setLoading(false);
+    setIsLoading(false);
   }, [])
 
   const headers = ['ID', 'Nombre'];
@@ -53,7 +53,7 @@ export default function Group() {
   };
 
   return (
-    loading ? <Loading /> :
+    isLoading ? <Loading /> :
       <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', p: 2 }}>
         <Typography color="white" variant="h4" gutterBottom>
           Group List

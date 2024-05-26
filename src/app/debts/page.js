@@ -1,6 +1,6 @@
 'use client';
 
-import {Card, Grid} from "@mui/material";
+import {Grid} from "@mui/material";
 import DebtList from "@/app/components/DebtList";
 import PaymentModal from "@/app/components/PaymentModal";
 
@@ -13,8 +13,8 @@ export default function Debt() {
     const [openPaymentModal, setOpenPaymentModal] = useState(false);
     const [debtToPay, setDebtToPay] = useState({});
 
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
+    const [hasError, setHasError] = useState(false);
 
     const { getMyDebts, debts } = useDebtsStore()
     const { getUsers, users } = useUserStore();
@@ -31,9 +31,9 @@ export default function Debt() {
                 await getUsers();
             }
         } catch (error) {
-            setError(true)
+            setHasError(true)
         } finally {
-            setLoading(false);
+            setIsLoading(false);
         }
     }
 
@@ -55,7 +55,7 @@ export default function Debt() {
         </>);
 
     return (
-        loading ? <Loading /> : error ? errorView :
+        isLoading ? <Loading /> : hasError ? errorView :
             <>
                 <DebtList debts={debts} users={users} handleOpenPaymentModal={handleOpenPaymentModal} />
                 <PaymentModal debt={debtToPay} open={openPaymentModal} onClose={handleClosePaymentModal} refreshDebts={fetchInitialData} />

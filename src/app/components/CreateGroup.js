@@ -1,4 +1,5 @@
 'use client'
+
 import {Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField} from "@mui/material";
 import {Fragment, useState} from "react";
 import useGroupStore from "@/app/store/groups";
@@ -8,13 +9,13 @@ export default function CreateGroup({fetchData}) {
     const {create} = useGroupStore()
 
     const [groupName, setGroupName] = useState('');
-    const [open, setOpen] = useState(false);
+    const [isOpen, setIsOpen] = useState(false);
 
     const handleClickOpen = () => {
-        setOpen(true);
+        setIsOpen(true);
     };
     const handleClose = () => {
-        setOpen(false);
+        setIsOpen(false);
     };
 
 
@@ -32,7 +33,7 @@ export default function CreateGroup({fetchData}) {
                 Create Group
             </Button>
             <Dialog
-                open={open}
+                open={isOpen}
                 onClose={handleClose}
                 PaperProps={{
                     component: 'form',
