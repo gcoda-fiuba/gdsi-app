@@ -5,8 +5,8 @@ import DebtList from "@/app/components/debtList";
 import PaymentModal from "@/app/components/PaymentModal";
 
 import {useEffect, useState} from "react";
-import useGroupStore from "@/app/store/groups";
 import Loading from "@/app/debts/loading";
+import useDebtsStore from "@/app/store/debts";
 import useUserStore from "@/app/store/user";
 
 export default function Debt() {
@@ -16,33 +16,24 @@ export default function Debt() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
 
-    const { getDebts, debts, getMembers, members, fetch, groups } = useGroupStore();
+    const { getMyDebts, debts } = useDebtsStore()
     const { getUsers, users } = useUserStore();
-
-    const [initialized, setInitialized] = useState(false);
 
     useEffect(() => {
         fetchInitialData()
-    }, [groups]);
-
-    const getGroupsData = async () => {
-        groups.map(async group => await Promise.all([getDebts(group.id),getMembers(group.id)]));
-    }
+    }, []);
 
     const fetchInitialData = async () => {
         try {
-            if (!initialized) {
-                await fetch();
+            await getMyDebts();
+
+            if(!users){
                 await getUsers();
-            }
-            if (initialized) {
-                await getGroupsData();
-                setLoading(false);
             }
         } catch (error) {
             setError(true)
         } finally {
-            setInitialized(true);
+            setLoading(false);
         }
     }
 

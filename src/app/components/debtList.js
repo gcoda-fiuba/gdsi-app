@@ -4,30 +4,29 @@ import cache from "@/app/services/cache";
 
 export default function DebtList({debts, users, handleOpenPaymentModal}) {
     const findUserById = (userId) => {
-        console.log('debts', debts)
         const result = users.find(user => user.id === userId)
         return result.first_name + ' ' + result.last_name
     }
 
-    const handlePayment = (debtToPay) => {
+    const handlePayment = (debt) => {
         handleOpenPaymentModal({
-            id: debtToPay.debtId,
-            user: findUserById(debtToPay.userToId),
-            amount: debtToPay.amountDebt
+            id: debt.debtId,
+            user: findUserById(debt.userToId),
+            amount: debt.amountDebt ? debt.amountDebt : (debt.amount - debt.amountPaid)
         });
     }
 
     return (
         <List>
-            {debts.map((debtToPay, index) => (
+            {debts.map((debt, index) => (
                 // cache.get('Id') !== `${debtToPay.userToId}` &&
                     <ListItem style={{ gap: '2%' }} key={index} secondaryAction={
-                        <IconButton edge="end" onClick={() => handlePayment(debtToPay)}>
+                        <IconButton edge="end" onClick={() => handlePayment(debt)}>
                             <PaymentsOutlinedIcon fontSize="medium" />
                         </IconButton>
                     }>
-                        <ListItemText primary={`${findUserById(debtToPay.userToId)}`} />
-                        <ListItemText primary={`$${debtToPay.amountDebt}`} />
+                        <ListItemText primary={`${findUserById(debt.userToId)}`} />
+                        <ListItemText primary={`$ ${debt.amountDebt ? debt.amountDebt : (debt.amount - debt.amountPaid)}`} />
                     </ListItem>
             ))}
         </List>
