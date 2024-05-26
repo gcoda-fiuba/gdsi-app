@@ -1,7 +1,7 @@
 import { List, ListItem, ListItemText, IconButton } from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
 import useGroupStore from "@/app/store/groups";
-import { useSnackbar } from "@/app/context/snackbarContext";
+import { useSnackbar } from "@/app/context/SnackbarContext";
 
 
 export default function MembersList({ members, groupId, refreshMembers }) {

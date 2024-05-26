@@ -1,7 +1,7 @@
 'use client'
 
 import { Grid } from '@mui/material';
-import { useSnackbar } from "@/app/context/snackbarContext";
+import { useSnackbar } from "@/app/context/SnackbarContext";
 import { useEffect, useState, Suspense } from "react";
 import useAuthStore from "@/app/store/auth";
 import { useRouter, useSearchParams } from 'next/navigation'

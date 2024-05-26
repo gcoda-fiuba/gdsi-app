@@ -15,7 +15,7 @@ import {
 } from "@mui/material";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import useGroupStore from "@/app/store/groups";
-import { useSnackbar } from "@/app/context/snackbarContext";
+import { useSnackbar } from "@/app/context/SnackbarContext";
 
 
 export default function AddExpenseSection({ groupId, categories, refreshBills }) {

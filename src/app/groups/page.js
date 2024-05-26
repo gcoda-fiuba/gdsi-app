@@ -13,8 +13,8 @@ import {
   Typography,
   Box,
 } from "@mui/material";
-import { useSnackbar } from "@/app/context/snackbarContext";
-import CreateGroup from "@/app/components/createGroup";
+import { useSnackbar } from "@/app/context/SnackbarContext";
+import CreateGroup from "@/app/components/CreateGroup";
 import Loading from "@/app/groups/loading";
 
 import useGroupStore from "@/app/store/groups";

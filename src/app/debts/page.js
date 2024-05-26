@@ -1,8 +1,8 @@
 'use client';
 
 import {Card, Grid} from "@mui/material";
-import DebtList from "@/app/components/debtList";
-import PaymentModal from "@/app/components/paymentModal";
+import DebtList from "@/app/components/DebtList";
+import PaymentModal from "@/app/components/PaymentModal";
 
 import {useEffect, useState} from "react";
 import Loading from "@/app/debts/loading";

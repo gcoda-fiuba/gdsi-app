@@ -1,9 +1,9 @@
 import { Montserrat } from "next/font/google";
 import "./globals.css";
 import theme from "./theme";
-import { SnackbarProvider } from './context/snackbarContext';
-import SnackbarComponent from './components/snackBar';
-import NavBar from "@/app/components/navBar";
+import { SnackbarProvider } from './context/SnackbarContext';
+import SnackbarComponent from './components/SnackBar';
+import NavBar from "@/app/components/NavBar";
 import { ThemeProvider } from "@mui/material";
 
 const montserrat = Montserrat({ subsets: ["latin"] });

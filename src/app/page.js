@@ -13,7 +13,7 @@ import {
 } from '@mui/material';
 import {Visibility, VisibilityOff} from "@mui/icons-material";
 import useAuthStore from "@/app/store/auth";
-import {useSnackbar} from "@/app/context/snackbarContext";
+import {useSnackbar} from "@/app/context/SnackbarContext";
 import cache from "@/app/services/cache";
 import {LoadingButton} from "@mui/lab";
 import { useRouter } from 'next/navigation'
