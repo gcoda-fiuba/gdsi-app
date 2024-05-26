@@ -1,7 +1,7 @@
 import { Montserrat } from "next/font/google";
 import "./globals.css";
 import theme from "./theme";
-import { SnackbarProvider } from './context/SnackbarContext';
+import { SnackbarProvider } from './context/snackbarContext';
 import SnackbarComponent from './components/snackBar';
 import NavBar from "@/app/components/navBar";
 import { ThemeProvider } from "@mui/material";

@@ -2,11 +2,11 @@
 
 import React, { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
-import AppBarComponent from './AppBarComponent';
-import DrawerComponent from './DrawerComponent';
-import MobileMenu from './MobileMenu';
-import ProfileMenu from './ProfileMenu';
-import NotificationMenu from './NotificationMenu';
+import AppBarComponent from './appBarComponent';
+import DrawerComponent from './drawerComponent';
+import MobileMenu from './mobileMenu';
+import ProfileMenu from './profileMenu';
+import NotificationMenu from './notificationMenu';
 import useAuthStore from "@/app/store/auth";
 import useNotificationStore from "@/app/store/notification";
 import cache from "@/app/services/cache";

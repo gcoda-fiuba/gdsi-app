@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from "react";
-import { useSnackbar } from '@/app/context/SnackbarContext';
+import { useSnackbar } from '@/app/context/snackbarContext';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 

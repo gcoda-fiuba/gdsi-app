@@ -2,7 +2,7 @@
 
 import {Dialog, DialogContent, DialogActions, Button, Typography, DialogTitle} from "@mui/material";
 import useGroupStore from "@/app/store/groups";
-import {useSnackbar} from "@/app/context/SnackbarContext";
+import {useSnackbar} from "@/app/context/snackbarContext";
 
 export default function PaymentModal({ debt, open, onClose, refreshDebts }) {
     const { patchBill } = useGroupStore();

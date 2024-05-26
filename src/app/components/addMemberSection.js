@@ -1,7 +1,7 @@
 import { Grid, Button, TextField, Autocomplete } from "@mui/material";
 import { useState } from 'react';
 import useGroupStore from "@/app/store/groups";
-import { useSnackbar } from "@/app/context/SnackbarContext";
+import { useSnackbar } from "@/app/context/snackbarContext";
 
 
 export default function AddMemberSection({ users, groupId, refreshMembers }) {

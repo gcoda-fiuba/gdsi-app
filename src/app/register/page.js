@@ -5,7 +5,7 @@ import { Grid, Card } from '@mui/material';
 import RegisterForm from './registerForm';
 import passwordSecurity from './passwordSecurity';
 import useAuthStore from '@/app/store/auth';
-import { useSnackbar } from '@/app/context/SnackbarContext';
+import { useSnackbar } from '@/app/context/snackbarContext';
 
 export default function Register() {
 

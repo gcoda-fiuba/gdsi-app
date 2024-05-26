@@ -2,7 +2,7 @@
 
 import {Card, Grid} from "@mui/material";
 import DebtList from "@/app/components/debtList";
-import PaymentModal from "@/app/components/PaymentModal";
+import PaymentModal from "@/app/components/paymentModal";
 
 import {useEffect, useState} from "react";
 import Loading from "@/app/debts/loading";

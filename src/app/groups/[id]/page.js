@@ -2,16 +2,16 @@
 
 import {Card, Grid} from "@mui/material";
 import { useEffect, useState } from 'react';
-import MembersList from '@/app/components/MembersList';
-import AddMemberSection from '@/app/components/AddMemberSection';
-import ExpensesList from '@/app/components/ExpensesList';
-import AddExpenseSection from '@/app/components/AddExpenseSection';
+import MembersList from '@/app/components/membersList';
+import AddMemberSection from '@/app/components/addMemberSection';
+import ExpensesList from '@/app/components/expensesList';
+import AddExpenseSection from '@/app/components/addExpenseSection';
 import DebtList from '@/app/components/debtList';
 import useGroupStore from "@/app/store/groups";
 import useUserStore from "@/app/store/user";
 import Loading from "@/app/groups/loading";
 import Divider from "@mui/material/Divider";
-import PaymentModal from "@/app/components/PaymentModal";
+import PaymentModal from "@/app/components/paymentModal";
 
 export default function GroupView({ params: {id} }) {
 
