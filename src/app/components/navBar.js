@@ -34,7 +34,7 @@ function DrawerAppBar() {
       setNotifications(await getNotifications());
     }
     loadNotifications();
-  }, []);
+  }, [user]);
 
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
@@ -54,6 +54,8 @@ function DrawerAppBar() {
 
   const handleLogOut = async () => {
     await logout();
+    setAnchorEl(null);
+    setAuth(false);
     router.replace('/');
   };
 

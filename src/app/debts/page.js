@@ -56,16 +56,9 @@ export default function Debt() {
 
     return (
         loading ? <Loading /> : error ? errorView :
-        <Card variant="outlined" sx={{p: 4}}>
-            <h3>My debts: </h3>
-            <Grid item>
-                <Card variant="outlined" sx={{p: 4}}>
-                    <Grid item>
-                        <DebtList debts={debts} users={users} handleOpenPaymentModal={handleOpenPaymentModal} />
-                    </Grid>
-                </Card>
-            </Grid>
-            <PaymentModal debt={debtToPay} open={openPaymentModal} onClose={handleClosePaymentModal} refreshDebts={fetchInitialData} />
-        </Card>
+            <>
+                <DebtList debts={debts} users={users} handleOpenPaymentModal={handleOpenPaymentModal} />
+                <PaymentModal debt={debtToPay} open={openPaymentModal} onClose={handleClosePaymentModal} refreshDebts={fetchInitialData} />
+            </>
     );
 }

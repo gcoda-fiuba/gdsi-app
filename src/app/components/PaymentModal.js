@@ -10,7 +10,7 @@ export default function PaymentModal({ debt, open, onClose, refreshDebts }) {
 
     const handlePayBill = async (debt) => {
         try {
-            const response = await patchBill(debt.id, {amount: debt.amount})
+            await patchBill(debt.id, {amount: debt.amount});
             showSnackbar('Payment registered');
             refreshDebts();
             onClose();
