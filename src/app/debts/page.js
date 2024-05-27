@@ -55,10 +55,11 @@ export default function Debt() {
         </>);
 
     return (
-        isLoading ? <Loading /> : hasError ? errorView :
-            <>
-                <DebtList debts={debts} users={users} handleOpenPaymentModal={handleOpenPaymentModal} />
-                <PaymentModal debt={debtToPay} open={openPaymentModal} onClose={handleClosePaymentModal} refreshDebts={fetchInitialData} />
-            </>
+        isLoading ? <Loading /> :
+             hasError ? errorView :
+                <>
+                    <DebtList debts={debts} users={users} handleOpenPaymentModal={handleOpenPaymentModal} />
+                    <PaymentModal debt={debtToPay} open={openPaymentModal} onClose={handleClosePaymentModal} refreshDebts={fetchInitialData} />
+                </>
     );
 }
