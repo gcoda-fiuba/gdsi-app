@@ -6,12 +6,10 @@ import MembersList from '@/app/components/MembersList';
 import AddMemberSection from '@/app/components/AddMemberSection';
 import ExpensesList from '@/app/components/ExpensesList';
 import AddExpenseSection from '@/app/components/AddExpenseSection';
-import DebtList from '@/app/components/DebtList';
 import useGroupStore from "@/app/store/groups";
 import useUserStore from "@/app/store/user";
-import Loading from "@/app/groups/loading";
+import Loading from "@/app/groups/[id]/loading";
 import Divider from "@mui/material/Divider";
-import PaymentModal from "@/app/components/PaymentModal";
 
 export default function GroupView({ params: {id} }) {
 
@@ -30,16 +28,16 @@ export default function GroupView({ params: {id} }) {
 
     const { getUsers, users } = useUserStore();
 
-    const [loading, setLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(false);
 
     useEffect(() => {
         if (groupId) {
             fetchInitialData();
         } else {
-            setLoading(false);
+            setIsLoading(false);
         }
-    }, [loading]);
+    }, [isLoading]);
 
     const fetchInitialData = async () => {
         try {
@@ -53,7 +51,7 @@ export default function GroupView({ params: {id} }) {
         } catch (error) {
             setError(true)
         } finally {
-            setLoading(false);
+            setIsLoading(false);
         }
     };
 
@@ -67,7 +65,7 @@ export default function GroupView({ params: {id} }) {
         </>);
 
     return (
-        loading ? <Loading /> :
+        isLoading ? <Loading /> :
             error ? errorView :
                 <Grid container alignItems="start" justifyContent="center" style={{ height: '100vh', marginTop: 20 }}>
                     <Grid item style={{ width: '100vh' }}>
