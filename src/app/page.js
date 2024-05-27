@@ -27,7 +27,7 @@ export default function Home() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (cache.get('token')) {
@@ -49,7 +49,7 @@ export default function Home() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    setLoading(true)
+    setIsLoading(true)
 
     try{
       await login({
@@ -60,7 +60,7 @@ export default function Home() {
       await router.push('/groups');
     } catch (error) {
       showSnackbar(error.response.data.error, 'error');
-      setLoading(false);
+      setIsLoading(false);
     }
   };
 
@@ -105,7 +105,7 @@ export default function Home() {
             <Box display="flex" justifyContent="center" marginTop={2} marginBottom={2}>
               <LoadingButton
                 size="large"
-                loading={loading}
+                loading={isLoading}
                 variant="outlined"
                 color="secondary"
                 type="submit"

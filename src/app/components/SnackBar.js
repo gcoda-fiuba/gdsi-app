@@ -7,11 +7,11 @@ import Alert from '@mui/material/Alert';
 
 export default function SnackBar() {
   const { message, severity, closeSnackbar } = useSnackbar();
-  const [open, setOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     if (message) {
-      setOpen(true);
+      setIsOpen(true);
     }
   }, [message]);
 
@@ -19,13 +19,13 @@ export default function SnackBar() {
     if (reason === 'clickaway') {
       return;
     }
-    setOpen(false);
+    setIsOpen(false);
     closeSnackbar();
   };
 
   return (
     <Snackbar
-      open={open}
+      open={isOpen}
       autoHideDuration={6000}
       onClose={handleClose}
       anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}

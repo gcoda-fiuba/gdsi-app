@@ -1,17 +1,54 @@
 'use client';
 
-import {Card, Grid} from "@mui/material";
+import {Box, Card, Grid, Tab, Tabs, Typography} from "@mui/material";
 import { useEffect, useState } from 'react';
 import MembersList from '@/app/components/MembersList';
 import AddMemberSection from '@/app/components/AddMemberSection';
 import ExpensesList from '@/app/components/ExpensesList';
 import AddExpenseSection from '@/app/components/AddExpenseSection';
-import DebtList from '@/app/components/debtList';
+import Loading from "@/app/groups/[id]/loading";
 import useGroupStore from "@/app/store/groups";
 import useUserStore from "@/app/store/user";
-import Loading from "@/app/groups/loading";
-import Divider from "@mui/material/Divider";
-import PaymentModal from "@/app/components/PaymentModal";
+import PropTypes from "prop-types";
+
+function CustomTabPanel(props) {
+    const { children, value, index, ...other } = props;
+
+    return (
+        <Typography
+            role="tabpanel"
+            hidden={value !== index}
+            id={`simple-tabpanel-${index}`}
+            aria-labelledby={`simple-tab-${index}`}
+            {...other}
+        >
+            {value === index && (
+                <Box sx={{ p: 3 }}>
+                    {children}
+                </Box>
+            )}
+        </Typography>
+    );
+}
+
+CustomTabPanel.propTypes = {
+    children: PropTypes.node,
+    index: PropTypes.number.isRequired,
+    value: PropTypes.number.isRequired,
+};
+
+function a11yProps(index) {
+    return {
+        id: `simple-tab-${index}`,
+        'aria-controls': `simple-tabpanel-${index}`,
+    };
+}
+
+const fabExpenseStyle = {
+    position: 'absolute',
+    bottom: 16,
+    right: 16,
+};
 
 export default function GroupView({ params: {id} }) {
 
@@ -22,29 +59,30 @@ export default function GroupView({ params: {id} }) {
         getMembers,
         getBills,
         getCategories,
-        getDebts,
         current,
         members,
         expenses,
-        categories,
-        debts
+        categories
     } = useGroupStore();
 
     const { getUsers, users } = useUserStore();
 
-    const [loading, setLoading] = useState(true);
-    const [openPaymentModal, setOpenPaymentModal] = useState(false);
-    const [debtToPay, setDebtToPay] = useState({});
-
+    const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(false);
+
+    const [tab, setTab] = useState(0);
+
+    const handleChangeTab = (event, newValue) => {
+        setTab(newValue);
+    };
 
     useEffect(() => {
         if (groupId) {
             fetchInitialData();
         } else {
-            setLoading(false);
+            setIsLoading(false);
         }
-    }, [loading]);
+    }, [isLoading]);
 
     const fetchInitialData = async () => {
         try {
@@ -54,22 +92,13 @@ export default function GroupView({ params: {id} }) {
                 getMembers(groupId),
                 getBills(groupId),
                 getCategories(),
-                getDebts(groupId)
             ]);
         } catch (error) {
             setError(true)
         } finally {
-            setLoading(false);
+            setIsLoading(false);
         }
     };
-
-    const handleClosePaymentModal = () => {
-        setOpenPaymentModal(false);
-    }
-    const handleOpenPaymentModal = (debt) => {
-        setDebtToPay(debt);
-        setOpenPaymentModal(true);
-    }
 
     const errorView =
         (<>
@@ -81,39 +110,40 @@ export default function GroupView({ params: {id} }) {
         </>);
 
     return (
-        loading ? <Loading /> :
+        isLoading ? <Loading /> :
             error ? errorView :
-                <Grid container alignItems="start" justifyContent="center" style={{ height: '100vh', gap: '2%', marginTop: 20 }}>
-                    <Grid item>
-                        <h2>My debts:</h2>
-                        <Card variant="outlined" alignItems="start" justifyContent="center" sx={{p: 4}}>
-                            <Grid item>
-                                <DebtList debts={debts} users={users} handleOpenPaymentModal={handleOpenPaymentModal} />
-                            </Grid>
-                        </Card>
-                    </Grid>
+                <Grid container alignItems="start" justifyContent="center" style={{ height: '100vh', marginTop: 20 }}>
+                    <Grid item style={{width: '100vh'}}>
+                        <h2 style={{marginTop: 10, marginBottom: 20}}>{current.name}</h2>
 
-                    <Grid item>
-                        <h2>{current.name}</h2>
-                        <Card variant="outlined" sx={{p: 4}}>
-                            <h3>Activities: </h3>
+                        <Box sx={{borderBottom: 1, borderColor: 'divider'}}>
+                            <Tabs value={tab} onChange={handleChangeTab} aria-label="basic tabs example">
+                                <Tab label="Expenses" {...a11yProps(0)} />
+                                <Tab label="Members" {...a11yProps(1)} />
+                            </Tabs>
+                        </Box>
+                        <CustomTabPanel value={tab} index={0}>
+                            <Card variant="outlined" sx={{p: 2}}>
+                                <Grid item>
+                                    <AddExpenseSection groupId={groupId} categories={categories} refreshBills={fetchInitialData}/>
+                                </Grid>
 
-                            <Grid item>
-                                <ExpensesList expenses={expenses}/>
-                            </Grid>
-                            <Grid item>
-                                <AddExpenseSection groupId={groupId} categories={categories} refreshBills={fetchInitialData}/>
-                            </Grid>
-                            <Divider  style={{ marginTop: '2%', marginBottom: '2%' }} />
-                            <Grid item>
-                                <AddMemberSection users={users} groupId={groupId} refreshMembers={fetchInitialData}/>
-                            </Grid>
-                            <Grid item>
-                                <MembersList members={members} groupId={groupId} refreshMembers={fetchInitialData}/>
-                            </Grid>
-                        </Card>
+                                <Grid item>
+                                    <ExpensesList expenses={expenses}/>
+                                </Grid>
+                            </Card>
+                        </CustomTabPanel>
+                        <CustomTabPanel value={tab} index={1}>
+                            <Card variant="outlined" sx={{p: 2}}>
+                                <Grid item>
+                                    <AddMemberSection users={users} groupId={groupId} refreshMembers={fetchInitialData}/>
+                                </Grid>
+                                <Grid item>
+                                    <MembersList members={members} groupId={groupId} refreshMembers={fetchInitialData}/>
+                                </Grid>
+                            </Card>
+                        </CustomTabPanel>
                     </Grid>
-                    <PaymentModal debt={debtToPay} open={openPaymentModal} onClose={handleClosePaymentModal} refreshDebts={fetchInitialData} />
                 </Grid>
     );
 }

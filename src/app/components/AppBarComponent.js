@@ -1,15 +1,13 @@
-import React from 'react';
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import IconButton from '@mui/material/IconButton';
-import Button from '@mui/material/Button';
-import Toolbar from '@mui/material/Toolbar';
+import { AppBar, Box, IconButton, Button, Toolbar, Badge } from '@mui/material';
+
 import MenuIcon from '@mui/icons-material/Menu';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import MoreIcon from '@mui/icons-material/MoreVert';
-import Badge from '@mui/material/Badge';
+
 import Link from 'next/link';
+import cache from "@/app/services/cache";
+
 
 const AppBarComponent = ({ pages, handleDrawerToggle, handleProfileMenuOpen, handleMobileMenuOpen, handleNotificationsMenuOpen, notifications }) => {
   const countUnreadNotifications = () => {
@@ -61,6 +59,7 @@ const AppBarComponent = ({ pages, handleDrawerToggle, handleProfileMenuOpen, han
             <AccountCircle />
           </IconButton>
         </Box>
+        <span style={{marginLeft: 10}}>{cache.get('Name')}</span>
         <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
           <IconButton
             size="large"

@@ -9,13 +9,13 @@ const theme = createTheme({
       dark: '#8bb14b',
     },
     secondary: {
-      main: '#2c5ba8',
+      main: '#0D99FF',
       dark: '#156a64',
     },
     tertiary: {
       main: '#A1DA97',
       dark: '#0c6070',
-    }
+    },
   },
 });
 

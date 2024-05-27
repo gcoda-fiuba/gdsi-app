@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Grid, Card } from '@mui/material';
 import RegisterForm from './RegisterForm';
 import passwordSecurity from './passwordSecurity';
@@ -19,7 +19,7 @@ export default function Register() {
   const [password, setPassword] = useState('');
   const [passwordConfirmation, setPasswordConfirmation] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const [registered, setRegistered] = useState(false);
+  const [isRegistered, setIsRegistered] = useState(false);
 
   const handleNameChange = (event) => setName(event.target.value);
   const handleLastNameChange = (event) => setLastName(event.target.value);
@@ -51,7 +51,7 @@ export default function Register() {
           password: password
         });
         
-        setRegistered(true);
+        setIsRegistered(true);
       } catch (error) {
         console.error(error);
         showSnackbar(error.response.data.error, 'error');
@@ -60,7 +60,7 @@ export default function Register() {
   };
 
   return (
-    registered ?
+    isRegistered ?
       <Grid container alignItems="center" justifyContent="center" style={{ height: '100vh' }}>
         <Card variant="outlined" style={{ alignItems: 'center', justifyContent: 'center' }} sx={{ p: 4 }}>
           <h2>¡Registrado!</h2>
