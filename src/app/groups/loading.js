@@ -37,8 +37,8 @@ export default function Loading() {
                     <TableBody>
                         {groups.map((g, index) =>
                             <TableRow key={index} hover sx={{ cursor: 'pointer' }}>
-                                <TableCell component="th" scope="row">
-                                    <Skeleton variant="text" width={20} />
+                                <TableCell component="th" scope="row" width="150">
+                                    <Skeleton variant="text" width={20}/>
                                 </TableCell>
                                 <TableCell component="th" scope="row">
                                     <Skeleton variant="text" width={50} />

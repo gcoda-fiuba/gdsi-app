@@ -6,6 +6,7 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 import MoreIcon from '@mui/icons-material/MoreVert';
 
 import Link from 'next/link';
+import cache from "@/app/services/cache";
 
 
 const AppBarComponent = ({ pages, handleDrawerToggle, handleProfileMenuOpen, handleMobileMenuOpen, handleNotificationsMenuOpen, notifications }) => {
@@ -58,6 +59,7 @@ const AppBarComponent = ({ pages, handleDrawerToggle, handleProfileMenuOpen, han
             <AccountCircle />
           </IconButton>
         </Box>
+        <span style={{marginLeft: 10}}>{cache.get('Name')}</span>
         <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
           <IconButton
             size="large"
