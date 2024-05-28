@@ -68,7 +68,7 @@ export default function GroupView({ params: {id} }) {
     const { getUsers, users } = useUserStore();
 
     const [isLoading, setIsLoading] = useState(true);
-    const [error, setError] = useState(false);
+    const [hasError, setHasError] = useState(false);
 
     const [tab, setTab] = useState(0);
 
@@ -94,7 +94,7 @@ export default function GroupView({ params: {id} }) {
                 getCategories(),
             ]);
         } catch (error) {
-            setError(true)
+            setHasError(true)
         } finally {
             setIsLoading(false);
         }
@@ -111,39 +111,39 @@ export default function GroupView({ params: {id} }) {
 
     return (
         isLoading ? <Loading /> :
-            error ? errorView :
-                <Grid container alignItems="start" justifyContent="center" style={{ height: '100vh', marginTop: 20 }}>
-                    <Grid item style={{width: '100vh'}}>
-                        <h2 style={{marginTop: 10, marginBottom: 20}}>{current.name}</h2>
+            hasError ? errorView :
+            <Grid container alignItems="start" justifyContent="center" style={{ height: '100vh', marginTop: 20 }}>
+                <Grid item style={{width: '100vh'}}>
+                    <h2>{current.name}</h2>
 
-                        <Box sx={{borderBottom: 1, borderColor: 'divider'}}>
-                            <Tabs value={tab} onChange={handleChangeTab} aria-label="basic tabs example">
-                                <Tab label="Expenses" {...a11yProps(0)} />
-                                <Tab label="Members" {...a11yProps(1)} />
-                            </Tabs>
-                        </Box>
-                        <CustomTabPanel value={tab} index={0}>
-                            <Card variant="outlined" sx={{p: 2}}>
-                                <Grid item>
-                                    <AddExpenseSection groupId={groupId} categories={categories} refreshBills={fetchInitialData}/>
-                                </Grid>
+                    <Box sx={{borderBottom: 1, borderColor: 'divider'}}>
+                        <Tabs value={tab} onChange={handleChangeTab} aria-label="basic tabs example">
+                            <Tab label="Expenses" {...a11yProps(0)} />
+                            <Tab label="Members" {...a11yProps(1)} />
+                        </Tabs>
+                    </Box>
+                    <CustomTabPanel value={tab} index={0}>
+                        <Card variant="outlined" sx={{p: 2}}>
+                            <Grid item>
+                                <AddExpenseSection groupId={groupId} categories={categories} refreshBills={fetchInitialData}/>
+                            </Grid>
 
-                                <Grid item>
-                                    <ExpensesList expenses={expenses}/>
-                                </Grid>
-                            </Card>
-                        </CustomTabPanel>
-                        <CustomTabPanel value={tab} index={1}>
-                            <Card variant="outlined" sx={{p: 2}}>
-                                <Grid item>
-                                    <AddMemberSection users={users} groupId={groupId} refreshMembers={fetchInitialData}/>
-                                </Grid>
-                                <Grid item>
-                                    <MembersList members={members} groupId={groupId} refreshMembers={fetchInitialData}/>
-                                </Grid>
-                            </Card>
-                        </CustomTabPanel>
-                    </Grid>
+                            <Grid item>
+                                <ExpensesList expenses={expenses}/>
+                            </Grid>
+                        </Card>
+                    </CustomTabPanel>
+                    <CustomTabPanel value={tab} index={1}>
+                        <Card variant="outlined" sx={{p: 2}}>
+                            <Grid item>
+                                <AddMemberSection users={users} groupId={groupId} refreshMembers={fetchInitialData}/>
+                            </Grid>
+                            <Grid item>
+                                <MembersList members={members} groupId={groupId} refreshMembers={fetchInitialData}/>
+                            </Grid>
+                        </Card>
+                    </CustomTabPanel>
                 </Grid>
+            </Grid>
     );
 }

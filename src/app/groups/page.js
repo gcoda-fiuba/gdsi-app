@@ -10,7 +10,6 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Typography,
   Box,
 } from "@mui/material";
 import { useSnackbar } from "@/app/context/SnackbarContext";
@@ -59,9 +58,6 @@ export default function Groups() {
   return (
     isLoading ? <Loading /> :
     <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', p: 2 }}>
-      <Typography color="white" variant="h4" gutterBottom>
-        Group List
-      </Typography>
       <CreateGroup fetchData={fetchData} />
       <TableContainer component={Paper} sx={{ maxWidth: 800, mt: 2, mb: 2 }}>
         <Table sx={{ minWidth: 500 }} aria-label="simple table" className="MuiTable-root">
