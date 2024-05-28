@@ -1,7 +1,10 @@
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
+import PowerSettingsNewOutlinedIcon from '@mui/icons-material/PowerSettingsNewOutlined';
+import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
+import {IconButton} from "@mui/material";
 
-const ProfileMenu = ({ anchorEl, setAnchorEl, handleLogOut }) => {
+const ProfileMenu = ({ anchorEl, setAnchorEl, handlePreferences, handleLogOut }) => {
   const isMenuOpen = Boolean(anchorEl);
 
   const handleMenuClose = () => {
@@ -24,7 +27,14 @@ const ProfileMenu = ({ anchorEl, setAnchorEl, handleLogOut }) => {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleLogOut}>Log out</MenuItem>
+        <MenuItem onClick={handlePreferences}>
+                <SettingsOutlinedIcon style={{ marginRight: '4%' }} />
+                Preferences
+        </MenuItem>
+        <MenuItem onClick={handleLogOut}>
+            <PowerSettingsNewOutlinedIcon style={{ marginRight: '4%' }} />
+            Log out
+        </MenuItem>
     </Menu>
   );
 };
