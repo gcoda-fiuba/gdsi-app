@@ -8,7 +8,6 @@ import {
     TableContainer,
     TableHead,
     TableRow,
-    Typography
 } from "@mui/material";
 
 export default function Loading() {
@@ -18,9 +17,6 @@ export default function Loading() {
 
     return (
         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', p: 2 }}>
-            <Typography variant="h4" gutterBottom>
-                Group list
-            </Typography>
             <Button variant="outlined" color="secondary" style={{margin: '2%'}}>
                 Create Group
             </Button>
