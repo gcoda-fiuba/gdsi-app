@@ -27,7 +27,9 @@ export default function EditProfile() {
     }
     const handlePhoneNumberChange = (event) => {
         setIsEdited(true);
-        setNewUserData(prevData => {return {...prevData, phone_number: event.target.value}});
+        // slice first charachter if it's 0
+        const phoneNumber = event.target.value[0] === '0' ? event.target.value.slice(1) : event.target.value;
+        setNewUserData(prevData => {return {...prevData, phone_number: phoneNumber}});
     }
 
     const handleSaveChanges = () => {
@@ -97,8 +99,8 @@ export default function EditProfile() {
                         margin="normal"
                         variant="outlined"
                         disabled={false}
-                        value={0}
-                        // onChange={handlePhoneNumberChange}
+                        value={newUserData.phone_number ? newUserData.phone_number : 0}
+                        onChange={handlePhoneNumberChange}
                     />
                 </Grid>
                 { isEdited &&
