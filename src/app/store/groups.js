@@ -93,6 +93,15 @@ const useGroupStore = create((set) => ({
       throw error;
     }
   },
+  postCategories: async (args = {}) => {
+    // Use this to post a new personalized categories for expenses in a group
+    try {
+      const response = await axios.post('/categories', args)
+      return response.data
+    } catch (error) {
+      throw error;
+    }
+  },
   getDebts: async (groupId)=> {
     try {
       const response = await axios.get(`/groups/debts/${groupId}`);
