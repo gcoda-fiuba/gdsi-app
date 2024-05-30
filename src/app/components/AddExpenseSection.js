@@ -17,11 +17,14 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
-  Fragment
+  Fragment,
+  Typography
 } from "@mui/material";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import useGroupStore from "@/app/store/groups";
 import { useSnackbar } from "@/app/context/SnackbarContext";
+import EmojiPicker from 'emoji-picker-react';
+
 
 
 export default function AddExpenseSection({ groupId, categories, refreshBills }) {
@@ -33,6 +36,7 @@ export default function AddExpenseSection({ groupId, categories, refreshBills })
     const [divisionMode, setDivisionMode] = useState("");
     const [isOpen, setIsOpen] = useState(false);
     const [customCategoryName, setCustomCategoryName] = useState('');
+    const [categoryEmoji, setCategoryEmoji] = useState('');
 
     const handleClickOpen = (event) => {
       setIsOpen(true);
@@ -46,7 +50,7 @@ export default function AddExpenseSection({ groupId, categories, refreshBills })
         event.preventDefault();
         const params = {
           name: customCategoryName,
-          icon: "",
+          icon: categoryEmoji,
           color: ""
         }
         //console.log("hola2");
@@ -69,7 +73,7 @@ export default function AddExpenseSection({ groupId, categories, refreshBills })
           group_id: groupId,
           mode: divisionMode,
         };
-    
+        console.log()
         if (parseInt(params.bill_amount) <= 0) {
           showSnackbar('The amount must be greater than 0', 'error');
           return;
@@ -107,6 +111,7 @@ export default function AddExpenseSection({ groupId, categories, refreshBills })
       >
       <DialogTitle color = "secondary">Crea un nuevo grupo</DialogTitle>
       <DialogContent>
+          <EmojiPicker onEmojiClick={(emojiData) => setCategoryEmoji(emojiData.emoji)}/>
           <DialogContentText>
               Elije el nombre de tu categoría personalizada
           </DialogContentText>
@@ -122,6 +127,7 @@ export default function AddExpenseSection({ groupId, categories, refreshBills })
               variant="standard"
               onChange={handleCategoryNameChange}
           />
+          <Typography variant='subtitle1'>Tu cateogría personalizada: {categoryEmoji} {customCategoryName}</Typography>
       </DialogContent>
       <DialogActions>
           <Button variant="outlined" color="secondary" onClick={handleClose}>Cancel</Button>
