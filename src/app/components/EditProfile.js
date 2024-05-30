@@ -35,14 +35,17 @@ export default function EditProfile() {
             showSnackbar('Only numbers aloud', 'error');
             return;
         }
-        setNewUserData(prevData => {return {...prevData, phone: phoneNumber}});
+        setNewUserData(prevData => {return {...prevData, phone_number: phoneNumber}});
     }
 
     const handleSaveChanges = async () => {
         setIsEdited(false);
-        // Patch data in DB
-        await editUserInfo(newUserData);
-        // console.log(newUserData);
+        try {
+            await editUserInfo(newUserData);
+            showSnackbar('Changes saved successfully');
+        } catch (error) {
+            showSnackbar(error.message, 'error');
+        }
     }
     const handleCancelChanges = () => {
         setIsEdited(false);
@@ -101,7 +104,6 @@ export default function EditProfile() {
                 <Grid item md={12}>
                     <Typography variant="subtitle2">Phone number</Typography>
                     <TextField
-                        // type="number"
                         type="tel"
                         fullWidth
                         margin="normal"
