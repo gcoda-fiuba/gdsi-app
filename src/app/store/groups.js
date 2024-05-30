@@ -34,6 +34,14 @@ const useGroupStore = create((set) => ({
       throw error;
     }
   },
+  addCustomCategory: async (args = {}) => {
+    try {
+      const response = await axios.post('/categories', args);
+      return response.data;
+    } catch(error) {
+      throw error;
+    }
+  },
   getMembers: async (id) => {
     try{
       const response = await axios.get(`/groups/${id}/integrant`)
@@ -88,6 +96,15 @@ const useGroupStore = create((set) => ({
     try {
       const response = await axios.get('/categories')
       set({ categories: response.data });
+      return response.data
+    } catch (error) {
+      throw error;
+    }
+  },
+  postCategories: async (args = {}) => {
+    // Use this to post a new personalized categories for expenses in a group
+    try {
+      const response = await axios.post('/categories', args)
       return response.data
     } catch (error) {
       throw error;
