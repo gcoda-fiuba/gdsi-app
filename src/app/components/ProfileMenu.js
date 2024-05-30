@@ -2,7 +2,6 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import PowerSettingsNewOutlinedIcon from '@mui/icons-material/PowerSettingsNewOutlined';
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
-import {IconButton} from "@mui/material";
 
 const ProfileMenu = ({ anchorEl, setAnchorEl, handlePreferences, handleLogOut }) => {
   const isMenuOpen = Boolean(anchorEl);

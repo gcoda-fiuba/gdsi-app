@@ -9,7 +9,7 @@ import useUserStore from "@/app/store/user";
 import {useState} from "react";
 
 export default function EditProfile() {
-    const {currentUser} = useUserStore();
+    const {currentUser, editUserInfo} = useUserStore();
     const [isEdited, setIsEdited] = useState(false);
     const [newUserData, setNewUserData] = useState(currentUser);
 
@@ -21,21 +21,22 @@ export default function EditProfile() {
         setIsEdited(true);
         setNewUserData(prevData => {return {...prevData, last_name: event.target.value}});
     }
-    const handleEmailChange = (event) => {
-        setIsEdited(true);
-        setNewUserData(prevData => {return {...prevData, email: event.target.value}});
-    }
+    // const handleEmailChange = (event) => {
+    //     setIsEdited(true);
+    //     setNewUserData(prevData => {return {...prevData, email: event.target.value}});
+    // }
     const handlePhoneNumberChange = (event) => {
         setIsEdited(true);
-        // slice first charachter if it's 0
+        // slice first character if it's 0
         const phoneNumber = event.target.value[0] === '0' ? event.target.value.slice(1) : event.target.value;
-        setNewUserData(prevData => {return {...prevData, phone_number: phoneNumber}});
+        setNewUserData(prevData => {return {...prevData, phone: phoneNumber}});
     }
 
-    const handleSaveChanges = () => {
+    const handleSaveChanges = async () => {
         setIsEdited(false);
         // Patch data in DB
-        console.log(newUserData);
+        await editUserInfo(newUserData);
+        // console.log(newUserData);
     }
     const handleCancelChanges = () => {
         setIsEdited(false);
@@ -61,7 +62,7 @@ export default function EditProfile() {
                             variant="outlined"
                             value={newUserData.first_name}
                             onChange={handleFirstNameChange}
-                            disabled={true}
+                            disabled={false}
                             required
                         />
                     </Grid>
@@ -73,7 +74,7 @@ export default function EditProfile() {
                             variant="outlined"
                             value={newUserData.last_name}
                             onChange={handleLastNameChange}
-                            disabled={true}
+                            disabled={false}
                             required
                         />
                     </Grid>
@@ -86,7 +87,7 @@ export default function EditProfile() {
                             margin="normal"
                             variant="outlined"
                             value={newUserData.email}
-                            onChange={handleEmailChange}
+                            // onChange={handleEmailChange}
                             disabled={true}
                             required
                         />
@@ -99,7 +100,7 @@ export default function EditProfile() {
                         margin="normal"
                         variant="outlined"
                         disabled={false}
-                        value={newUserData.phone_number ? newUserData.phone_number : 0}
+                        value={newUserData.phone ? newUserData.phone : 0}
                         onChange={handlePhoneNumberChange}
                     />
                 </Grid>
