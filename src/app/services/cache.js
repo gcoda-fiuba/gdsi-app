@@ -19,8 +19,10 @@ const remove = (key) => {
   }
 }
 
-export default {
+const cache = {
   get,
   set,
   remove
 }
+
+export default cache;
