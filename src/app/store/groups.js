@@ -34,6 +34,14 @@ const useGroupStore = create((set) => ({
       throw error;
     }
   },
+  addCustomCategory: async (args = {}) => {
+    try {
+      const response = await axios.post('/categories', args);
+      return response.data;
+    } catch(error) {
+      throw error;
+    }
+  },
   getMembers: async (id) => {
     try{
       const response = await axios.get(`/groups/${id}/integrant`)

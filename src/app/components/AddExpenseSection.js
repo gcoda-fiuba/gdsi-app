@@ -43,22 +43,20 @@ export default function AddExpenseSection({ groupId, categories, refreshBills })
 
     const handleSubmit = async (event) => {
       try {
-        handleClose();
         event.preventDefault();
         const params = {
           name: customCategoryName,
-          /*
-          icon: ' ',
-          color: ' '
-          */
+          icon: "",
+          color: ""
         }
-        console.log("llegué");
+        //console.log("hola2");
         await addCustomCategory(params);
-        console.log("llegué2");
+        //console.log("hola");
         await refreshBills();
+        handleClose();
       } catch (error) {
-        showSnackbar(error.response, 'error');
-        //showSnackbar('Hubo un error', 'error');
+        console.log("error desconocido")
+        //showSnackbar(error.response.data.error, 'error');
       }
     }
 
@@ -93,6 +91,7 @@ export default function AddExpenseSection({ groupId, categories, refreshBills })
           showSnackbar('The expense was added successfully', 'success');
         } catch (error) {
           showSnackbar(error.response.data.error, 'error');
+          //showSnackbar('Hubo un error', 'error');
         }
       };
 
@@ -106,7 +105,7 @@ export default function AddExpenseSection({ groupId, categories, refreshBills })
           onSubmit: handleSubmit,
       }}
       >
-      <DialogTitle color = "secondary">Crea una nueva categoria</DialogTitle>
+      <DialogTitle color = "secondary">Crea un nuevo grupo</DialogTitle>
       <DialogContent>
           <DialogContentText>
               Elije el nombre de tu categoría personalizada
