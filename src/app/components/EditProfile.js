@@ -107,7 +107,7 @@ export default function EditProfile() {
                         margin="normal"
                         variant="outlined"
                         disabled={false}
-                        value={newUserData.phone ? newUserData.phone : 0}
+                        value={newUserData.phone_number ? newUserData.phone_number : 0}
                         onChange={handlePhoneNumberChange}
                     />
                 </Grid>
