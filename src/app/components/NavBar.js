@@ -59,6 +59,10 @@ function DrawerAppBar() {
     router.replace('/');
   };
 
+  const handlePreferences = () => {
+    router.replace('/preferences')
+  }
+
   return (isAuth &&
     <Box sx={{ display: 'flex' }}>
       <AppBarComponent
@@ -72,6 +76,7 @@ function DrawerAppBar() {
       <ProfileMenu
         anchorEl={anchorEl}
         setAnchorEl={setAnchorEl}
+        handlePreferences={handlePreferences}
         handleLogOut={handleLogOut}
       />
       <MobileMenu
