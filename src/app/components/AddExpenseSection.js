@@ -92,12 +92,6 @@ export default function AddExpenseSection({ groupId, categories, refreshBills })
           />
           <FormControl fullWidth margin="normal">
             <InputLabel>Category</InputLabel>
-            
-
-
-
-
-
             <FormControlLabel control={<Checkbox />} label="Custom category" onChange={handleCheckboxChange}/>
             {isCustom && (
               <TextField
@@ -119,9 +113,6 @@ export default function AddExpenseSection({ groupId, categories, refreshBills })
             </Select>
             )}
           </FormControl>
-
-
-
 
           <FormControl fullWidth margin="normal">
             <InputLabel>Division Mode</InputLabel>
