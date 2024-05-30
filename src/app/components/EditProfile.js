@@ -7,8 +7,11 @@ import {
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import useUserStore from "@/app/store/user";
 import {useState} from "react";
+import {useSnackbar} from "@/app/context/SnackbarContext";
 
 export default function EditProfile() {
+    const {showSnackbar} = useSnackbar();
+
     const {currentUser, editUserInfo} = useUserStore();
     const [isEdited, setIsEdited] = useState(false);
     const [newUserData, setNewUserData] = useState(currentUser);
@@ -27,8 +30,11 @@ export default function EditProfile() {
     // }
     const handlePhoneNumberChange = (event) => {
         setIsEdited(true);
-        // slice first character if it's 0
         const phoneNumber = event.target.value[0] === '0' ? event.target.value.slice(1) : event.target.value;
+        if (phoneNumber.match(/[^0-9+ ]/)) {
+            showSnackbar('Only numbers aloud', 'error');
+            return;
+        }
         setNewUserData(prevData => {return {...prevData, phone: phoneNumber}});
     }
 
@@ -95,6 +101,7 @@ export default function EditProfile() {
                 <Grid item md={12}>
                     <Typography variant="subtitle2">Phone number</Typography>
                     <TextField
+                        // type="number"
                         type="tel"
                         fullWidth
                         margin="normal"

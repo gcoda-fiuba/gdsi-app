@@ -25,7 +25,6 @@ const useUserStore = create((set) => ({
   },
   editUserInfo: async (user = {}) => {
     try{
-      console.log('PATCH', user);
       const response = await axios.patch(`/users/${user.id}`, user);
       set({currentUser: user});
       return response.data;
