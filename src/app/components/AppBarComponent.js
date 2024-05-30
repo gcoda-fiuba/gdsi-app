@@ -1,4 +1,6 @@
-import { AppBar, Box, IconButton, Button, Toolbar, Badge } from '@mui/material';
+'use client';
+
+import {AppBar, Box, IconButton, Button, Toolbar, Badge, Skeleton} from '@mui/material';
 
 import MenuIcon from '@mui/icons-material/Menu';
 import NotificationsIcon from '@mui/icons-material/Notifications';
@@ -6,13 +8,28 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 import MoreIcon from '@mui/icons-material/MoreVert';
 
 import Link from 'next/link';
+import useUserStore from "@/app/store/user";
+import {useEffect, useState} from "react";
 import cache from "@/app/services/cache";
 
-
 const AppBarComponent = ({ pages, handleDrawerToggle, handleProfileMenuOpen, handleMobileMenuOpen, handleNotificationsMenuOpen, notifications }) => {
+
+  const { getUserById, currentUser} = useUserStore();
+  const [isCurrentUserSetted, setIsCurrentUserSetted] = useState(false);
+
   const countUnreadNotifications = () => {
     return notifications.filter(notification => !notification.read).length;
   };
+
+  const getCurrentUserData = async () => await getUserById(cache.get('Id'));
+
+  useEffect(() => {
+    if (currentUser === null){
+      getCurrentUserData();
+    }else{
+      setIsCurrentUserSetted(true);
+    }
+  }, [currentUser]);
 
   return (
     <AppBar component="nav" position="static" color="primary">
@@ -59,7 +76,7 @@ const AppBarComponent = ({ pages, handleDrawerToggle, handleProfileMenuOpen, han
             <AccountCircle />
           </IconButton>
         </Box>
-        <span style={{marginLeft: 10}}>{cache.get('Name')}</span>
+        <span style={{marginLeft: 10}}>{isCurrentUserSetted ? `${currentUser.first_name} ${currentUser.last_name}` : <Skeleton variant="text" width={80} />}</span>
         <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
           <IconButton
             size="large"

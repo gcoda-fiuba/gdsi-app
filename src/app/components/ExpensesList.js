@@ -34,7 +34,7 @@ export default function ExpensesList({ expenses }) {
                 <Typography variant="body1">${expense.amount}</Typography>
               </Grid>
               <Grid item md={3}>
-                <Typography variant="body1">{expense.first_name + expense.last_name}</Typography>
+                <Typography variant="body1">{expense.first_name + ' ' + expense.last_name}</Typography>
               </Grid>
               <Grid item md={2} style={{ display: 'flex', justifyContent: 'center', }}>
                 <Typography variant="body1">emoji</Typography>
