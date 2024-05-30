@@ -10,7 +10,9 @@ import {
   Select,
   MenuItem,
   Button,
-  DialogContentText
+  DialogContentText,
+  FormControlLabel,
+  Checkbox
 } from "@mui/material";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import useGroupStore from "@/app/store/groups";
@@ -21,9 +23,22 @@ export default function AddExpenseSection({ groupId, categories, refreshBills })
     const { addBill } = useGroupStore();
     const { showSnackbar } = useSnackbar();
   
-    const [newExpense, setNewExpense] = useState({ bill_amount: 0, category_id: 0 });
+    const [newExpense, setNewExpense] = useState({ bill_amount: 0, category_id: 0, custom_category: '' });
     const [divisionMode, setDivisionMode] = useState("");
   
+    const [isCustom, setIsCustom] = useState(false);
+
+    
+    const handleCheckboxChange = (event) => {
+      setIsCustom(event.target.checked);
+    };
+
+    const handleCustomChange = (event) => {
+      const newCustomCategory = event.target.value;
+      //console.log(newCustomCategory);
+      setNewExpense({ ...newExpense, custom_category: newCustomCategory })
+    };
+
     const handleAddExpense = async () => {
         const params = {
           ...newExpense,
@@ -35,7 +50,8 @@ export default function AddExpenseSection({ groupId, categories, refreshBills })
           showSnackbar('The amount must be greater than 0', 'error');
           return;
         }
-        if (parseInt(params.category_id) <= 0) {
+        console.log("custom category: " + params.custom_category);
+        if (parseInt(params.category_id) <= 0 && parseInt(params.custom_category)<=0) {
           showSnackbar('You must choose a category', 'error');
           return;
         }
@@ -46,11 +62,12 @@ export default function AddExpenseSection({ groupId, categories, refreshBills })
     
         try {
           await addBill(params);
-          setNewExpense({ bill_amount: 0, category_id: 0 })
+          setNewExpense({ bill_amount: 0, category_id: 0, custom_category: ''})
           await refreshBills();
           showSnackbar('The expense was added successfully', 'success');
         } catch (error) {
-          showSnackbar('Hubo un error', 'error');
+          showSnackbar(error.response.data.error, 'error');
+          //showSnackbar('Hubo un error', 'error');
         }
       };
 
@@ -75,7 +92,24 @@ export default function AddExpenseSection({ groupId, categories, refreshBills })
           />
           <FormControl fullWidth margin="normal">
             <InputLabel>Category</InputLabel>
-            <Select
+            
+
+
+
+
+
+            <FormControlLabel control={<Checkbox />} label="Custom category" onChange={handleCheckboxChange}/>
+            {isCustom && (
+              <TextField
+                fullWidth
+                margin="normal"
+                label="Categoría Personalizada"
+                value={newExpense.custom_category}
+                onChange={handleCustomChange}
+              />
+            )}
+            {!isCustom && (
+              <Select
               value={newExpense.category_id}
               onChange={(e) => setNewExpense({ ...newExpense, category_id: e.target.value })}
             >
@@ -83,7 +117,11 @@ export default function AddExpenseSection({ groupId, categories, refreshBills })
                 <MenuItem key={category.id} value={category.id}>{category.icon + ' ' + category.name}</MenuItem>
               ))}
             </Select>
+            )}
           </FormControl>
+
+
+
 
           <FormControl fullWidth margin="normal">
             <InputLabel>Division Mode</InputLabel>
