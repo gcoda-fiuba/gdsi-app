@@ -12,7 +12,12 @@ import {
   Button,
   DialogContentText,
   FormControlLabel,
-  Checkbox
+  Checkbox,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Fragment
 } from "@mui/material";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import useGroupStore from "@/app/store/groups";
@@ -21,23 +26,39 @@ import { useSnackbar } from "@/app/context/SnackbarContext";
 
 export default function AddExpenseSection({ groupId, categories, refreshBills }) {
     const { addBill } = useGroupStore();
+    const { addCustomCategory } = useGroupStore();
     const { showSnackbar } = useSnackbar();
   
     const [newExpense, setNewExpense] = useState({ bill_amount: 0, category_id: 0, custom_category: '' });
     const [divisionMode, setDivisionMode] = useState("");
-  
-    const [isCustom, setIsCustom] = useState(false);
+    const [isOpen, setIsOpen] = useState(false);
+    const [customCategoryName, setCustomCategoryName] = useState('');
 
-    
-    const handleCheckboxChange = (event) => {
-      setIsCustom(event.target.checked);
+    const handleClickOpen = (event) => {
+      setIsOpen(true);
+    }
+    const handleClose = () => {
+        setIsOpen(false);
     };
 
-    const handleCustomChange = (event) => {
-      const newCustomCategory = event.target.value;
-      //console.log(newCustomCategory);
-      setNewExpense({ ...newExpense, custom_category: newCustomCategory })
-    };
+    const handleSubmit = async (event) => {
+      try {
+        event.preventDefault();
+        const params = {
+          name: customCategoryName,
+          icon: "",
+          color: ""
+        }
+        await addCustomCategory(params);
+        await refreshBills();
+        handleClose();
+      } catch (error) {
+        showSnackbar(error.response.data.error, 'error');
+      }
+    }
+
+
+    const handleCategoryNameChange = (event) => setCustomCategoryName(event.target.value);
 
     const handleAddExpense = async () => {
         const params = {
@@ -72,6 +93,40 @@ export default function AddExpenseSection({ groupId, categories, refreshBills })
       };
 
   return (
+    <>
+    <Dialog
+      open={isOpen}
+      onClose={handleClose}
+      PaperProps={{
+          component: 'form',
+          onSubmit: handleSubmit,
+      }}
+      >
+      <DialogTitle color = "secondary">Crea un nuevo grupo</DialogTitle>
+      <DialogContent>
+          <DialogContentText>
+              Elije el nombre de tu categoría personalizada
+          </DialogContentText>
+          <TextField
+              autoFocus
+              required
+              margin="dense"
+              id="name"
+              name="groupName"
+              label="Nombre"
+              type="text"
+              fullWidth
+              variant="standard"
+              onChange={handleCategoryNameChange}
+          />
+      </DialogContent>
+      <DialogActions>
+          <Button variant="outlined" color="secondary" onClick={handleClose}>Cancel</Button>
+          <Button variant="outlined" color="secondary" type="submit">Crear</Button>
+      </DialogActions>
+    </Dialog>
+
+
     <Accordion sx={{ marginTop: 2 }}>
       <AccordionSummary
         expandIcon={<ExpandMoreIcon />}
@@ -81,6 +136,9 @@ export default function AddExpenseSection({ groupId, categories, refreshBills })
         <DialogContentText>Add Expense</DialogContentText>
       </AccordionSummary>
       <AccordionDetails>
+      <Button variant="outlined" color="secondary" onClick={handleClickOpen} /*style={{margin: '2%'}}*/>
+                Create Custom Category
+            </Button>
         <Box>
           <TextField
             label="Amount"
@@ -92,24 +150,7 @@ export default function AddExpenseSection({ groupId, categories, refreshBills })
           />
           <FormControl fullWidth margin="normal">
             <InputLabel>Category</InputLabel>
-            
-
-
-
-
-
-            <FormControlLabel control={<Checkbox />} label="Custom category" onChange={handleCheckboxChange}/>
-            {isCustom && (
-              <TextField
-                fullWidth
-                margin="normal"
-                label="Categoría Personalizada"
-                value={newExpense.custom_category}
-                onChange={handleCustomChange}
-              />
-            )}
-            {!isCustom && (
-              <Select
+            <Select
               value={newExpense.category_id}
               onChange={(e) => setNewExpense({ ...newExpense, category_id: e.target.value })}
             >
@@ -117,10 +158,7 @@ export default function AddExpenseSection({ groupId, categories, refreshBills })
                 <MenuItem key={category.id} value={category.id}>{category.icon + ' ' + category.name}</MenuItem>
               ))}
             </Select>
-            )}
           </FormControl>
-
-
 
 
           <FormControl fullWidth margin="normal">
@@ -138,5 +176,41 @@ export default function AddExpenseSection({ groupId, categories, refreshBills })
         </Box>
       </AccordionDetails>
     </Accordion>
+    </>
   );
 }
+
+
+
+/*
+      <Dialog
+        open={isOpen}
+        onClose={handleClose}
+        PaperProps={{
+            component: 'form',
+            onSubmit: handleSubmit,
+        }}
+      >
+        <DialogTitle color = "secondary">Crea un nuevo grupo</DialogTitle>
+        <DialogContent>
+            <DialogContentText>
+                ¡Se creativo! Este va a ser el nombre del grupo.
+            </DialogContentText>
+            <TextField
+                autoFocus
+                required
+                margin="dense"
+                id="name"
+                name="groupName"
+                label="Nombre"
+                type="text"
+                fullWidth
+                variant="standard"
+                onChange={handleNameChange}
+            />
+        </DialogContent>
+        <DialogActions>
+            <Button variant="outlined" color="secondary" onClick={handleClose}>Cancel</Button>
+            <Button variant="outlined" color="secondary" type="submit">Crear</Button>
+        </DialogActions>
+      </Dialog> */
