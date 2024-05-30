@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Grid, Card } from '@mui/material';
 import RegisterForm from './RegisterForm';
 import passwordSecurity from './passwordSecurity';
@@ -16,15 +16,17 @@ export default function Register() {
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [emailConfirmation, setEmailConfirmation] = useState('');
+  const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
   const [passwordConfirmation, setPasswordConfirmation] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const [registered, setRegistered] = useState(false);
+  const [isRegistered, setIsRegistered] = useState(false);
 
   const handleNameChange = (event) => setName(event.target.value);
   const handleLastNameChange = (event) => setLastName(event.target.value);
   const handleEmailChange = (event) => setEmail(event.target.value);
   const handleEmailConfirmationChange = (event) => setEmailConfirmation(event.target.value);
+  const handlePhoneChange = (event) => setPhone(event.target.value);
   const handlePasswordChange = (event) => setPassword(event.target.value);
   const handlePasswordConfirmationChange = (event) => setPasswordConfirmation(event.target.value);
   const handleClickShowPassword = () => setShowPassword(!showPassword);
@@ -48,10 +50,11 @@ export default function Register() {
           email: email,
           first_name: name,
           last_name: lastName,
-          password: password
+          password: password,
+          phone_number: phone
         });
         
-        setRegistered(true);
+        setIsRegistered(true);
       } catch (error) {
         console.error(error);
         showSnackbar(error.response.data.error, 'error');
@@ -60,7 +63,7 @@ export default function Register() {
   };
 
   return (
-    registered ?
+    isRegistered ?
       <Grid container alignItems="center" justifyContent="center" style={{ height: '100vh' }}>
         <Card variant="outlined" style={{ alignItems: 'center', justifyContent: 'center' }} sx={{ p: 4 }}>
           <h2>¡Registrado!</h2>
@@ -73,6 +76,7 @@ export default function Register() {
         lastName={lastName}
         email={email}
         emailConfirmation={emailConfirmation}
+        phone={phone}
         password={password}
         passwordConfirmation={passwordConfirmation}
         showPassword={showPassword}
@@ -80,6 +84,7 @@ export default function Register() {
         handleLastNameChange={handleLastNameChange}
         handleEmailChange={handleEmailChange}
         handleEmailConfirmationChange={handleEmailConfirmationChange}
+        handlePhoneChange={handlePhoneChange}
         handlePasswordChange={handlePasswordChange}
         handlePasswordConfirmationChange={handlePasswordConfirmationChange}
         handleClickShowPassword={handleClickShowPassword}

@@ -2,14 +2,16 @@ import axios from "@/app/services/axios";
 import { create } from 'zustand'
 
 const useGroupStore = create((set) => ({
+  groups: [],
   members: null,
   categories: null,
   expenses: null,
-  debts: null,
+  debts: [],
   current: null,
   fetch: async () => {
     try{
       const response = await axios.get('/groups')
+      set({groups: response.data});
       return response.data
     }catch (error) {
       throw error;
@@ -27,6 +29,14 @@ const useGroupStore = create((set) => ({
   create: async (args = {}) => {
     try {
       const response = await axios.post('/groups', args);
+      return response.data;
+    } catch(error) {
+      throw error;
+    }
+  },
+  addCustomCategory: async (args = {}) => {
+    try {
+      const response = await axios.post('/categories', args);
       return response.data;
     } catch(error) {
       throw error;
@@ -86,6 +96,15 @@ const useGroupStore = create((set) => ({
     try {
       const response = await axios.get('/categories')
       set({ categories: response.data });
+      return response.data
+    } catch (error) {
+      throw error;
+    }
+  },
+  postCategories: async (args = {}) => {
+    // Use this to post a new personalized categories for expenses in a group
+    try {
+      const response = await axios.post('/categories', args)
       return response.data
     } catch (error) {
       throw error;

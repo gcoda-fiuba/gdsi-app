@@ -1,5 +1,6 @@
 'use client'
-import {Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField} from "@mui/material";
+
+import {Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField, Select, MenuItem, FormControl, InputLabel} from "@mui/material";
 import {Fragment, useState} from "react";
 import useGroupStore from "@/app/store/groups";
 
@@ -8,23 +9,30 @@ export default function CreateGroup({fetchData}) {
     const {create} = useGroupStore()
 
     const [groupName, setGroupName] = useState('');
-    const [open, setOpen] = useState(false);
+    const [categoryName, setCategoryName] = useState('');
+
+    const [isOpen, setIsOpen] = useState(false);
 
     const handleClickOpen = () => {
-        setOpen(true);
+        setIsOpen(true);
     };
     const handleClose = () => {
-        setOpen(false);
+        setIsOpen(false);
     };
 
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        await create({name: groupName});
+        await create({name: groupName /*, category: categoryName*/});
         handleClose();
         fetchData();
     }
+
     const handleNameChange = (event) => setGroupName(event.target.value);
+    const handleCategoryChange = (event) => setCategoryName(event.target.value);
+
+    //console.log(categoryName);
+
 
     return (
         <Fragment>
@@ -32,7 +40,7 @@ export default function CreateGroup({fetchData}) {
                 Create Group
             </Button>
             <Dialog
-                open={open}
+                open={isOpen}
                 onClose={handleClose}
                 PaperProps={{
                     component: 'form',
@@ -56,11 +64,35 @@ export default function CreateGroup({fetchData}) {
                         variant="standard"
                         onChange={handleNameChange}
                     />
+
+                    <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+                        <InputLabel id="demo-select-small-label">Category</InputLabel>
+
+                        <Select
+                            labelId="demo-simple-small-label"
+                            id="demo-simple-select"
+                            value={categoryName}
+                            label="Category"
+                            onChange={handleCategoryChange}
+                        >
+                            <MenuItem value={"food"}>Comida y bebida</MenuItem>
+                            <MenuItem value={"transport"}>Transporte</MenuItem>
+                            <MenuItem value={"housing"}>Vivienda</MenuItem>
+                            <MenuItem value={"entertainment"}>Entretenimiento</MenuItem>
+                            <MenuItem value={"clothing"}>Ropa</MenuItem>
+                            <MenuItem value={"travel"}>Viajes</MenuItem>
+                        </Select>
+    
+                    </FormControl>
+
                 </DialogContent>
                 <DialogActions>
                     <Button variant="outlined" color="secondary" onClick={handleClose}>Cancel</Button>
                     <Button variant="outlined" color="secondary" type="submit">Crear</Button>
                 </DialogActions>
+
+                
+
             </Dialog>
         </Fragment>
     );
