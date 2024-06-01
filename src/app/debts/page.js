@@ -8,8 +8,9 @@ import {useEffect, useState} from "react";
 import Loading from "@/app/debts/loading";
 import useDebtsStore from "@/app/store/debts";
 import useUserStore from "@/app/store/user";
+import DebtListFilter from "@/app/components/DebtListFilter";
 
-export default function Debt() {
+export default function DebtListView() {
     const [openPaymentModal, setOpenPaymentModal] = useState(false);
     const [debtToPay, setDebtToPay] = useState({});
 
@@ -18,6 +19,13 @@ export default function Debt() {
 
     const { getMyDebts, debts } = useDebtsStore()
     const { getUsers, users } = useUserStore();
+
+    const [listFilters, setListFilters] = useState({
+        group: null,
+        user: null,
+        lessThan: null,
+        graterThan: null,
+    });
 
     useEffect(() => {
         fetchInitialData()
@@ -57,9 +65,14 @@ export default function Debt() {
     return (
         isLoading ? <Loading /> :
              hasError ? errorView :
-                <>
-                    <DebtList debts={debts} users={users} handleOpenPaymentModal={handleOpenPaymentModal} />
-                    <PaymentModal debt={debtToPay} open={openPaymentModal} onClose={handleClosePaymentModal} refreshDebts={fetchInitialData} />
-                </>
+                <Grid container spacing={2}>
+                    <Grid item md={12}>
+                        <DebtListFilter changeFilters={setListFilters} />
+                    </Grid>
+                    <Grid item md={12}>
+                        <DebtList debts={debts} users={users} handleOpenPaymentModal={handleOpenPaymentModal} filters={listFilters} />
+                        <PaymentModal debt={debtToPay} open={openPaymentModal} onClose={handleClosePaymentModal} refreshDebts={fetchInitialData} />
+                    </Grid>
+                </Grid>
     );
 }

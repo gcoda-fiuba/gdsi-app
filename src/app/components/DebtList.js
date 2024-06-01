@@ -2,7 +2,7 @@ import {IconButton, Card, ListItem, List, ListItemText} from "@mui/material";
 import PaymentsOutlinedIcon from '@mui/icons-material/PaymentsOutlined';
 import cache from "@/app/services/cache";
 
-export default function DebtList({debts, users, handleOpenPaymentModal}) {
+export default function DebtList({debts, users, handleOpenPaymentModal, filters}) {
     const findUserById = (userId) => {
         const result = users.find(user => user.id === userId)
         return result.first_name + ' ' + result.last_name
