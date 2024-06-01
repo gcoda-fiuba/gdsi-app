@@ -9,6 +9,7 @@ import Loading from "@/app/debts/loading";
 import useDebtsStore from "@/app/store/debts";
 import useUserStore from "@/app/store/user";
 import DebtListFilter from "@/app/components/DebtListFilter";
+import useGroupStore from "@/app/store/groups";
 
 export default function DebtListView() {
     const [openPaymentModal, setOpenPaymentModal] = useState(false);
@@ -19,12 +20,13 @@ export default function DebtListView() {
 
     const { getMyDebts, debts } = useDebtsStore()
     const { getUsers, users } = useUserStore();
+    const { fetch } = useGroupStore()
 
     const [listFilters, setListFilters] = useState({
-        group: null,
-        user: null,
-        lessThan: null,
-        graterThan: null,
+        filterGroup: null,
+        filterUser: null,
+        filterLessThan: null,
+        filterGraterThan: null,
     });
 
     useEffect(() => {
@@ -34,6 +36,7 @@ export default function DebtListView() {
     const fetchInitialData = async () => {
         try {
             await getMyDebts();
+            await fetch();
 
             if(!users){
                 await getUsers();
@@ -57,7 +60,7 @@ export default function DebtListView() {
         (<>
             <Grid container style={{height: '100vh'}}>
                 <Grid item>
-                    <h2>Hubo un error cargando este grupo</h2>
+                    <h2>Hubo un error cargando las deudas</h2>
                 </Grid>
             </Grid>
         </>);
@@ -67,7 +70,7 @@ export default function DebtListView() {
              hasError ? errorView :
                 <Grid container spacing={2}>
                     <Grid item md={12}>
-                        <DebtListFilter changeFilters={setListFilters} />
+                        <DebtListFilter filters={listFilters} changeFilters={setListFilters} />
                     </Grid>
                     <Grid item md={12}>
                         <DebtList debts={debts} users={users} handleOpenPaymentModal={handleOpenPaymentModal} filters={listFilters} />
