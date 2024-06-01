@@ -22,16 +22,18 @@ import useGroupStore from "@/app/store/groups";
 import { useSnackbar } from "@/app/context/SnackbarContext";
 import EmojiPicker from 'emoji-picker-react';
 import Divider from "@mui/material/Divider";
+import DivisionInput from './DivisionInput';
 
 
-
-export default function AddExpenseSection({ groupId, categories, refreshBills }) {
+export default function AddExpenseSection({ groupId, categories, refreshBills, members }) {
     const { addBill } = useGroupStore();
     const { addCustomCategory } = useGroupStore();
     const { showSnackbar } = useSnackbar();
   
     const [newExpense, setNewExpense] = useState({ bill_amount: 0, category_id: 0, custom_category: '' });
     const [divisionMode, setDivisionMode] = useState("");
+    const [percentages, setPercentages] = useState({});
+    const [amounts, setAmounts] = useState({});
 
     const [isCustomCategoryOpen, setIsCustomCategoryOpen] = useState(false);
     const [customCategoryName, setCustomCategoryName] = useState('');
@@ -67,10 +69,17 @@ export default function AddExpenseSection({ groupId, categories, refreshBills })
     }
 
     const handleAddExpense = async () => {
+      const divisionDetails = divisionMode === "percentual" ? percentages : amounts;
+      const debtsList = Object.keys(divisionDetails).map(memberId => ({
+        id: memberId,
+        amount: divisionDetails[memberId]
+      }));
+
         const params = {
           ...newExpense,
           group_id: groupId,
           mode: divisionMode,
+          debts_list: debtsList
         };
         console.log()
         if (parseInt(params.bill_amount) <= 0) {
@@ -90,6 +99,7 @@ export default function AddExpenseSection({ groupId, categories, refreshBills })
         try {
           await addBill(params);
           setNewExpense({ bill_amount: 0, category_id: 0, custom_category: ''})
+          setAmounts({});
           await refreshBills();
           showSnackbar('The expense was added successfully', 'success');
         } catch (error) {
@@ -97,6 +107,14 @@ export default function AddExpenseSection({ groupId, categories, refreshBills })
           //showSnackbar('Hubo un error', 'error');
         }
       };
+
+    const handlePercentageChange = (memberId, value) => { 
+        setPercentages({ ...percentages, [memberId]: value });
+    };
+
+    const handleAmountChange = (memberId, value) => { 
+        setAmounts({ ...amounts, [memberId]: value });
+    };
 
   return (
     <>
@@ -185,12 +203,22 @@ export default function AddExpenseSection({ groupId, categories, refreshBills })
                         onChange={(e) => setDivisionMode(e.target.value)}
                     >
                         <MenuItem value="equitative">Equitative</MenuItem>
+                        <MenuItem value="percentual">Percentual</MenuItem>
+                        <MenuItem value="fixed">Fixed</MenuItem>
                     </Select>
                 </FormControl>
+
+                <DivisionInput
+                    members={members}
+                    divisionMode={divisionMode}
+                    values={divisionMode === "percentual" ? percentages : amounts}
+                    handleValueChange={divisionMode === "percentual" ? handlePercentageChange : handleAmountChange}
+                />
 
                 <Button onClick={handleAddExpense} variant="outlined" color="secondary" fullWidth>
                     Add Expense
                 </Button>
+                
             </Box>
           </AccordionDetails>
         </Accordion>
