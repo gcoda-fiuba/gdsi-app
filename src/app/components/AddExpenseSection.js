@@ -69,10 +69,10 @@ export default function AddExpenseSection({ groupId, categories, refreshBills, m
     }
 
     const handleAddExpense = async () => {
-      const divisionDetails = divisionMode === "percentual" ? percentages : amounts;
+      const divisionDetails = divisionMode === "percentage" ? percentages : amounts;
       const debtsList = Object.keys(divisionDetails).map(memberId => ({
         id: memberId,
-        amount: divisionDetails[memberId]
+        amount: parseInt(divisionDetails[memberId])
       }));
 
         const params = {
@@ -100,6 +100,7 @@ export default function AddExpenseSection({ groupId, categories, refreshBills, m
           await addBill(params);
           setNewExpense({ bill_amount: 0, category_id: 0, custom_category: ''})
           setAmounts({});
+          setPercentages({});
           await refreshBills();
           showSnackbar('The expense was added successfully', 'success');
         } catch (error) {
@@ -203,7 +204,7 @@ export default function AddExpenseSection({ groupId, categories, refreshBills, m
                         onChange={(e) => setDivisionMode(e.target.value)}
                     >
                         <MenuItem value="equitative">Equitative</MenuItem>
-                        <MenuItem value="percentual">Percentual</MenuItem>
+                        <MenuItem value="percentage">Percentual</MenuItem>
                         <MenuItem value="fixed">Fixed</MenuItem>
                     </Select>
                 </FormControl>
@@ -211,8 +212,8 @@ export default function AddExpenseSection({ groupId, categories, refreshBills, m
                 <DivisionInput
                     members={members}
                     divisionMode={divisionMode}
-                    values={divisionMode === "percentual" ? percentages : amounts}
-                    handleValueChange={divisionMode === "percentual" ? handlePercentageChange : handleAmountChange}
+                    values={divisionMode === "percentage" ? percentages : amounts}
+                    handleValueChange={divisionMode === "percentage" ? handlePercentageChange : handleAmountChange}
                 />
 
                 <Button onClick={handleAddExpense} variant="outlined" color="secondary" fullWidth>

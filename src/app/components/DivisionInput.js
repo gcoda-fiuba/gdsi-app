@@ -4,10 +4,10 @@ import { TextField, Typography, Box } from "@mui/material";
 const DivisionInput = ({ members, divisionMode, values, handleValueChange }) => {
   return (
     <Box>
-      {(divisionMode === "percentual" || divisionMode === "fixed") && members.map(member => (
+      {(divisionMode === "percentage" || divisionMode === "fixed") && members.map(member => (
         <Box key={member.id} display="flex" alignItems="center" marginBottom={2}>
           <Typography variant="body1" marginRight={2}>
-            {member.first_name} {member.last_name} ({divisionMode === "percentual" ? "%" : "amount"})
+            {member.first_name} {member.last_name} ({divisionMode === "percentage" ? "%" : "amount"})
           </Typography>
           <TextField
             value={values[member.id] || ''}
