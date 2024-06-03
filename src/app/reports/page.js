@@ -11,11 +11,11 @@ export default function Reports() {
     const [reportsDashboardToken, setReportsDashboardToken] = useState(null);
 
     useEffect(() => {
-        fetchToken();
+        fetchToken().then(res => setReportsDashboardToken(res.token));
     }, []);
 
     const fetchToken = async () => {
-        await getReportsDashboard().then(res => setReportsDashboardToken(res.token));
+        return await getReportsDashboard();
     }
 
     const myDashboard = embedDashboard({
