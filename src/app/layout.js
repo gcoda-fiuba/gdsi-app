@@ -23,9 +23,7 @@ export default function RootLayout({ children }) {
         <ThemeProvider theme={theme}>
             <SnackbarProvider>
                 <NavBar />
-                <div>
                     {children}
-                </div>
                 <SnackbarComponent />
             </SnackbarProvider>
         </ThemeProvider>

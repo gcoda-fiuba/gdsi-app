@@ -32,8 +32,8 @@ const AppBarComponent = ({ pages, handleDrawerToggle, handleProfileMenuOpen, han
   }, [currentUser]);
 
   return (
-    <AppBar component="nav" position="static" color="primary">
-      <Toolbar sx={{ minHeight: 'auto' }}>
+    <AppBar position="static" color="primary">
+      <Toolbar>
         <IconButton
           color="inherit"
           aria-label="open drawer"

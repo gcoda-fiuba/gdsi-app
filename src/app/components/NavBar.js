@@ -12,7 +12,12 @@ import useNotificationStore from "@/app/store/notification";
 import cache from "@/app/services/cache";
 import { useRouter } from 'next/navigation';
 
-const pages = [{ name: 'Groups', path: '/groups' }, {name: 'Debts', path: '/debts'}, {name: 'Reports', path: '/reports'}];
+const pages = [
+    {name: 'Home', path: '/' },
+  {name: 'Groups', path: '/groups' },
+  {name: 'Debts', path: '/debts'},
+  {name: 'Reports', path: '/reports'}
+];
 
 function DrawerAppBar() {
   const router = useRouter();
@@ -64,7 +69,7 @@ function DrawerAppBar() {
   }
 
   return (isAuth &&
-    <Box sx={{ display: 'flex' }}>
+    <Box>
       <AppBarComponent
         pages={pages}
         handleDrawerToggle={handleDrawerToggle}

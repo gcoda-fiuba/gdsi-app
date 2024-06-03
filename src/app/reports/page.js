@@ -4,7 +4,6 @@ import { embedDashboard } from "@preset-sdk/embedded";
 import cache from "@/app/services/cache";
 import useUserStore from "@/app/store/user";
 import {useEffect, useState} from "react";
-import {Box} from "@mui/material";
 
 export default function Reports() {
     const { getReportsDashboard } = useUserStore();
@@ -37,6 +36,6 @@ export default function Reports() {
     });
 
     return (
-        <Box id="reports-dashboard-box" style={{ height: '100vh' }}></Box>
+        <div id="reports-dashboard-box" style={{ height: '100%', overflow: 'hidden'}}></div>
     );
 }

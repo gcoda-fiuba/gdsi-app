@@ -102,7 +102,7 @@ export default function GroupView({ params: {id} }) {
 
     const errorView =
         (<>
-            <Grid container alignItems="center" justifyContent="center" style={{height: '100vh'}}>
+            <Grid container alignItems="center" justifyContent="center" style={{ marginTop: 20 }}>
                 <Grid item>
                     <h2>Hubo un error cargando este grupo</h2>
                 </Grid>
@@ -112,7 +112,7 @@ export default function GroupView({ params: {id} }) {
     return (
         isLoading ? <Loading /> :
             hasError ? errorView :
-            <Grid container alignItems="start" justifyContent="center" style={{ height: '100vh', marginTop: 20 }}>
+            <Grid container alignItems="start" justifyContent="center" style={{ marginTop: 20 }}>
                 <Grid item style={{width: '100vh'}}>
                     <h2>{current.name}</h2>
 
