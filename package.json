@@ -15,6 +15,7 @@
     "@mui/icons-material": "^5.15.16",
     "@mui/lab": "^5.0.0-alpha.170",
     "@mui/material": "^5.15.16",
+    "@preset-sdk/embedded": "^0.1.10",
     "axios": "^1.6.8",
     "emoji-mart": "^5.6.0",
     "emoji-picker-react": "^4.9.3",

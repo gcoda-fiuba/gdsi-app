@@ -12,7 +12,7 @@ import useNotificationStore from "@/app/store/notification";
 import cache from "@/app/services/cache";
 import { useRouter } from 'next/navigation';
 
-const pages = [{ name: 'Groups', path: '/groups' }, {name: 'Debts', path: '/debts'}];
+const pages = [{ name: 'Groups', path: '/groups' }, {name: 'Debts', path: '/debts'}, {name: 'Reports', path: '/reports'}];
 
 function DrawerAppBar() {
   const router = useRouter();
