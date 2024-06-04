@@ -3,6 +3,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 import AccountCircle from '@mui/icons-material/AccountCircle';
+import {useEffect, useState} from "react";
 
 const NotificationMenu = ({ notifications, setNotifications, notificationAnchorEl, setNotificationAnchorEl, readNotification }) => {
   const handleReadNotification = () => {
@@ -10,8 +11,24 @@ const NotificationMenu = ({ notifications, setNotifications, notificationAnchorE
     setNotifications(notifications.map(notification => ({ ...notification, read: true })));
     notifications.forEach(notification => readNotification({ id: notification.id }));
   };
+  const [notificationsDisabled, setNotificationsDisabled] = useState(false);
 
-  return (notifications.length > 0 &&
+  useEffect(() => {
+    const savedPreference = localStorage.getItem('notificationsDisabled');
+    console.log(savedPreference);
+    if(savedPreference!=null){
+      if (savedPreference=='false'){
+        console.log("false");
+        setNotificationsDisabled(false);
+      }
+      else if (savedPreference=='true'){
+        console.log("true");
+        setNotificationsDisabled(true);
+      }
+    }
+  }, []);
+
+  return (notifications.length > 0 && !notificationsDisabled &&
     <Menu
       sx={{ mt: '30px' }}
       anchorEl={notificationAnchorEl}
