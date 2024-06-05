@@ -4,6 +4,8 @@ import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import {useEffect, useState} from "react";
+import cache from "@/app/services/cache";
+
 
 const NotificationMenu = ({ notifications, setNotifications, notificationAnchorEl, setNotificationAnchorEl, readNotification }) => {
   const handleReadNotification = () => {
@@ -11,24 +13,24 @@ const NotificationMenu = ({ notifications, setNotifications, notificationAnchorE
     setNotifications(notifications.map(notification => ({ ...notification, read: true })));
     notifications.forEach(notification => readNotification({ id: notification.id }));
   };
-  const [notificationsDisabled, setNotificationsDisabled] = useState(false);
+  const [inAppNotifications, setInAppNotifications] = useState(false);
 
-  useEffect(() => {
-    const savedPreference = localStorage.getItem('notificationsDisabled');
+  /*useEffect(() => {
+    const savedPreference = cache.get('inAppNotifications');
     console.log(savedPreference);
     if(savedPreference!=null){
       if (savedPreference=='false'){
         console.log("false");
-        setNotificationsDisabled(false);
+        setInAppNotifications(false);
       }
       else if (savedPreference=='true'){
         console.log("true");
-        setNotificationsDisabled(true);
+        setInAppNotifications(true);
       }
     }
-  }, []);
+  }, []);*/
 
-  return (notifications.length > 0 && !notificationsDisabled &&
+  return (notifications.length > 0 /*&& inAppNotifications*/ &&
     <Menu
       sx={{ mt: '30px' }}
       anchorEl={notificationAnchorEl}

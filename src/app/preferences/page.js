@@ -99,9 +99,13 @@ export default function Preferences() {
                         <EditProfile />
                     </CustomTabPanel>
             }
-            <CustomTabPanel value={value} index={1}>
-                <EditNotifications />
-            </CustomTabPanel>
+            {
+                isLoading ? <Loading /> :
+                    hasError ? errorView :
+                    <CustomTabPanel value={value} index={1}>
+                        <EditNotifications />
+                    </CustomTabPanel>}
+            
         </Box>
     );
 }

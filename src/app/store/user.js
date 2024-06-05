@@ -31,7 +31,24 @@ const useUserStore = create((set) => ({
     }catch (error) {
       throw error;
     }
-  }
+  },
+  modifyUserConfiguration: async (id, args ={}) => {
+    try{
+      const response = await axios.put(`/users/${id}/config`, args);
+      return response.data;
+    }catch (error) {
+      throw error;
+    }
+  },
+  getUserConfiguration: async (id) => {
+    try{
+      const response = await axios.get(`/users/${id}/config`);
+      return response.data;
+    }catch (error) {
+      throw error;
+    }
+  },
+
 }));
 
 export default useUserStore;
