@@ -11,8 +11,9 @@ import useDebtsStore from "@/app/store/debts";
 import useUserStore from "@/app/store/user";
 import DebtListFilter from "@/app/components/DebtListFilter";
 import useGroupStore from "@/app/store/groups";
+import withAuth from "@/app/hoc/withAuth";
 
-export default function DebtListView() {
+const DebtListView = () => {
     const [openPaymentModal, setOpenPaymentModal] = useState(false);
     const [debtToPay, setDebtToPay] = useState({});
 
@@ -87,3 +88,5 @@ export default function DebtListView() {
         </Grid>
     );
 }
+
+export default withAuth(DebtListView);

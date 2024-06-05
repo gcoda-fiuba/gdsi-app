@@ -18,8 +18,9 @@ import CreateGroup from "@/app/components/CreateGroup";
 import useGroupStore from "@/app/store/groups";
 import { useRouter } from 'next/navigation'
 import Loading from "@/app/groups/loading";
+import withAuth from "@/app/hoc/withAuth";
 
-export default function Groups() {
+const Groups = () => {
 
   const router = useRouter();
   const { fetch } = useGroupStore()
@@ -86,3 +87,5 @@ export default function Groups() {
     </Box>
   );
 }
+
+export default withAuth(Groups)

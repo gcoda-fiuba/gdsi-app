@@ -11,6 +11,7 @@ import useUserStore from "@/app/store/user";
 import cache from "@/app/services/cache";
 import {Grid} from "@mui/material";
 import Loading from "@/app/preferences/loading";
+import withAuth from "@/app/hoc/withAuth";
 
 function CustomTabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -44,7 +45,7 @@ function a11yProps(index) {
     };
 }
 
-export default function Preferences() {
+const Preferences = () => {
     const [value, setValue] = useState(0);
 
     const {currentUser, getUserById} = useUserStore();
@@ -104,3 +105,5 @@ export default function Preferences() {
         </Box>
     );
 }
+
+export default withAuth(Preferences)

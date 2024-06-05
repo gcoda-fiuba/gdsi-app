@@ -31,6 +31,14 @@ const useUserStore = create((set) => ({
     }catch (error) {
       throw error;
     }
+  },
+  getReportsDashboard: async () => {
+    try{
+      const response = await axios.get('/dashboards/user');
+      return response.data;
+    }catch (error) {
+      throw error;
+    }
   }
 }));
 
