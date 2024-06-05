@@ -10,6 +10,7 @@ import Loading from "@/app/groups/[id]/loading";
 import useGroupStore from "@/app/store/groups";
 import useUserStore from "@/app/store/user";
 import PropTypes from "prop-types";
+import withAuth from "@/app/hoc/withAuth";
 
 function CustomTabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -50,7 +51,7 @@ const fabExpenseStyle = {
     right: 16,
 };
 
-export default function GroupView({ params: {id} }) {
+const GroupView = ({ params: {id} }) => {
 
     const groupId = id;
 
@@ -102,7 +103,7 @@ export default function GroupView({ params: {id} }) {
 
     const errorView =
         (<>
-            <Grid container alignItems="center" justifyContent="center" style={{height: '100vh'}}>
+            <Grid container alignItems="center" justifyContent="center" style={{ marginTop: 20 }}>
                 <Grid item>
                     <h2>Hubo un error cargando este grupo</h2>
                 </Grid>
@@ -112,7 +113,7 @@ export default function GroupView({ params: {id} }) {
     return (
         isLoading ? <Loading /> :
             hasError ? errorView :
-            <Grid container alignItems="start" justifyContent="center" style={{ height: '100vh', marginTop: 20 }}>
+            <Grid container alignItems="start" justifyContent="center" style={{ marginTop: 20 }}>
                 <Grid item style={{width: '100vh'}}>
                     <h2>{current.name}</h2>
 
@@ -125,7 +126,7 @@ export default function GroupView({ params: {id} }) {
                     <CustomTabPanel value={tab} index={0}>
                         <Card variant="outlined" sx={{p: 2}}>
                             <Grid item>
-                                <AddExpenseSection groupId={groupId} categories={categories} refreshBills={fetchInitialData}/>
+                                <AddExpenseSection groupId={groupId} categories={categories} refreshBills={fetchInitialData} members={members}/>
                             </Grid>
 
                             <Grid item>
@@ -147,3 +148,5 @@ export default function GroupView({ params: {id} }) {
             </Grid>
     );
 }
+
+export default withAuth(GroupView);

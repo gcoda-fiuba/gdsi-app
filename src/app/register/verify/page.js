@@ -32,7 +32,7 @@ function VerifyContent() {
         }
 
         verify();
-    }, []);
+    }, [router, searchParams, showSnackbar, verifyAccount]);
 
     return (
         <Grid container alignItems="center" justifyContent="center" style={{ flexDirection: 'column', height: '100vh' }}>

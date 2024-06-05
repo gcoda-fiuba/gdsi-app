@@ -39,7 +39,7 @@ export default function EditProfile() {
         setIsEdited(true);
         const phoneNumber = event.target.value[0] === '0' ? event.target.value.slice(1) : event.target.value;
         if (phoneNumber.match(/[^0-9+ ]/)) {
-            showSnackbar('Only numbers aloud', 'error');
+            showSnackbar('Only numbers allowed', 'error');
             return;
         }
         setNewUserData(prevData => {return {...prevData, phone_number: phoneNumber}});
