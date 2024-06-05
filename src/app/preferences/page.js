@@ -6,6 +6,7 @@ import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import EditProfile from "@/app/components/EditProfile";
+import EditNotifications from "@/app/components/EditNotifications";
 import {useEffect, useState} from "react";
 import useUserStore from "@/app/store/user";
 import cache from "@/app/services/cache";
@@ -99,9 +100,13 @@ const Preferences = () => {
                         <EditProfile />
                     </CustomTabPanel>
             }
-            <CustomTabPanel value={value} index={1}>
-                Nothing to see here yet
-            </CustomTabPanel>
+            {
+                isLoading ? <Loading /> :
+                    hasError ? errorView :
+                    <CustomTabPanel value={value} index={1}>
+                        <EditNotifications />
+                    </CustomTabPanel>}
+            
         </Box>
     );
 }
