@@ -3,7 +3,7 @@ import { create } from 'zustand'
 import cache from "@/app/services/cache";
 
 const useUserStore = create((set) => ({
-  users: null,
+  users: [],
   currentUser: null,
   getUsers: async () => {
     try{

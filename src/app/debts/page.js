@@ -1,9 +1,10 @@
 'use client';
 
 import {Grid} from "@mui/material";
+
+
 import DebtList from "@/app/components/DebtList";
 import PaymentModal from "@/app/components/PaymentModal";
-
 import {useEffect, useState} from "react";
 import Loading from "@/app/debts/loading";
 import useDebtsStore from "@/app/store/debts";
@@ -37,10 +38,8 @@ export default function DebtListView() {
         try {
             await getMyDebts();
             await fetch();
+            await getUsers();
 
-            if(!users){
-                await getUsers();
-            }
         } catch (error) {
             setHasError(true)
         } finally {
@@ -66,16 +65,25 @@ export default function DebtListView() {
         </>);
 
     return (
-        isLoading ? <Loading /> :
-             hasError ? errorView :
-                <Grid container spacing={2}>
+        <Grid container spacing={2}>
+            <Grid item md={12}>
+                <DebtListFilter filters={listFilters} changeFilters={setListFilters} />
+            </Grid>
+            {
+                isLoading ?
                     <Grid item md={12}>
-                        <DebtListFilter filters={listFilters} changeFilters={setListFilters} />
+                        <Loading />
                     </Grid>
-                    <Grid item md={12}>
-                        <DebtList debts={debts} users={users} handleOpenPaymentModal={handleOpenPaymentModal} filters={listFilters} />
-                        <PaymentModal debt={debtToPay} open={openPaymentModal} onClose={handleClosePaymentModal} refreshDebts={fetchInitialData} />
-                    </Grid>
-                </Grid>
+                    : hasError ?
+                        <Grid item md={12}>
+                            errorView
+                        </Grid>
+                        :
+                        <Grid item md={12}>
+                            <DebtList debts={debts} users={users} handleOpenPaymentModal={handleOpenPaymentModal} filters={listFilters} />
+                            <PaymentModal debt={debtToPay} open={openPaymentModal} onClose={handleClosePaymentModal} refreshDebts={fetchInitialData} />
+                        </Grid>
+            }
+        </Grid>
     );
 }
