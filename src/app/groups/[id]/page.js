@@ -125,7 +125,7 @@ export default function GroupView({ params: {id} }) {
                     <CustomTabPanel value={tab} index={0}>
                         <Card variant="outlined" sx={{p: 2}}>
                             <Grid item>
-                                <AddExpenseSection groupId={groupId} categories={categories} refreshBills={fetchInitialData}/>
+                                <AddExpenseSection groupId={groupId} categories={categories} refreshBills={fetchInitialData} members={members}/>
                             </Grid>
 
                             <Grid item>
