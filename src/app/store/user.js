@@ -3,7 +3,7 @@ import { create } from 'zustand'
 import cache from "@/app/services/cache";
 
 const useUserStore = create((set) => ({
-  users: null,
+  users: [],
   currentUser: null,
   getUsers: async () => {
     try{
@@ -27,6 +27,14 @@ const useUserStore = create((set) => ({
     try{
       const response = await axios.patch(`/users/${user.id}`, user);
       set({currentUser: user});
+      return response.data;
+    }catch (error) {
+      throw error;
+    }
+  },
+  getReportsDashboard: async () => {
+    try{
+      const response = await axios.get('/dashboards/user');
       return response.data;
     }catch (error) {
       throw error;

@@ -11,6 +11,7 @@ import Link from 'next/link';
 import useUserStore from "@/app/store/user";
 import {useEffect, useState} from "react";
 import cache from "@/app/services/cache";
+import Typography from "@mui/material/Typography";
 
 const AppBarComponent = ({ pages, handleDrawerToggle, handleProfileMenuOpen, handleMobileMenuOpen, handleNotificationsMenuOpen, notifications }) => {
 
@@ -32,8 +33,8 @@ const AppBarComponent = ({ pages, handleDrawerToggle, handleProfileMenuOpen, han
   }, [currentUser]);
 
   return (
-    <AppBar component="nav" position="static" color="primary">
-      <Toolbar sx={{ minHeight: 'auto' }}>
+    <AppBar position="static" color="primary">
+      <Toolbar>
         <IconButton
           color="inherit"
           aria-label="open drawer"
@@ -43,6 +44,25 @@ const AppBarComponent = ({ pages, handleDrawerToggle, handleProfileMenuOpen, han
         >
           <MenuIcon />
         </IconButton>
+
+        <Typography
+            variant="h6"
+            noWrap
+            component="a"
+            href="/"
+            sx={{
+              mr: 2,
+              display: { xs: 'none', md: 'flex' },
+              fontFamily: 'monospace',
+              fontWeight: 700,
+              letterSpacing: '.3rem',
+              color: 'inherit',
+              textDecoration: 'none',
+            }}
+        >
+          BB
+        </Typography>
+
         <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
           {pages.map((item) => (
             <Link key={item.name} href={item.path}>
