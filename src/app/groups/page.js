@@ -48,7 +48,7 @@ const Groups = () => {
     }
 
     fetchData();
-  }, [])
+  }, [router])
 
   const headers = ['ID', 'Nombre'];
 

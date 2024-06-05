@@ -21,7 +21,7 @@ const Dashboard = () => {
             await getUsers();
         }
         load();
-    }, []);
+    }, [getMyDebts, getNotifications, getUsers]);
 
     return (
         <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }} width="full">
@@ -61,7 +61,7 @@ const Dashboard = () => {
                         <Typography variant="h6">Latest activities</Typography>
                         <List>
                             {notifications.slice().reverse().slice(0,5).map((notification) => (
-                                <ListItem>
+                                <ListItem key={notification.id}>
                                     <ListItemText
                                         primary={new Date(notification.createdAt).toLocaleString()}
                                         secondary={notification.message}
@@ -78,7 +78,7 @@ const Dashboard = () => {
                         <List>
                             {debts.slice().reverse().slice(0,6).map((debt) => (
                                 (debt.amount - debt.amountPaid) !== 0 &&
-                                <ListItem>
+                                <ListItem key={debt.id}>
                                     <ListItemText
                                         primary={users
                                             ? `${users.find(user => user.id === debt.userToId)?.first_name || 'FN'} ${users.find(user => user.id === debt.userToId)?.last_name || 'LN'}`

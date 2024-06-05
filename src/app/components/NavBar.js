@@ -38,7 +38,7 @@ function DrawerAppBar() {
       setNotifications(await getNotifications());
     }
     loadNotifications();
-  }, [user]);
+  }, [user, getNotifications]);
 
   const handleDrawerToggle = () => {
     setIsMobileOpen((prevState) => !prevState);
