@@ -5,6 +5,7 @@ import {Box, Grid, Paper, Typography, List, ListItem, ListItemText, Button, Card
 import useNotificationStore from "@/app/store/notification";
 import useDebtsStore from "@/app/store/debts";
 import useUserStore from "@/app/store/user";
+import withAuth from "@/app/hoc/withAuth";
 
 const Dashboard = () => {
     const [notifications, setNotifications] = useState([]);
@@ -80,7 +81,7 @@ const Dashboard = () => {
                                 <ListItem>
                                     <ListItemText
                                         primary={users
-                                            ? `${users.find(user => user.id === debt.userToId).first_name || 'FN'} ${users.find(user => user.id === debt.userToId).last_name || 'LN'}`
+                                            ? `${users.find(user => user.id === debt.userToId)?.first_name || 'FN'} ${users.find(user => user.id === debt.userToId)?.last_name || 'LN'}`
                                             : 'NN'}
                                         secondary={`$${debt.amount - debt.amountPaid}`}
                                     />
@@ -95,4 +96,4 @@ const Dashboard = () => {
     );
 };
 
-export default Dashboard;
+export default withAuth(Dashboard);

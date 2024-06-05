@@ -4,8 +4,9 @@ import { embedDashboard } from "@preset-sdk/embedded";
 import cache from "@/app/services/cache";
 import useUserStore from "@/app/store/user";
 import {useEffect, useState} from "react";
+import withAuth from "@/app/hoc/withAuth";
 
-export default function Reports() {
+const Reports = () => {
     const { getReportsDashboard } = useUserStore();
     const [reportsDashboardToken, setReportsDashboardToken] = useState(null);
 
@@ -39,3 +40,5 @@ export default function Reports() {
         <div id="reports-dashboard-box" style={{ height: '100%', overflow: 'hidden'}}></div>
     );
 }
+
+export default withAuth(Reports);

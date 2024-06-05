@@ -4,7 +4,7 @@ import theme from "./theme";
 import { SnackbarProvider } from './context/SnackbarContext';
 import SnackbarComponent from './components/SnackBar';
 import NavBar from "@/app/components/NavBar";
-import { ThemeProvider } from "@mui/material";
+import {Box, ThemeProvider} from "@mui/material";
 
 const montserrat = Montserrat({ subsets: ["latin"] });
 
@@ -23,7 +23,14 @@ export default function RootLayout({ children }) {
         <ThemeProvider theme={theme}>
             <SnackbarProvider>
                 <NavBar />
+                <Box
+                    sx={{
+                        height: 'calc(100vh - 64px)',
+                        overflow: 'auto',
+                    }}
+                >
                     {children}
+                </Box>
                 <SnackbarComponent />
             </SnackbarProvider>
         </ThemeProvider>

@@ -10,6 +10,7 @@ import Loading from "@/app/groups/[id]/loading";
 import useGroupStore from "@/app/store/groups";
 import useUserStore from "@/app/store/user";
 import PropTypes from "prop-types";
+import withAuth from "@/app/hoc/withAuth";
 
 function CustomTabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -50,7 +51,7 @@ const fabExpenseStyle = {
     right: 16,
 };
 
-export default function GroupView({ params: {id} }) {
+const GroupView = ({ params: {id} }) => {
 
     const groupId = id;
 
@@ -147,3 +148,5 @@ export default function GroupView({ params: {id} }) {
             </Grid>
     );
 }
+
+export default withAuth(GroupView);

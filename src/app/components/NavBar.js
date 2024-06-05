@@ -13,7 +13,6 @@ import cache from "@/app/services/cache";
 import { useRouter } from 'next/navigation';
 
 const pages = [
-    {name: 'Home', path: '/' },
   {name: 'Groups', path: '/groups' },
   {name: 'Debts', path: '/debts'},
   {name: 'Reports', path: '/reports'}
