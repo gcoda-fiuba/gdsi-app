@@ -109,7 +109,7 @@ export default function Home() {
             </Box>
           </form>
           <hr />
-          <p style={{ marginTop: 20 }}>Don't have an account yet? <Link color = "secondary" href="/register">Register</Link></p>
+          <p style={{ marginTop: 20 }}>{`Don't have an account yet?`} <Link color = "secondary" href="/register">Register</Link></p>
         </Card>
       </Grid>
     </Grid>
