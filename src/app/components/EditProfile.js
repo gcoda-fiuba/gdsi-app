@@ -16,9 +16,6 @@ export default function EditProfile() {
     const [isEdited, setIsEdited] = useState(false);
     const [newUserData, setNewUserData] = useState(currentUser);
 
-
-
-    
     const handleFirstNameChange = (event) => {
         setIsEdited(true);
         setNewUserData(prevData => {return {...prevData, first_name: event.target.value}});
@@ -31,9 +28,6 @@ export default function EditProfile() {
     //     setIsEdited(true);
     //     setNewUserData(prevData => {return {...prevData, email: event.target.value}});
     // }
-
-
-
 
     const handlePhoneNumberChange = (event) => {
         setIsEdited(true);

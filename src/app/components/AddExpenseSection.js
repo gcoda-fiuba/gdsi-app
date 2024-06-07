@@ -60,7 +60,7 @@ export default function AddExpenseSection({ groupId, categories, refreshBills, m
         await refreshBills();
         handleCloseCustomCategory();
       } catch (error) {
-        showSnackbar('Hubo un error', 'error');
+        showSnackbar('There was an error', 'error');
       }
     }
 
@@ -104,8 +104,7 @@ export default function AddExpenseSection({ groupId, categories, refreshBills, m
           await refreshBills();
           showSnackbar('The expense was added successfully', 'success');
         } catch (error) {
-          showSnackbar(error.response.data.error, 'error');
-          //showSnackbar('Hubo un error', 'error');
+          showSnackbar('there was an error', 'error');
         }
       };
 
@@ -159,7 +158,7 @@ export default function AddExpenseSection({ groupId, categories, refreshBills, m
             </DialogContent>
             <DialogActions>
               <Button variant="outlined" color="error" onClick={handleCloseCustomCategory}>Cancel</Button>
-              <Button variant="outlined" color="secondary" type="submit">Crear</Button>
+              <Button variant="outlined" color="secondary" type="submit">Create</Button>
             </DialogActions>
         </Dialog>
 

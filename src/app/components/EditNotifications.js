@@ -1,7 +1,8 @@
+// TODO: REFACTOR
 import {
     Switch,
 } from "@mui/material";
-import {useState, useEffect, use} from "react";
+import {useState, useEffect} from "react";
 import useUserStore from "@/app/store/user";
 import {useSnackbar} from "@/app/context/SnackbarContext";
 import cache from "@/app/services/cache";
@@ -24,10 +25,8 @@ export default function EditNotifications() {
     const fetchPreferences = async () => {
         try{
             const savedPreference = await getUserConfiguration(parseInt(cache.get("Id")));
-            //console.log("recibo" );
-            //console.log(savedPreference);
-            setInAppChecked(savedPreference.allowNotifications == 'true');
-            setEmailChecked(savedPreference.allowEmailNotifications == 'true');
+            setInAppChecked(savedPreference.allowNotifications === 'true');
+            setEmailChecked(savedPreference.allowEmailNotifications === 'true');
         }
         catch (error) {
             showSnackbar('error fetch preferences', "error");
@@ -46,7 +45,7 @@ export default function EditNotifications() {
             await modifyUserConfiguration(userId ,params);
         }
         catch (error) {
-            showSnackbar('error desconocido', "error");
+            showSnackbar('Unknown error', "error");
             console.log(error);
         }
     };
@@ -63,7 +62,7 @@ export default function EditNotifications() {
             await modifyUserConfiguration(userId ,params);
         }
         catch (error) {
-            showSnackbar('error desconocido', "error");
+            showSnackbar('Unknown error', "error");
             console.log(error);
         }
     };

@@ -105,7 +105,7 @@ const GroupView = ({ params: {id} }) => {
         (<>
             <Grid container alignItems="center" justifyContent="center" style={{ marginTop: 20 }}>
                 <Grid item>
-                    <h2>Hubo un error cargando este grupo</h2>
+                    <h2>There was an error loading this group</h2>
                 </Grid>
             </Grid>
         </>);

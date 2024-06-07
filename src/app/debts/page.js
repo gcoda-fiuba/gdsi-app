@@ -1,8 +1,6 @@
 'use client';
 
 import {Grid} from "@mui/material";
-
-
 import DebtList from "@/app/components/DebtList";
 import PaymentModal from "@/app/components/PaymentModal";
 import {useEffect, useState} from "react";
@@ -60,7 +58,7 @@ const DebtListView = () => {
         (<>
             <Grid container style={{height: '100vh'}}>
                 <Grid item>
-                    <h2>Hubo un error cargando las deudas</h2>
+                    <h2>There was an error loading your debts</h2>
                 </Grid>
             </Grid>
         </>);

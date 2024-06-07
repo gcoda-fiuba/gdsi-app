@@ -15,10 +15,14 @@ export default function ExpensesList({ expenses }) {
               <Typography variant="subtitle1" fontWeight="bold">Category</Typography>
             </Grid>
             <Grid item md={2}>
-              <Typography variant="subtitle1" fontWeight="bold">Amount</Typography>
+              <Typography variant="subtitle1" fontWeight="bold" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', }}>
+                Amount
+              </Typography>
             </Grid>
             <Grid item md={3}>
-              <Typography variant="subtitle1" fontWeight="bold">Made by</Typography>
+              <Typography variant="subtitle1" fontWeight="bold" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', }}>
+                Made by
+              </Typography>
             </Grid>
             <Grid item md={2}>
               <Typography variant="subtitle1" fontWeight="bold">Paid off</Typography>
@@ -26,20 +30,20 @@ export default function ExpensesList({ expenses }) {
           </Grid>
           {expenses.map(expense => (
             <Grid container key={expense.id}>
-              <Grid item md={2} style={{ display: 'flex', flexDirection: 'row' }}>
+              <Grid item md={2} style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
                 <Typography variant="body1">{expense.category?.icon}</Typography>
                 <Typography variant="body1">{expense.category?.name}</Typography>
               </Grid>
-              <Grid item md={2}>
+              <Grid item md={2} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <Typography variant="body1">${expense.amount}</Typography>
               </Grid>
-              <Grid item md={3}>
+              <Grid item md={3} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <Typography variant="body1">{expense.first_name + ' ' + expense.last_name}</Typography>
               </Grid>
-              <Grid item md={2} style={{ display: 'flex', justifyContent: 'center', }}>
+              <Grid item md={2} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', }}>
                 <Typography variant="body1">emoji</Typography>
               </Grid>
-              <Grid item md={2}>
+              <Grid item md={2} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', }}>
                 <IconButton><DeleteIcon /></IconButton>
               </Grid>
             </Grid>
