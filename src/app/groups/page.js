@@ -36,7 +36,7 @@ const Groups = () => {
         setIsLoading(false)
       })
     } catch (error) {
-      showSnackbar('Error al obtener los grupos', 'error');
+      showSnackbar('Error getting groups', 'error');
     } finally {
       setIsLoading(false);
     }
@@ -50,7 +50,7 @@ const Groups = () => {
     fetchData();
   }, [router])
 
-  const headers = ['ID', 'Nombre'];
+  const headers = ['ID', 'Name'];
 
   const handleRowClick = (idx) => {
     router.push(`/groups/${groups.at(idx).id}`);

@@ -1,8 +1,6 @@
 'use client';
 
-import {Grid} from "@mui/material";
-
-
+import {Box, Grid} from "@mui/material";
 import DebtList from "@/app/components/DebtList";
 import PaymentModal from "@/app/components/PaymentModal";
 import {useEffect, useState} from "react";
@@ -60,7 +58,7 @@ const DebtListView = () => {
         (<>
             <Grid container style={{height: '100vh'}}>
                 <Grid item>
-                    <h2>Hubo un error cargando las deudas</h2>
+                    <h2>There was an error loading your debts</h2>
                 </Grid>
             </Grid>
         </>);
@@ -70,21 +68,19 @@ const DebtListView = () => {
             <Grid item md={12}>
                 <DebtListFilter filters={listFilters} changeFilters={setListFilters} />
             </Grid>
+            <Grid item md={12}>
             {
                 isLoading ?
-                    <Grid item md={12}>
-                        <Loading />
-                    </Grid>
+                    <Loading />
                     : hasError ?
-                        <Grid item md={12}>
-                            errorView
-                        </Grid>
+                        errorView
                         :
-                        <Grid item md={12}>
+                        <>
                             <DebtList debts={debts} users={users} handleOpenPaymentModal={handleOpenPaymentModal} filters={listFilters} />
                             <PaymentModal debt={debtToPay} open={openPaymentModal} onClose={handleClosePaymentModal} refreshDebts={fetchInitialData} />
-                        </Grid>
+                        </>
             }
+            </Grid>
         </Grid>
     );
 }

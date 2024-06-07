@@ -88,25 +88,26 @@ const Preferences = () => {
                 value={value}
                 onChange={handleChange}
                 aria-label="Vertical tabs example"
-                sx={{ borderRight: 1, borderColor: 'divider' }}
+                sx={{ padding: '2%' }}
             >
-                <Tab label="Profile" {...a11yProps(0)} />
-                <Tab label="Notifications" {...a11yProps(1)} />
+                <Tab label="Profile" {...a11yProps(0)} sx={{ borderRight: 1, borderColor: 'divider' }}/>
+                <Tab label="Notifications" {...a11yProps(1)} sx={{ borderRight: 1, borderColor: 'divider' }}/>
             </Tabs>
-            {
-                isLoading ? <Loading /> :
-                    hasError ? errorView :
-                    <CustomTabPanel value={value} index={0}>
+            <CustomTabPanel value={value} index={0}>
+                {
+                    isLoading ? <Loading /> :
+                        hasError ? errorView :
                         <EditProfile />
-                    </CustomTabPanel>
-            }
-            {
-                isLoading ? <Loading /> :
-                    hasError ? errorView :
-                    <CustomTabPanel value={value} index={1}>
-                        <EditNotifications />
-                    </CustomTabPanel>}
-            
+                }
+            </CustomTabPanel>
+
+            <CustomTabPanel value={value} index={1}>
+                {
+                    isLoading ? <Loading /> :
+                        hasError ? errorView :
+                            <EditNotifications />
+                }
+            </CustomTabPanel>
         </Box>
     );
 }

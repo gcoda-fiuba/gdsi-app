@@ -39,7 +39,7 @@ export default function CreateGroup({fetchData}) {
     return (
         <Fragment>
             <Button variant="outlined" color="secondary" onClick={handleClickOpen} style={{margin: '2%'}}>
-                Create Group
+                Create group
             </Button>
             <Dialog
                 open={isOpen}
@@ -49,10 +49,10 @@ export default function CreateGroup({fetchData}) {
                     onSubmit: handleSubmit,
                 }}
             >
-                <DialogTitle color = "secondary">Crea un nuevo grupo</DialogTitle>
+                <DialogTitle color="secondary">Create new group</DialogTitle>
                 <DialogContent>
                     <DialogContentText>
-                        ¡Se creativo! Este va a ser el nombre del grupo.
+                        This is going to be your groups name
                     </DialogContentText>
                     <TextField
                         autoFocus
@@ -60,7 +60,7 @@ export default function CreateGroup({fetchData}) {
                         margin="dense"
                         id="name"
                         name="groupName"
-                        label="Nombre"
+                        label="Name"
                         type="text"
                         fullWidth
                         variant="standard"
@@ -69,7 +69,7 @@ export default function CreateGroup({fetchData}) {
                 </DialogContent>
                 <DialogActions>
                     <Button variant="outlined" color="secondary" onClick={handleClose}>Cancel</Button>
-                    <Button variant="outlined" color="secondary" type="submit">Crear</Button>
+                    <Button variant="outlined" color="secondary" type="submit">Create</Button>
                 </DialogActions>
             </Dialog>
         </Fragment>

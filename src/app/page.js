@@ -1,7 +1,7 @@
 'use client'
 
 import React, {useEffect, useState} from 'react';
-import {Box, Grid, Paper, Typography, List, ListItem, ListItemText, Button, Card} from '@mui/material';
+import {Box, Grid, Paper, Typography, List, ListItem, ListItemText, Button, Card, Skeleton} from '@mui/material';
 import useNotificationStore from "@/app/store/notification";
 import useDebtsStore from "@/app/store/debts";
 import useUserStore from "@/app/store/user";
@@ -80,9 +80,11 @@ const Dashboard = () => {
                                 (debt.amount - debt.amountPaid) !== 0 &&
                                 <ListItem key={debt.id}>
                                     <ListItemText
-                                        primary={users
-                                            ? `${users.find(user => user.id === debt.userToId)?.first_name || 'FN'} ${users.find(user => user.id === debt.userToId)?.last_name || 'LN'}`
-                                            : 'NN'}
+                                        primary={
+                                            users.find(user => user.id === debt.userToId)
+                                                ? `${users.find(user => user.id === debt.userToId)?.first_name} ${users.find(user => user.id === debt.userToId)?.last_name}`
+                                                : <Skeleton width={30} />
+                                        }
                                         secondary={`$${debt.amount - debt.amountPaid}`}
                                     />
                                 </ListItem>

@@ -1,6 +1,6 @@
 'use client'
 
-import { Grid } from '@mui/material';
+import {CircularProgress, Grid} from '@mui/material';
 import { useSnackbar } from "@/app/context/SnackbarContext";
 import { useEffect, useState, Suspense } from "react";
 import useAuthStore from "@/app/store/auth";
@@ -20,11 +20,11 @@ function VerifyContent() {
 
             try {
                 await verifyAccount({ token });
-                showSnackbar('Usuario registrado correctamente', 'success');
+                showSnackbar("User verified correctly.", 'success');
                 router.replace('/groups');
             } catch (error) {
                 setVerifying(false);
-                showSnackbar("Hubo un error al verificar tu cuenta :(", 'error');
+                showSnackbar("There was an error verifying your account.", 'error');
                 setTimeout(() => {
                     router.replace('/');
                 }, 2000);
@@ -36,14 +36,14 @@ function VerifyContent() {
 
     return (
         <Grid container alignItems="center" justifyContent="center" style={{ flexDirection: 'column', height: '100vh' }}>
-            {verifying && <h1>Estamos verificando tu cuenta...</h1>}
+            {verifying && <h1>Verifying your account.</h1>}
         </Grid>
     );
 }
 
 export default function Verify() {
     return (
-        <Suspense fallback={<div>Cargando...</div>}>
+        <Suspense fallback={<CircularProgress />}>
             <VerifyContent />
         </Suspense>
     );

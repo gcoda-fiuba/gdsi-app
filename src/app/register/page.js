@@ -35,12 +35,12 @@ export default function Register() {
     event.preventDefault();
 
     if (email !== emailConfirmation) {
-      showSnackbar('Los correos no coinciden', 'error');
+      showSnackbar("Emails don't match", 'error');
     } else if (password !== passwordConfirmation) {
-      showSnackbar('Las contraseñas no coinciden', 'error');
+      showSnackbar("Passwords don't match", 'error');
     } else if (!passwordSecurity(password)) {
       showSnackbar(
-        'La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula y un número',
+        "The password must have at least 8 characters, one uppercase letter, one lowercase letter, and one number.",
         'error'
       );
     } else {
@@ -66,8 +66,8 @@ export default function Register() {
     isRegistered ?
       <Grid container alignItems="center" justifyContent="center" style={{ height: '100vh' }}>
         <Card variant="outlined" style={{ alignItems: 'center', justifyContent: 'center' }} sx={{ p: 4 }}>
-          <h2>¡Registrado!</h2>
-          <p>Revisa tu correo para verificar tu cuenta</p>
+          <h2>Registered!</h2>
+          <p>Check your email and verify your account.</p>
         </Card>
       </Grid>
       :

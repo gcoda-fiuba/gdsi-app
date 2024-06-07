@@ -1,9 +1,11 @@
-import {IconButton, Card, ListItem, List, ListItemText} from "@mui/material";
+import {IconButton, Grid, Typography} from "@mui/material";
 import PaymentsOutlinedIcon from '@mui/icons-material/PaymentsOutlined';
 import cache from "@/app/services/cache";
+import useGroupStore from "@/app/store/groups";
 
 export default function DebtList({debts, users, handleOpenPaymentModal, filters}) {
     const {filterGroup, filterUser, filterLessThan, filterGraterThan} = filters;
+    const { groups } = useGroupStore();
 
     const findUserById = (userId) => {
         const result = users.find(user => user.id === userId)
@@ -28,23 +30,41 @@ export default function DebtList({debts, users, handleOpenPaymentModal, filters}
     }
 
     return (
-        <List>
-            <Card variant="outlined" style={{margin: '2%'}}>
-                {debts.map(debt => (
-                    filterDebts(debt) &&
-                            <ListItem key={debt.id} secondaryAction={
-                                <IconButton edge="end" onClick={() => handlePayment(debt)}>
-                                    <PaymentsOutlinedIcon fontSize="medium"/>
-                                </IconButton>
-                            }>
-                                <ListItemText primary={`${findUserById(debt.userToId)}`}/>
-                                <ListItemText
-                                    primary={`$ ${debt.amountDebt ? debt.amountDebt : (debt.amount - debt.amountPaid)}`}/>
-                            </ListItem>
-                    ))
-                }
-            </Card>
-        </List>
+        <section style={{ padding: '2%' }}>
+            {/*HEADERS*/}
+            <Grid container spacing={1} sx={{marginTop: 1}}>
+                <Grid item md={3}>
+                    <Typography variant="subtitle1" fontWeight="bold">Name</Typography>
+                </Grid>
+                <Grid item md={3}>
+                    <Typography variant="subtitle1" fontWeight="bold">Group</Typography>
+                </Grid>
+                <Grid item md={2}>
+                    <Typography variant="subtitle1" fontWeight="bold">Amount</Typography>
+                </Grid>
+                <Grid item md={2}></Grid>
+            </Grid>
+            {/*BODY*/}
+            {debts.map(debt => (
+                filterDebts(debt) &&
+                <Grid container key={debt.id} sx={{ display: 'flex', alignItems: 'center' }}>
+                    <Grid item md={3}>
+                        <Typography variant="body1">{findUserById(debt.userToId)}</Typography>
+                    </Grid>
+                    <Grid item md={3}>
+                        <Typography variant="body1">{groups.find(group => group.id === debt.groupId).name}</Typography>
+                    </Grid>
+                    <Grid item md={2}>
+                        <Typography variant="body1">{`$${debt.amountDebt ? debt.amountDebt : (debt.amount - debt.amountPaid)}`}</Typography>
+                    </Grid>
+                    <Grid item md={2}>
+                        <IconButton edge="end" onClick={() => handlePayment(debt)}>
+                            <PaymentsOutlinedIcon fontSize="medium"/>
+                        </IconButton>
+                    </Grid>
+                </Grid>
+            ))
+            }
+        </section>
     );
 }
-

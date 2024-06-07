@@ -19,22 +19,22 @@ export const metadata = {
 export default function RootLayout({ children }) {
     return (
         <html lang="es" className={montserrat.className}>
-        <body>
-        <ThemeProvider theme={theme}>
-            <SnackbarProvider>
-                <NavBar />
-                <Box
-                    sx={{
-                        height: 'calc(100vh - 64px)',
-                        overflow: 'auto',
-                    }}
-                >
-                    {children}
-                </Box>
-                <SnackbarComponent />
-            </SnackbarProvider>
-        </ThemeProvider>
-        </body>
+            <body>
+                <ThemeProvider theme={theme}>
+                    <SnackbarProvider>
+                        <NavBar />
+                        <Box
+                            sx={{
+                                height: 'calc(100vh - 64px)',
+                                overflow: 'auto',
+                            }}
+                        >
+                            {children}
+                        </Box>
+                        <SnackbarComponent />
+                    </SnackbarProvider>
+                </ThemeProvider>
+            </body>
         </html>
     );
 }

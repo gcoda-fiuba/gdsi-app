@@ -32,12 +32,12 @@ const RegisterForm = ({
                       }) => (
     <Grid container alignItems="center" justifyContent="center" style={{ height: '100vh', margin: '0 auto' }} xs={12} md={8} lg={4}>
       <Card variant="outlined" sx={{ p: 4 }} >
-        <h2>Registrate</h2>
+        <h2>Register</h2>
         <form onSubmit={handleSubmit}>
           <Grid container spacing={2}>
             <Grid item xs={6}>
               <TextField
-                  label="Nombre"
+                  label="Name"
                   type="name"
                   margin="normal"
                   variant="outlined"
@@ -49,7 +49,7 @@ const RegisterForm = ({
             </Grid>
             <Grid item xs={6}>
               <TextField
-                  label="Apellido"
+                  label="Lastname"
                   type="lastName"
                   margin="normal"
                   variant="outlined"
@@ -74,7 +74,7 @@ const RegisterForm = ({
             </Grid>
             <Grid item xs={12}>
               <TextField
-                  label="Confirma tu email"
+                  label="Email confirmation"
                   type="email"
                   fullWidth
                   margin="normal"
@@ -87,7 +87,7 @@ const RegisterForm = ({
 
             <Grid item xs={12}>
               <TextField
-                  label="Teléfono"
+                  label="Phone number"
                   type="phone"
                   margin="normal"
                   variant="outlined"
@@ -99,27 +99,27 @@ const RegisterForm = ({
 
             <Grid item xs={11}>
               <FormControl fullWidth variant="outlined">
-                <InputLabel htmlFor="outlined-adornment-password">Contraseña</InputLabel>
+                <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
                 <OutlinedInput
                     id="outlined-adornment-password"
                     type={showPassword ? 'text' : 'password'}
                     value={password}
                     onChange={handlePasswordChange}
                     required
-                    label="Contraseña"
+                    label="Password"
                 />
               </FormControl>
             </Grid>
             <Grid item xs={11}>
               <FormControl fullWidth variant="outlined">
-                <InputLabel htmlFor="outlined-adornment-confirm-password">Confirmar contraseña</InputLabel>
+                <InputLabel htmlFor="outlined-adornment-confirm-password">Confirm password</InputLabel>
                 <OutlinedInput
                     id="outlined-adornment-confirm-password"
                     type={showPassword ? 'text' : 'password'}
                     value={passwordConfirmation}
                     onChange={handlePasswordConfirmationChange}
                     required
-                    label="Confirmar contraseña"
+                    label="Confirm password"
                 />
               </FormControl>
             </Grid>
@@ -133,10 +133,10 @@ const RegisterForm = ({
             </Grid>
           </Grid>
           <Button type="submit" color="secondary" variant="outlined" fullWidth style={{ marginTop: 20 }}>
-            Registrar
+            Register
           </Button>
         </form>
-        <p style={{ marginTop: 20 }}>¿Ya tienes una cuenta? <Link color = 'secondary' href="/">Login</Link></p>
+        <p style={{ marginTop: 20 }}>Already have an account? <Link color = 'secondary' href="/">Log in</Link></p>
       </Card>
     </Grid>
 );
