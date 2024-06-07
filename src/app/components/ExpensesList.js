@@ -24,9 +24,9 @@ export default function ExpensesList({ expenses }) {
                 Made by
               </Typography>
             </Grid>
-            <Grid item md={2}>
-              <Typography variant="subtitle1" fontWeight="bold">Paid off</Typography>
-            </Grid>
+            {/*<Grid item md={2}>*/}
+            {/*  <Typography variant="subtitle1" fontWeight="bold">Paid off</Typography>*/}
+            {/*</Grid>*/}
           </Grid>
           {expenses.map(expense => (
             <Grid container key={expense.id}>
@@ -40,12 +40,12 @@ export default function ExpensesList({ expenses }) {
               <Grid item md={3} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <Typography variant="body1">{expense.first_name + ' ' + expense.last_name}</Typography>
               </Grid>
-              <Grid item md={2} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', }}>
-                <Typography variant="body1">emoji</Typography>
-              </Grid>
-              <Grid item md={2} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', }}>
-                <IconButton><DeleteIcon /></IconButton>
-              </Grid>
+              {/*<Grid item md={2} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', }}>*/}
+              {/*  <Typography variant="body1">emoji</Typography>*/}
+              {/*</Grid>*/}
+              {/*<Grid item md={2} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', }}>*/}
+              {/*  <IconButton><DeleteIcon /></IconButton>*/}
+              {/*</Grid>*/}
             </Grid>
           ))}
         </>
