@@ -92,7 +92,7 @@ const GroupView = ({ params: {id} }) => {
                 getUsers(),
                 getMembers(groupId),
                 getBills(groupId),
-                getCategories(),
+                getCategories(groupId),
             ]);
         } catch (error) {
             setHasError(true)
