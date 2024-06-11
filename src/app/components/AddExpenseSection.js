@@ -23,6 +23,8 @@ import { useSnackbar } from "@/app/context/SnackbarContext";
 import EmojiPicker from 'emoji-picker-react';
 import Divider from "@mui/material/Divider";
 import DivisionInput from './DivisionInput';
+import InstallmentInput from './InstallmentInput';
+import RecurrenceInput from './RecurrenceInput';
 
 
 export default function AddExpenseSection({ groupId, categories, refreshBills, members }) {
@@ -34,6 +36,8 @@ export default function AddExpenseSection({ groupId, categories, refreshBills, m
     const [divisionMode, setDivisionMode] = useState("");
     const [percentages, setPercentages] = useState({});
     const [amounts, setAmounts] = useState({});
+    const [installments, setInstallments] = useState({ isInstallment: false, count: 1 });
+    const [recurrence, setRecurrence] = useState({ isRecurring: false, frequency: 'daily', count: 1 });
 
     const [isCustomCategoryOpen, setIsCustomCategoryOpen] = useState(false);
     const [customCategoryName, setCustomCategoryName] = useState('');
@@ -79,7 +83,9 @@ export default function AddExpenseSection({ groupId, categories, refreshBills, m
           ...newExpense,
           group_id: groupId,
           mode: divisionMode,
-          debts_list: debtsList
+          debts_list: debtsList,
+          installments,
+          recurrence
         };
         console.log()
         if (parseInt(params.bill_amount) <= 0) {
@@ -101,6 +107,8 @@ export default function AddExpenseSection({ groupId, categories, refreshBills, m
           setNewExpense({ bill_amount: 0, category_id: 0, custom_category: ''})
           setAmounts({});
           setPercentages({});
+          setInstallments({ isInstallment: false, count: 1 });
+          setRecurrence({ isRecurring: false, frequency: 'daily', count: 1 });
           await refreshBills();
           showSnackbar('The expense was added successfully', 'success');
         } catch (error) {
@@ -114,6 +122,14 @@ export default function AddExpenseSection({ groupId, categories, refreshBills, m
 
     const handleAmountChange = (memberId, value) => { 
         setAmounts({ ...amounts, [memberId]: value });
+    };
+    
+    const handleInstallmentsChange = (isInstallment, count) => {
+      setInstallments({ isInstallment, count });
+    };
+    
+    const handleRecurrenceChange = (isRecurring, frequency, count) => {
+      setRecurrence({ isRecurring, frequency, count });
     };
 
   return (
@@ -215,6 +231,10 @@ export default function AddExpenseSection({ groupId, categories, refreshBills, m
                     handleValueChange={divisionMode === "percentage" ? handlePercentageChange : handleAmountChange}
                 />
 
+                <InstallmentInput onInstallmentsChange={handleInstallmentsChange} />
+
+                <RecurrenceInput onRecurrenceChange={handleRecurrenceChange} />
+
                 <Button onClick={handleAddExpense} variant="outlined" color="secondary" fullWidth>
                     Add Expense
                 </Button>
@@ -225,3 +245,5 @@ export default function AddExpenseSection({ groupId, categories, refreshBills, m
     </>
   );
 }
+
+
