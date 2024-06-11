@@ -111,11 +111,7 @@ const GroupView = ({ params: {id} }) => {
     };
 
     const handleFavorite = async () => {
-        try {
-            await setFavorite(groupId).then(() => fetchFavorites());
-        } catch (error) {
-            showSnackbar('There was an error', 'error');
-        }
+        await setFavorite(groupId).then(() => fetchFavorites()).catch(() => showSnackbar('There was an error', 'error'));
     }
 
     const errorView =
