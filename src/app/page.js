@@ -17,22 +17,31 @@ import {
 import useNotificationStore from "@/app/store/notification";
 import useDebtsStore from "@/app/store/debts";
 import useUserStore from "@/app/store/user";
+import useGroupStore from "@/app/store/groups";
 import withAuth from "@/app/hoc/withAuth";
+import { useRouter } from 'next/navigation';
 import {embedDashboard} from "@preset-sdk/embedded";
 import cache from "@/app/services/cache";
 
 const Dashboard = () => {
+    const router = useRouter();
+
     const [notifications, setNotifications] = useState([]);
 
     const { getNotifications } = useNotificationStore();
     const { getMyDebts, debts } = useDebtsStore();
     const {users, getUsers, getReportsDashboardTokenSlim, reportsDashboardTokenSlim } = useUserStore();
 
+    const {favGroups, fetchFavorites} = useGroupStore();
+
+    const [isFavGroupsLoading, setIsFavGroupsLoading] = useState(true);
+
     useEffect(() => {
         async function load() {
             setNotifications(await getNotifications());
             await getMyDebts();
             await getUsers();
+            await fetchFavorites().then(() => setIsFavGroupsLoading(false))
             await getReportsDashboardTokenSlim();
         }
         load();
@@ -64,21 +73,29 @@ const Dashboard = () => {
                     <Card variant="outlined" sx={{ padding: 2 }}>
                         <Typography variant="h6">Favorites</Typography>
                         <List>
-                            <ListItem>
-                                <Button variant="contained" fullWidth>
-                                    Group a
-                                </Button>
-                            </ListItem>
-                            <ListItem>
-                                <Button variant="contained" fullWidth>
-                                    Group b
-                                </Button>
-                            </ListItem>
-                            <ListItem>
-                                <Button variant="contained" fullWidth>
-                                    Group c
-                                </Button>
-                            </ListItem>
+                            {
+                                isFavGroupsLoading ?
+                                    <Box>
+                                        <ListItem>
+                                            <Skeleton variant="rectangular" width={200} height={40} />
+                                        </ListItem>
+                                        <ListItem>
+                                            <Skeleton variant="rectangular" width={200} height={40} />
+                                        </ListItem>
+                                        <ListItem>
+                                            <Skeleton variant="rectangular" width={200} height={40} />
+                                        </ListItem>
+                                    </Box>
+                                    :
+                                    favGroups.length === 0 ? <ListItem><ListItemText primary="There are no favorite groups to show"/></ListItem> :
+                                    favGroups.map((group) => (
+                                    <ListItem key={group.id}>
+                                        <Button variant="contained" onClick={() => router.replace(`/groups/${group.id}`)} fullWidth>
+                                            <ListItemText primary={group.name} />
+                                        </Button>
+                                    </ListItem>
+                                ))
+                            }
                         </List>
                     </Card>
                 </Grid>
@@ -91,7 +108,8 @@ const Dashboard = () => {
                     <Card variant="outlined" sx={{ padding: 2 }}>
                         <Typography variant="h6">Latest activities</Typography>
                         <List>
-                            {notifications.slice().reverse().slice(0,5).map((notification) => (
+                            {notifications.length === 0 ? <ListItem><ListItemText primary="There are no notifications to show"/></ListItem> :
+                                notifications.slice().reverse().slice(0,5).map((notification) => (
                                 <ListItem key={notification.id}>
                                     <ListItemText
                                         primary={new Date(notification.createdAt).toLocaleString()}
@@ -107,7 +125,8 @@ const Dashboard = () => {
                     <Card variant="outlined" sx={{ padding: 2 }}>
                         <Typography variant="h6">Debts</Typography>
                         <List>
-                            {debts.slice().reverse().slice(0,6).map((debt) => (
+                            {debts.length === 0 ? <ListItem><ListItemText primary="There are no debts to show"/></ListItem> :
+                                debts.slice().reverse().slice(0,6).map((debt) => (
                                 (debt.amount - debt.amountPaid) !== 0 &&
                                 <ListItem key={debt.id}>
                                     <ListItemText

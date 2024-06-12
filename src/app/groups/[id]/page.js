@@ -1,6 +1,6 @@
 'use client';
 
-import {Box, Card, Grid, Tab, Tabs, Typography} from "@mui/material";
+import {Box, Card, Grid, IconButton, Tab, Tabs, Typography} from "@mui/material";
 import { useEffect, useState } from 'react';
 import MembersList from '@/app/components/MembersList';
 import AddMemberSection from '@/app/components/AddMemberSection';
@@ -11,6 +11,9 @@ import useGroupStore from "@/app/store/groups";
 import useUserStore from "@/app/store/user";
 import PropTypes from "prop-types";
 import withAuth from "@/app/hoc/withAuth";
+import StarOutlineOutlinedIcon from '@mui/icons-material/StarOutlineOutlined';
+import StarOutlinedIcon from '@mui/icons-material/StarOutlined';
+import {useSnackbar} from "@/app/context/SnackbarContext";
 import {embedDashboard} from "@preset-sdk/embedded";
 import cache from "@/app/services/cache";
 
@@ -25,11 +28,9 @@ function CustomTabPanel(props) {
             aria-labelledby={`simple-tab-${index}`}
             {...other}
         >
-            {value === index && (
-                <Box sx={{ p: 3 }}>
-                    {children}
-                </Box>
-            )}
+            <Box sx={{ p: 3 }}>
+                {children}
+            </Box>
         </Typography>
     );
 }
@@ -66,11 +67,16 @@ const GroupView = ({ params: {id} }) => {
         members,
         expenses,
         categories,
+        fetchFavorites,
+        favGroups,
+        setFavorite,
         getReportsDashboardToken,
         reportsDashboardToken,
     } = useGroupStore();
 
     const { getUsers, users } = useUserStore();
+
+    const { showSnackbar } = useSnackbar();
 
     const [isLoading, setIsLoading] = useState(true);
     const [hasError, setHasError] = useState(false);
@@ -96,8 +102,9 @@ const GroupView = ({ params: {id} }) => {
                 getUsers(),
                 getMembers(groupId),
                 getBills(groupId),
-                getCategories(),
-                getReportsDashboardToken(),
+                getCategories(groupId),
+                fetchFavorites(),
+                getReportsDashboardToken()
             ]);
         } catch (error) {
             setHasError(true)
@@ -105,6 +112,10 @@ const GroupView = ({ params: {id} }) => {
             setIsLoading(false);
         }
     };
+
+    const handleFavorite = async () => {
+        await setFavorite(groupId).then(() => fetchFavorites()).catch(() => showSnackbar('There was an error', 'error'));
+    }
 
     const errorView =
         (<>
@@ -138,7 +149,12 @@ const GroupView = ({ params: {id} }) => {
             hasError ? errorView :
             <Grid container alignItems="start" justifyContent="center" style={{ marginTop: 20 }}>
                 <Grid item style={{width: '100vh'}}>
-                    <h2>{current.name}</h2>
+                    <Box style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
+                        <h2>{current.name}</h2>
+                        <IconButton edge="end" onClick={handleFavorite}>
+                            {favGroups.find(group => group.id === current.id ) ? <StarOutlinedIcon /> : <StarOutlineOutlinedIcon />}
+                        </IconButton>
+                    </Box>
 
                     <Box sx={{borderBottom: 1, borderColor: 'divider'}}>
                         <Tabs value={tab} onChange={handleChangeTab} aria-label="basic tabs example">

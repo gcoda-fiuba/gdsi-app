@@ -3,6 +3,7 @@ import { create } from 'zustand'
 
 const useGroupStore = create((set) => ({
   groups: [],
+  favGroups: [],
   members: null,
   categories: null,
   expenses: null,
@@ -13,6 +14,23 @@ const useGroupStore = create((set) => ({
     try{
       const response = await axios.get('/groups')
       set({groups: response.data});
+      return response.data
+    }catch (error) {
+      throw error;
+    }
+  },
+  fetchFavorites: async () => {
+    try{
+      const response = await axios.get('/favorites')
+      set({favGroups: response.data});
+      return response.data
+    }catch (error) {
+      throw error;
+    }
+  },
+  setFavorite: async(id) => {
+    try{
+      const response = await axios.patch(`groups/${id}`);
       return response.data
     }catch (error) {
       throw error;
@@ -37,7 +55,7 @@ const useGroupStore = create((set) => ({
   },
   addCustomCategory: async (args = {}) => {
     try {
-      const response = await axios.post('/categories', args);
+      const response = await axios.post(`/groups/${args.groupId}/categories`, args);
       return response.data;
     } catch(error) {
       throw error;
@@ -93,9 +111,9 @@ const useGroupStore = create((set) => ({
       throw error;
     }
   },
-  getCategories: async (args = {}) => {
+  getCategories: async (groupId) => {
     try {
-      const response = await axios.get('/categories')
+      const response = await axios.get(`/groups/${groupId}/categories`)
       set({ categories: response.data });
       return response.data
     } catch (error) {
