@@ -23,12 +23,20 @@ const Reports = () => {
     const fetchToken = async () => {
         return await getReportsDashboard();
     }
+    function getFormattedDateTime() {
+        const now = new Date();
+        const year = now.getFullYear();
+        const month = String(now.getMonth() + 1).padStart(2, '0');
+        const day = String(now.getDate()).padStart(2, '0');
+        return `${day}-${month}-${year}`;
+    }
+
     const downloadButtonClickHandler = async () =>{
         try{
-            const fileName = "file.csv";
+
+            const fileName = "reporte-billbuddies-"+ getFormattedDateTime() +".csv";
             
             const content = await getFile();
-            console.log("contenido", content);
             const blob = decodeBase64AndCreateBlob(content);
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
