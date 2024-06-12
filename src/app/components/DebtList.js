@@ -64,7 +64,7 @@ export default function DebtList({debts, users, handleOpenPaymentModal, filters}
                         </IconButton>
                     </Grid>
                 </Grid>
-            ))})
+            ))}
         </section>
     );
 }
