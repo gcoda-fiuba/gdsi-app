@@ -23,8 +23,9 @@ export default function Loading() {
 
                 <Box sx={{borderBottom: 1, borderColor: 'divider'}}>
                     <Tabs value={0}>
-                        <Tab sx={{ display: 'flex', alignItems: 'start' }} label={<Skeleton variant="text" width={50} height={25} />} />
-                        <Tab sx={{ display: 'flex', alignItems: 'start' }} label={<Skeleton variant="text" width={50} height={25} />} />
+                        <Tab sx={{ display: 'flex', alignItems: 'start' }} label={<Skeleton variant="text" width={80} height={25} />} />
+                        <Tab sx={{ display: 'flex', alignItems: 'start' }} label={<Skeleton variant="text" width={80} height={25} />} />
+                        <Tab sx={{ display: 'flex', alignItems: 'start' }} label={<Skeleton variant="text" width={80} height={25} />} />
                     </Tabs>
                 </Box>
 

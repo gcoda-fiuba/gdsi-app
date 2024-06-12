@@ -1,13 +1,27 @@
 'use client'
 
 import React, {useEffect, useState} from 'react';
-import {Box, Grid, Paper, Typography, List, ListItem, ListItemText, Button, Card, Skeleton} from '@mui/material';
+import {
+    Box,
+    Grid,
+    Paper,
+    Typography,
+    List,
+    ListItem,
+    ListItemText,
+    Button,
+    Card,
+    Skeleton,
+    CircularProgress
+} from '@mui/material';
 import useNotificationStore from "@/app/store/notification";
 import useDebtsStore from "@/app/store/debts";
 import useUserStore from "@/app/store/user";
 import useGroupStore from "@/app/store/groups";
 import withAuth from "@/app/hoc/withAuth";
 import { useRouter } from 'next/navigation';
+import {embedDashboard} from "@preset-sdk/embedded";
+import cache from "@/app/services/cache";
 
 const Dashboard = () => {
     const router = useRouter();
@@ -16,7 +30,7 @@ const Dashboard = () => {
 
     const { getNotifications } = useNotificationStore();
     const { getMyDebts, debts } = useDebtsStore();
-    const {users, getUsers } = useUserStore();
+    const {users, getUsers, getReportsDashboardTokenSlim, reportsDashboardTokenSlim } = useUserStore();
 
     const {favGroups, fetchFavorites} = useGroupStore();
 
@@ -28,9 +42,28 @@ const Dashboard = () => {
             await getMyDebts();
             await getUsers();
             await fetchFavorites().then(() => setIsFavGroupsLoading(false))
+            await getReportsDashboardTokenSlim();
         }
         load();
     }, [getMyDebts, getNotifications, getUsers]);
+
+    embedDashboard({
+        id: "a31da8a0-9cef-43c7-8515-85169511ade6", // from the Embedded dialog
+        supersetDomain: "https://4e8cd7f4.us1a.app.preset.io", // from the Embedded dialog
+        mountPoint: document.getElementById("reports-dashboard-box"), // any HTML element that can contain an iframe
+        fetchGuestToken: () => reportsDashboardTokenSlim, // function responsible to return a guest_token
+        dashboardUiConfig: {
+            // reports UI config: hideTitle, hideChartControls, filters.expanded (optional)
+            hideTitle: true, // change it to `true` to hide the reports title
+            hideChartControls: true, // change it to `true` to hide the chart controls (ellipses menu)
+            filters: {
+                expanded: false, // change it to `false` so that reports filters are collapsed (for vertical filter bar only)
+            },
+            urlParams: { // URL parameters to be used with the ``{{url_param()}}`` Jinja macro
+                user_id: cache.get('Id'),
+            }, // reports UI configuration. Options: hideTitle, hideChartControls, filters.expanded, urlParams (all optional)
+        },
+    });
 
     return (
         <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }} width="full">
@@ -68,9 +101,7 @@ const Dashboard = () => {
                 </Grid>
 
                 <Grid item sx={{ padding: 2 }} xs={12} sm={4} md={8}>
-                    <Paper sx={{ padding: 2 }}>
-                        <Typography variant="h6">Some information and quick access to reports</Typography>
-                    </Paper>
+                    <div id="reports-dashboard-box" style={{ height: '100%', overflow: 'hidden' }}></div>
                 </Grid>
 
                 <Grid item sx={{ padding: 2 }} xs={12} sm={6} md={6}>

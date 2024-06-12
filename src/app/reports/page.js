@@ -9,19 +9,20 @@ import {useSnackbar} from "@/app/context/SnackbarContext";
 import {
     Button
 } from "@mui/material";
+import useGroupStore from "@/app/store/groups";
 
 const Reports = () => {
     const {showSnackbar} = useSnackbar();
     const { getFile } = useUserStore();
-    const { getReportsDashboard } = useUserStore();
+    const { getReportsDashboardToken } = useGroupStore();
     const [reportsDashboardToken, setReportsDashboardToken] = useState(null);
 
     useEffect(() => {
-        fetchToken().then(res => setReportsDashboardToken(res.token));
+        fetchToken();
     }, []);
 
     const fetchToken = async () => {
-        return await getReportsDashboard();
+        return await getReportsDashboardToken();
     }
     function getFormattedDateTime() {
         const now = new Date();
@@ -35,7 +36,7 @@ const Reports = () => {
         try{
 
             const fileName = "reporte-billbuddies-"+ getFormattedDateTime() +".csv";
-            
+
             const content = await getFile();
             const blob = decodeBase64AndCreateBlob(content);
             const url = URL.createObjectURL(blob);
@@ -56,17 +57,17 @@ const Reports = () => {
         const binaryString = atob(base64);
         const len = binaryString.length;
         const bytes = new Uint8Array(len);
-    
+
         for (let i = 0; i < len; i++) {
           bytes[i] = binaryString.charCodeAt(i);
         }
-    
+
         return new Blob([bytes], { type: 'text/csv' });
       };
 
-    const myDashboard = embedDashboard({
-        id: "7e19c962-4757-4cae-ac78-4d426263a441", // from the Embedded dialog
-        supersetDomain: "https://41860ebc.us1a.app.preset.io", // from the Embedded dialog
+    embedDashboard({
+        id: "f7264cbc-3ae6-4cd1-a931-8fe050692b42", // from the Embedded dialog
+        supersetDomain: "https://4e8cd7f4.us1a.app.preset.io", // from the Embedded dialog
         mountPoint: document.getElementById("reports-dashboard-box"), // any HTML element that can contain an iframe
         fetchGuestToken: () => reportsDashboardToken, // function responsible to return a guest_token
         dashboardUiConfig: {

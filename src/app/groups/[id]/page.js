@@ -14,6 +14,8 @@ import withAuth from "@/app/hoc/withAuth";
 import StarOutlineOutlinedIcon from '@mui/icons-material/StarOutlineOutlined';
 import StarOutlinedIcon from '@mui/icons-material/StarOutlined';
 import {useSnackbar} from "@/app/context/SnackbarContext";
+import {embedDashboard} from "@preset-sdk/embedded";
+import cache from "@/app/services/cache";
 
 function CustomTabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -26,11 +28,9 @@ function CustomTabPanel(props) {
             aria-labelledby={`simple-tab-${index}`}
             {...other}
         >
-            {value === index && (
-                <Box sx={{ p: 3 }}>
-                    {children}
-                </Box>
-            )}
+            <Box sx={{ p: 3 }}>
+                {children}
+            </Box>
         </Typography>
     );
 }
@@ -69,7 +69,9 @@ const GroupView = ({ params: {id} }) => {
         categories,
         fetchFavorites,
         favGroups,
-        setFavorite
+        setFavorite,
+        getReportsDashboardToken,
+        reportsDashboardToken,
     } = useGroupStore();
 
     const { getUsers, users } = useUserStore();
@@ -102,6 +104,7 @@ const GroupView = ({ params: {id} }) => {
                 getBills(groupId),
                 getCategories(groupId),
                 fetchFavorites(),
+                getReportsDashboardToken()
             ]);
         } catch (error) {
             setHasError(true)
@@ -123,6 +126,24 @@ const GroupView = ({ params: {id} }) => {
             </Grid>
         </>);
 
+    embedDashboard({
+        id: "c0f8a3e9-c671-4ac3-9570-c8083e9c803e", // from the Embedded dialog
+        supersetDomain: "https://4e8cd7f4.us1a.app.preset.io", // from the Embedded dialog
+        mountPoint: document.getElementById("reports-dashboard-box"), // any HTML element that can contain an iframe
+        fetchGuestToken: () => reportsDashboardToken, // function responsible to return a guest_token
+        dashboardUiConfig: {
+            // reports UI config: hideTitle, hideChartControls, filters.expanded (optional)
+            hideTitle: true, // change it to `true` to hide the reports title
+            hideChartControls: true, // change it to `true` to hide the chart controls (ellipses menu)
+            filters: {
+                expanded: false, // change it to `false` so that reports filters are collapsed (for vertical filter bar only)
+            },
+            urlParams: { // URL parameters to be used with the ``{{url_param()}}`` Jinja macro
+                user_id: cache.get('Id'),
+            }, // reports UI configuration. Options: hideTitle, hideChartControls, filters.expanded, urlParams (all optional)
+        },
+    });
+
     return (
         isLoading ? <Loading /> :
             hasError ? errorView :
@@ -139,6 +160,7 @@ const GroupView = ({ params: {id} }) => {
                         <Tabs value={tab} onChange={handleChangeTab} aria-label="basic tabs example">
                             <Tab label="Expenses" {...a11yProps(0)} />
                             <Tab label="Members" {...a11yProps(1)} />
+                            <Tab label="Group reports" {...a11yProps(2)} />
                         </Tabs>
                     </Box>
                     <CustomTabPanel value={tab} index={0}>
@@ -161,6 +183,9 @@ const GroupView = ({ params: {id} }) => {
                                 <MembersList members={members} groupId={groupId} refreshMembers={fetchInitialData}/>
                             </Grid>
                         </Card>
+                    </CustomTabPanel>
+                    <CustomTabPanel index={tab} value={2}>
+                        <div id="reports-dashboard-box" style={{ width: '100vh', height: '100vh', overflow: 'hidden'}}></div>
                     </CustomTabPanel>
                 </Grid>
             </Grid>

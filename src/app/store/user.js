@@ -5,6 +5,8 @@ import cache from "@/app/services/cache";
 const useUserStore = create((set) => ({
   users: [],
   currentUser: null,
+  reportsDashboardToken: null,
+  reportsDashboardTokenSlim: null,
   getUsers: async () => {
     try{
       const response = await axios.get('/users')
@@ -40,9 +42,19 @@ const useUserStore = create((set) => ({
       throw error;
     }
   },
-  getReportsDashboard: async () => {
+  getReportsDashboardToken: async () => {
     try{
       const response = await axios.get('/dashboards/user');
+      set({reportsDashboardToken: response.data.token});
+      return response.data;
+    }catch (error) {
+      throw error;
+    }
+  },
+  getReportsDashboardTokenSlim: async () => {
+    try{
+      const response = await axios.get('/dashboards/slim');
+      set({reportsDashboardTokenSlim: response.data.token});
       return response.data;
     }catch (error) {
       throw error;
