@@ -33,17 +33,21 @@ export default function DebtList({debts, users, handleOpenPaymentModal, filters}
         debts.length === 0 ? <Typography variant="subtitle1" fontWeight="bold" sx={{margin: 1}}>You owe no one😎</Typography> :
         <section style={{ padding: '2%' }}>
             {/*HEADERS*/}
-            <Grid container spacing={1} sx={{marginTop: 1}}>
-                <Grid item md={3}>
+            <Grid container spacing={1} sx={{marginTop: 1, borderBottom: 1, borderColor: 'divider' }}>
+                <Grid item md={3} sx={{ display: 'flex', alignItems: 'end'}}>
                     <Typography variant="subtitle1" fontWeight="bold">Name</Typography>
                 </Grid>
-                <Grid item md={3}>
+                <Grid item md={2} sx={{ display: 'flex', alignItems: 'end'}}>
                     <Typography variant="subtitle1" fontWeight="bold">Group</Typography>
                 </Grid>
-                <Grid item md={2}>
+                <Grid item md={3}>
+                    <Typography variant="subtitle1" fontWeight="bold">Date</Typography>
+                    <Typography variant="body1">yyyy-mm-dd</Typography>
+                </Grid>
+                <Grid item md={2} sx={{ display: 'flex', alignItems: 'end'}}>
                     <Typography variant="subtitle1" fontWeight="bold">Amount</Typography>
                 </Grid>
-                <Grid item md={2}></Grid>
+                <Grid item md={2} sx={{ display: 'flex', alignItems: 'end'}}></Grid>
             </Grid>
             {/*BODY*/}
             {debts.map(debt => (
@@ -52,8 +56,11 @@ export default function DebtList({debts, users, handleOpenPaymentModal, filters}
                     <Grid item md={3}>
                         <Typography variant="body1">{findUserById(debt.userToId)}</Typography>
                     </Grid>
-                    <Grid item md={3}>
+                    <Grid item md={2}>
                         <Typography variant="body1">{groups.find(group => group.id === debt.groupId).name}</Typography>
+                    </Grid>
+                    <Grid item md={3}>
+                        <Typography variant="body1">{`${debt.createdAt.slice(0,9)}`}</Typography>
                     </Grid>
                     <Grid item md={2}>
                         <Typography variant="body1">{`$${debt.amountDebt ? debt.amountDebt : (debt.amount - debt.amountPaid)}`}</Typography>
