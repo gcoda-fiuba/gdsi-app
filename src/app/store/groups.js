@@ -54,7 +54,7 @@ const useGroupStore = create((set) => ({
   },
   addCustomCategory: async (args = {}) => {
     try {
-      const response = await axios.post('/categories', args);
+      const response = await axios.post(`/groups/${args.groupId}/categories`, args);
       return response.data;
     } catch(error) {
       throw error;
@@ -110,9 +110,9 @@ const useGroupStore = create((set) => ({
       throw error;
     }
   },
-  getCategories: async (args = {}) => {
+  getCategories: async (groupId) => {
     try {
-      const response = await axios.get('/categories')
+      const response = await axios.get(`/groups/${groupId}/categories`)
       set({ categories: response.data });
       return response.data
     } catch (error) {

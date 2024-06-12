@@ -100,7 +100,7 @@ const GroupView = ({ params: {id} }) => {
                 getUsers(),
                 getMembers(groupId),
                 getBills(groupId),
-                getCategories(),
+                getCategories(groupId),
                 fetchFavorites(),
             ]);
         } catch (error) {

@@ -52,9 +52,10 @@ export default function AddExpenseSection({ groupId, categories, refreshBills, m
       try {
         event.preventDefault();
         const params = {
-          name: customCategoryName,
-          icon: customCategoryEmoji,
-          color: ""
+            groupId: groupId,
+            name: customCategoryName,
+            icon: customCategoryEmoji,
+            color: ""
         }
         await addCustomCategory(params);
         await refreshBills();
