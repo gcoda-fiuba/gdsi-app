@@ -11,13 +11,13 @@ export default function InstallmentInput({ onInstallmentsChange }) {
     if (!checked) {
       setInstallmentCount(1);
     }
-    onInstallmentsChange(checked, installmentCount);
+    onInstallmentsChange(checked ? installmentCount : 1);
   };
 
   const handleInstallmentCountChange = (event) => {
     const value = event.target.value;
     setInstallmentCount(value);
-    onInstallmentsChange(isInstallment, value);
+    onInstallmentsChange(value);
   };
 
   return (
