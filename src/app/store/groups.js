@@ -3,6 +3,7 @@ import { create } from 'zustand'
 
 const useGroupStore = create((set) => ({
   groups: [],
+  favGroups: [],
   members: null,
   categories: null,
   expenses: null,
@@ -12,6 +13,23 @@ const useGroupStore = create((set) => ({
     try{
       const response = await axios.get('/groups')
       set({groups: response.data});
+      return response.data
+    }catch (error) {
+      throw error;
+    }
+  },
+  fetchFavorites: async () => {
+    try{
+      const response = await axios.get('/favorites')
+      set({favGroups: response.data});
+      return response.data
+    }catch (error) {
+      throw error;
+    }
+  },
+  setFavorite: async(id) => {
+    try{
+      const response = await axios.patch(`groups/${id}`);
       return response.data
     }catch (error) {
       throw error;
