@@ -11,6 +11,8 @@ import useGroupStore from "@/app/store/groups";
 import useUserStore from "@/app/store/user";
 import PropTypes from "prop-types";
 import withAuth from "@/app/hoc/withAuth";
+import {embedDashboard} from "@preset-sdk/embedded";
+import cache from "@/app/services/cache";
 
 function CustomTabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -63,7 +65,9 @@ const GroupView = ({ params: {id} }) => {
         current,
         members,
         expenses,
-        categories
+        categories,
+        getReportsDashboardToken,
+        reportsDashboardToken,
     } = useGroupStore();
 
     const { getUsers, users } = useUserStore();
@@ -93,6 +97,7 @@ const GroupView = ({ params: {id} }) => {
                 getMembers(groupId),
                 getBills(groupId),
                 getCategories(),
+                getReportsDashboardToken(),
             ]);
         } catch (error) {
             setHasError(true)
@@ -110,6 +115,24 @@ const GroupView = ({ params: {id} }) => {
             </Grid>
         </>);
 
+    embedDashboard({
+        id: "c0f8a3e9-c671-4ac3-9570-c8083e9c803e", // from the Embedded dialog
+        supersetDomain: "https://4e8cd7f4.us1a.app.preset.io", // from the Embedded dialog
+        mountPoint: document.getElementById("reports-dashboard-box"), // any HTML element that can contain an iframe
+        fetchGuestToken: () => reportsDashboardToken, // function responsible to return a guest_token
+        dashboardUiConfig: {
+            // reports UI config: hideTitle, hideChartControls, filters.expanded (optional)
+            hideTitle: true, // change it to `true` to hide the reports title
+            hideChartControls: true, // change it to `true` to hide the chart controls (ellipses menu)
+            filters: {
+                expanded: false, // change it to `false` so that reports filters are collapsed (for vertical filter bar only)
+            },
+            urlParams: { // URL parameters to be used with the ``{{url_param()}}`` Jinja macro
+                user_id: cache.get('Id'),
+            }, // reports UI configuration. Options: hideTitle, hideChartControls, filters.expanded, urlParams (all optional)
+        },
+    });
+
     return (
         isLoading ? <Loading /> :
             hasError ? errorView :
@@ -121,6 +144,7 @@ const GroupView = ({ params: {id} }) => {
                         <Tabs value={tab} onChange={handleChangeTab} aria-label="basic tabs example">
                             <Tab label="Expenses" {...a11yProps(0)} />
                             <Tab label="Members" {...a11yProps(1)} />
+                            <Tab label="Group reports" {...a11yProps(2)} />
                         </Tabs>
                     </Box>
                     <CustomTabPanel value={tab} index={0}>
@@ -143,6 +167,9 @@ const GroupView = ({ params: {id} }) => {
                                 <MembersList members={members} groupId={groupId} refreshMembers={fetchInitialData}/>
                             </Grid>
                         </Card>
+                    </CustomTabPanel>
+                    <CustomTabPanel index={tab} value={2}>
+                        <div id="reports-dashboard-box" style={{ width: '100vh', height: '100vh', overflow: 'hidden'}}></div>
                     </CustomTabPanel>
                 </Grid>
             </Grid>
