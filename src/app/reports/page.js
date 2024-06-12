@@ -3,24 +3,23 @@
 import { embedDashboard } from "@preset-sdk/embedded";
 import cache from "@/app/services/cache";
 import useUserStore from "@/app/store/user";
-import {useEffect, useState} from "react";
+import {useEffect} from "react";
 import withAuth from "@/app/hoc/withAuth";
 
 const Reports = () => {
-    const { getReportsDashboard } = useUserStore();
-    const [reportsDashboardToken, setReportsDashboardToken] = useState(null);
+    const { getReportsDashboardToken, reportsDashboardToken } = useUserStore();
 
     useEffect(() => {
-        fetchToken().then(res => setReportsDashboardToken(res.token));
+        fetchToken();
     }, []);
 
     const fetchToken = async () => {
-        return await getReportsDashboard();
+        return await getReportsDashboardToken();
     }
 
-    const myDashboard = embedDashboard({
-        id: "7e19c962-4757-4cae-ac78-4d426263a441", // from the Embedded dialog
-        supersetDomain: "https://41860ebc.us1a.app.preset.io", // from the Embedded dialog
+    embedDashboard({
+        id: "f7264cbc-3ae6-4cd1-a931-8fe050692b42", // from the Embedded dialog
+        supersetDomain: "https://4e8cd7f4.us1a.app.preset.io", // from the Embedded dialog
         mountPoint: document.getElementById("reports-dashboard-box"), // any HTML element that can contain an iframe
         fetchGuestToken: () => reportsDashboardToken, // function responsible to return a guest_token
         dashboardUiConfig: {

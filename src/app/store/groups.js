@@ -8,6 +8,7 @@ const useGroupStore = create((set) => ({
   expenses: null,
   debts: [],
   current: null,
+  reportsDashboardToken: null,
   fetch: async () => {
     try{
       const response = await axios.get('/groups')
@@ -116,6 +117,15 @@ const useGroupStore = create((set) => ({
       set({ debts: response.data });
       return response.data;
     } catch (error) {
+      throw error;
+    }
+  },
+  getReportsDashboardToken: async () => {
+    try{
+      const response = await axios.get('/dashboards/group');
+      set({reportsDashboardToken: response.data.token});
+      return response.data;
+    }catch (error) {
       throw error;
     }
   }

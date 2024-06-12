@@ -30,6 +30,7 @@ export default function DebtList({debts, users, handleOpenPaymentModal, filters}
     }
 
     return (
+        debts.length === 0 ? <Typography variant="subtitle1" fontWeight="bold" sx={{margin: 1}}>You owe no one😎</Typography> :
         <section style={{ padding: '2%' }}>
             {/*HEADERS*/}
             <Grid container spacing={1} sx={{marginTop: 1}}>
@@ -63,8 +64,7 @@ export default function DebtList({debts, users, handleOpenPaymentModal, filters}
                         </IconButton>
                     </Grid>
                 </Grid>
-            ))
-            }
+            ))})
         </section>
     );
 }
