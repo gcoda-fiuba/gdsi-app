@@ -5,22 +5,69 @@ import cache from "@/app/services/cache";
 import useUserStore from "@/app/store/user";
 import {useEffect, useState} from "react";
 import withAuth from "@/app/hoc/withAuth";
+import {useSnackbar} from "@/app/context/SnackbarContext";
+import {
+    Button
+} from "@mui/material";
+import useGroupStore from "@/app/store/groups";
 
 const Reports = () => {
-    const { getReportsDashboard } = useUserStore();
+    const {showSnackbar} = useSnackbar();
+    const { getFile } = useUserStore();
+    const { getReportsDashboardToken } = useGroupStore();
     const [reportsDashboardToken, setReportsDashboardToken] = useState(null);
 
     useEffect(() => {
-        fetchToken().then(res => setReportsDashboardToken(res.token));
+        fetchToken();
     }, []);
 
     const fetchToken = async () => {
-        return await getReportsDashboard();
+        return await getReportsDashboardToken();
+    }
+    function getFormattedDateTime() {
+        const now = new Date();
+        const year = now.getFullYear();
+        const month = String(now.getMonth() + 1).padStart(2, '0');
+        const day = String(now.getDate()).padStart(2, '0');
+        return `${day}-${month}-${year}`;
     }
 
-    const myDashboard = embedDashboard({
-        id: "7e19c962-4757-4cae-ac78-4d426263a441", // from the Embedded dialog
-        supersetDomain: "https://41860ebc.us1a.app.preset.io", // from the Embedded dialog
+    const downloadButtonClickHandler = async () =>{
+        try{
+
+            const fileName = "reporte-billbuddies-"+ getFormattedDateTime() +".csv";
+
+            const content = await getFile();
+            const blob = decodeBase64AndCreateBlob(content);
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = fileName;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+        catch(error){
+            showSnackbar('error', "error");
+            console.log(error);
+        }
+    }
+    const decodeBase64AndCreateBlob = (base64) => {
+        const binaryString = atob(base64);
+        const len = binaryString.length;
+        const bytes = new Uint8Array(len);
+
+        for (let i = 0; i < len; i++) {
+          bytes[i] = binaryString.charCodeAt(i);
+        }
+
+        return new Blob([bytes], { type: 'text/csv' });
+      };
+
+    embedDashboard({
+        id: "f7264cbc-3ae6-4cd1-a931-8fe050692b42", // from the Embedded dialog
+        supersetDomain: "https://4e8cd7f4.us1a.app.preset.io", // from the Embedded dialog
         mountPoint: document.getElementById("reports-dashboard-box"), // any HTML element that can contain an iframe
         fetchGuestToken: () => reportsDashboardToken, // function responsible to return a guest_token
         dashboardUiConfig: {
@@ -37,7 +84,11 @@ const Reports = () => {
     });
 
     return (
-        <div id="reports-dashboard-box" style={{ height: '100%', overflow: 'hidden'}}></div>
+        <>
+            <div id="reports-dashboard-box" style={{ height: '100%', overflow: 'hidden'}}>
+            </div>
+            <Button onClick={downloadButtonClickHandler} variant="outlined">Download csv</Button>
+        </>
     );
 }
 

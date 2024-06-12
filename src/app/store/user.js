@@ -5,6 +5,8 @@ import cache from "@/app/services/cache";
 const useUserStore = create((set) => ({
   users: [],
   currentUser: null,
+  reportsDashboardToken: null,
+  reportsDashboardTokenSlim: null,
   getUsers: async () => {
     try{
       const response = await axios.get('/users')
@@ -40,9 +42,19 @@ const useUserStore = create((set) => ({
       throw error;
     }
   },
-  getReportsDashboard: async () => {
+  getReportsDashboardToken: async () => {
     try{
       const response = await axios.get('/dashboards/user');
+      set({reportsDashboardToken: response.data.token});
+      return response.data;
+    }catch (error) {
+      throw error;
+    }
+  },
+  getReportsDashboardTokenSlim: async () => {
+    try{
+      const response = await axios.get('/dashboards/slim');
+      set({reportsDashboardTokenSlim: response.data.token});
       return response.data;
     }catch (error) {
       throw error;
@@ -52,6 +64,16 @@ const useUserStore = create((set) => ({
     try{
       const response = await axios.get(`/users/${id}/config`);
       return response.data;
+    }catch (error) {
+      throw error;
+    }
+  },
+  getFile: async () => {
+    try{
+      //const response = await axios.get(`/debts`);
+      //return response.data;
+      const data ="bmFtZSxhZ2UsY2l0eQpKb2huIERvZSwyOSxOZXcgWW9yawpKYW5lIFNtaXRoLDM0LExvcyBBbmdlbGVzCkVtaWx5IEpvaG5zb24sMjIsQ2hpY2FnbwpNaWNoYWVsIEJyb3duLDQ1LEhvdXN0b24K";
+      return data;
     }catch (error) {
       throw error;
     }

@@ -12,7 +12,7 @@ import {
 
 export default function Loading() {
 
-    const headers = ['ID', 'Nombre'];
+    const headers = ['ID', 'Name'];
     const groups = Array.from({ length: 5 });
 
     return (

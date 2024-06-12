@@ -62,7 +62,7 @@ export default function Home() {
     <Grid container alignItems="center" justifyContent="center" style={{ height: '100vh' }}>
       <Grid item xs={12} sm={6} md={4}>
         <Card variant="outlined" sx={{ p: 4}}>
-          <h2>Login</h2>
+          <h2>Log in</h2>
           <form onSubmit={handleSubmit}>
             <TextField
               label="Email"
@@ -75,7 +75,7 @@ export default function Home() {
               required
             />
             <FormControl fullWidth variant="outlined">
-              <InputLabel htmlFor="outlined-adornment-password">Contraseña</InputLabel>
+              <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
               <OutlinedInput
                 id="outlined-adornment-password"
                 type={showPassword ? 'text' : 'password'}
@@ -93,7 +93,7 @@ export default function Home() {
                     </IconButton>
                   </InputAdornment>
                 }
-                label="Contraseña"
+                label="Password"
               />
             </FormControl>
             <Box display="flex" justifyContent="center" marginTop={2} marginBottom={2}>
@@ -104,12 +104,12 @@ export default function Home() {
                 color="secondary"
                 type="submit"
               >
-                <span>Iniciar sesión</span>
+                <span>Log in</span>
               </LoadingButton>
             </Box>
           </form>
           <hr />
-          <p style={{ marginTop: 20 }}>¿Aún no tienes una cuenta? <Link color = "secondary" href="/register">Registrarse</Link></p>
+          <p style={{ marginTop: 20 }}>{`Don't have an account yet?`} <Link color = "secondary" href="/register">Register</Link></p>
         </Card>
       </Grid>
     </Grid>
