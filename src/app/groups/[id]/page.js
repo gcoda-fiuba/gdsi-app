@@ -28,7 +28,7 @@ function CustomTabPanel(props) {
             aria-labelledby={`simple-tab-${index}`}
             {...other}
         >
-            <Box sx={{ p: 3 }}>
+            <Box sx={{ paddingTop: 3 }}>
                 {children}
             </Box>
         </Typography>

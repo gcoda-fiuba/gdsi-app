@@ -40,7 +40,7 @@ export default function ExpensesList({ expenses }) {
               <Grid item md={3} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <Typography variant="body1">{expense.first_name + ' ' + expense.last_name}</Typography>
               </Grid>
-              <Grid item md={2} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', }}>
+              <Grid item md={2} style={{ display: 'flex', alignItems: 'center', justifyContent: 'start', }}>
                 <Typography variant="body1">{expense.paidOff ? '👌' : '❌' }</Typography>
               </Grid>
               {/*<Grid item md={2} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', }}>*/}
