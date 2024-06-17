@@ -36,7 +36,7 @@ export default function AddExpenseSection({ groupId, categories, refreshBills, m
     const [divisionMode, setDivisionMode] = useState("");
     const [percentages, setPercentages] = useState({});
     const [amounts, setAmounts] = useState({});
-    const [installments, setInstallments] = useState({ isInstallment: false, count: 1 });
+    const [installments, setInstallments] = useState(1);
     const [recurrence, setRecurrence] = useState({ isRecurring: false, frequency: 'daily', count: 1 });
 
     const [isCustomCategoryOpen, setIsCustomCategoryOpen] = useState(false);
@@ -86,7 +86,6 @@ export default function AddExpenseSection({ groupId, categories, refreshBills, m
           mode: divisionMode,
           debts_list: debtsList,
           installments,
-          recurrence
         };
         console.log()
         if (parseInt(params.bill_amount) <= 0) {
@@ -108,8 +107,7 @@ export default function AddExpenseSection({ groupId, categories, refreshBills, m
           setNewExpense({ bill_amount: 0, category_id: 0, custom_category: ''})
           setAmounts({});
           setPercentages({});
-          setInstallments({ isInstallment: false, count: 1 });
-          setRecurrence({ isRecurring: false, frequency: 'daily', count: 1 });
+          setInstallments(1);
           await refreshBills();
           showSnackbar('The expense was added successfully', 'success');
         } catch (error) {
@@ -125,8 +123,8 @@ export default function AddExpenseSection({ groupId, categories, refreshBills, m
         setAmounts({ ...amounts, [memberId]: value });
     };
     
-    const handleInstallmentsChange = (isInstallment, count) => {
-      setInstallments({ isInstallment, count });
+    const handleInstallmentsChange = (count) => {
+      setInstallments(count);
     };
     
     const handleRecurrenceChange = (isRecurring, frequency, count) => {
@@ -234,8 +232,6 @@ export default function AddExpenseSection({ groupId, categories, refreshBills, m
 
                 <InstallmentInput onInstallmentsChange={handleInstallmentsChange} />
 
-                <RecurrenceInput onRecurrenceChange={handleRecurrenceChange} />
-
                 <Button onClick={handleAddExpense} variant="outlined" color="secondary" fullWidth>
                     Add Expense
                 </Button>
@@ -246,5 +242,3 @@ export default function AddExpenseSection({ groupId, categories, refreshBills, m
     </>
   );
 }
-
-

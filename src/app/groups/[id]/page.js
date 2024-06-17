@@ -140,6 +140,7 @@ const GroupView = ({ params: {id} }) => {
             },
             urlParams: { // URL parameters to be used with the ``{{url_param()}}`` Jinja macro
                 user_id: cache.get('Id'),
+                group_id: groupId,
             }, // reports UI configuration. Options: hideTitle, hideChartControls, filters.expanded, urlParams (all optional)
         },
     });
