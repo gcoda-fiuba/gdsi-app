@@ -39,7 +39,7 @@ const useUserStore = create((set) => ({
       const response = await axios.put(`/users/${id}/config`, args);
       return response.data;
     }catch (error) {
-      throw error;
+      throw error
     }
   },
   getReportsDashboardToken: async () => {
