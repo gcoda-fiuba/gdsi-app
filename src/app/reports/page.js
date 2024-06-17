@@ -3,15 +3,17 @@
 import { embedDashboard } from "@preset-sdk/embedded";
 import cache from "@/app/services/cache";
 import useUserStore from "@/app/store/user";
-import {useEffect, useState} from "react";
+import { useEffect } from "react";
 import withAuth from "@/app/hoc/withAuth";
-import {useSnackbar} from "@/app/context/SnackbarContext";
+import { useSnackbar } from "@/app/context/SnackbarContext";
 import {
-    Button
+    Fab,
+    Box
 } from "@mui/material";
+import GetAppIcon from '@mui/icons-material/GetApp';
 
 const Reports = () => {
-    const {showSnackbar} = useSnackbar();
+    const { showSnackbar } = useSnackbar();
     const { getFile } = useUserStore();
     const { getReportsDashboardToken, reportsDashboardToken } = useUserStore();
 
@@ -21,7 +23,8 @@ const Reports = () => {
 
     const fetchToken = async () => {
         return await getReportsDashboardToken();
-    }
+    };
+
     function getFormattedDateTime() {
         const now = new Date();
         const year = now.getFullYear();
@@ -30,11 +33,9 @@ const Reports = () => {
         return `${day}-${month}-${year}`;
     }
 
-    const downloadButtonClickHandler = async () =>{
-        try{
-
-            const fileName = "reporte-billbuddies-"+ getFormattedDateTime() +".csv";
-
+    const downloadButtonClickHandler = async () => {
+        try {
+            const fileName = "reporte-billbuddies-" + getFormattedDateTime() + ".csv";
             const content = await getFile();
             const blob = decodeBase64AndCreateBlob(content);
             const url = URL.createObjectURL(blob);
@@ -45,23 +46,23 @@ const Reports = () => {
             a.click();
             document.body.removeChild(a);
             URL.revokeObjectURL(url);
-        }
-        catch(error){
+        } catch (error) {
             showSnackbar('error', "error");
             console.log(error);
         }
-    }
+    };
+
     const decodeBase64AndCreateBlob = (base64) => {
         const binaryString = atob(base64);
         const len = binaryString.length;
         const bytes = new Uint8Array(len);
 
         for (let i = 0; i < len; i++) {
-          bytes[i] = binaryString.charCodeAt(i);
+            bytes[i] = binaryString.charCodeAt(i);
         }
 
         return new Blob([bytes], { type: 'text/csv' });
-      };
+    };
 
     embedDashboard({
         id: "f7264cbc-3ae6-4cd1-a931-8fe050692b42", // from the Embedded dialog
@@ -83,11 +84,21 @@ const Reports = () => {
 
     return (
         <>
-            <Button onClick={downloadButtonClickHandler} variant="outlined">Download csv</Button>
-            <div id="reports-dashboard-box" style={{ height: '100%', overflow: 'hidden'}}>
+            <Box
+                sx={{
+                    position: 'fixed',
+                    bottom: 16,
+                    right: 25,
+                }}
+            >
+                <Fab color="info" onClick={downloadButtonClickHandler}>
+                    <GetAppIcon />
+                </Fab>
+            </Box>
+            <div id="reports-dashboard-box" style={{ height: '100%', overflow: 'hidden' }}>
             </div>
         </>
     );
-}
+};
 
 export default withAuth(Reports);
