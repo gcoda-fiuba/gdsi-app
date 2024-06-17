@@ -14,8 +14,7 @@ import useGroupStore from "@/app/store/groups";
 const Reports = () => {
     const {showSnackbar} = useSnackbar();
     const { getFile } = useUserStore();
-    const { getReportsDashboardToken } = useGroupStore();
-    const [reportsDashboardToken, setReportsDashboardToken] = useState(null);
+    const { getReportsDashboardToken, reportsDashboardToken } = useUserStore();
 
     useEffect(() => {
         fetchToken();
