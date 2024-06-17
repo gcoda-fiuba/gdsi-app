@@ -30,11 +30,11 @@ export default function DebtListFilter({filters, changeFilters}) {
             changeFilters(prevFilters => {return {...prevFilters, filterLessThan: event.target.value}});
         }
     }
-    const handleGraterThanChange = (event) => {
+    const handleGreaterThanChange = (event) => {
         if (event.target.value === '') {
-            changeFilters(prevFilters => {return {...prevFilters, filterGraterThan: null}});
+            changeFilters(prevFilters => {return {...prevFilters, filterGreaterThan: null}});
         } else {
-            changeFilters(prevFilters => {return {...prevFilters, filterGraterThan: event.target.value}});
+            changeFilters(prevFilters => {return {...prevFilters, filterGreaterThan: event.target.value}});
         }
     }
 
@@ -72,7 +72,7 @@ export default function DebtListFilter({filters, changeFilters}) {
 
                         <TextField type="number" variant="outlined" label="Less than" onChange={handleLessThanChange} sx={{ marginRight: '2%' }} />
 
-                        <TextField type="number" variant="outlined" label="Grater than" onChange={handleGraterThanChange} sx={{ marginRight: '2%' }} />
+                        <TextField type="number" variant="outlined" label="Greater than" onChange={handleGreaterThanChange} sx={{ marginRight: '2%' }} />
                     </Grid>
                 </Grid>
             </AccordionDetails>
