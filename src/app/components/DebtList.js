@@ -42,7 +42,6 @@ export default function DebtList({debts, users, handleOpenPaymentModal, filters}
                 </Grid>
                 <Grid item md={3}>
                     <Typography variant="subtitle1" fontWeight="bold">Date</Typography>
-                    <Typography variant="body1">yyyy-mm-dd</Typography>
                 </Grid>
                 <Grid item md={2} sx={{ display: 'flex', alignItems: 'end'}}>
                     <Typography variant="subtitle1" fontWeight="bold">Amount</Typography>
@@ -60,7 +59,7 @@ export default function DebtList({debts, users, handleOpenPaymentModal, filters}
                         <Typography variant="body1">{groups.find(group => group.id === debt.groupId).name}</Typography>
                     </Grid>
                     <Grid item md={3}>
-                        <Typography variant="body1">{`${debt.createdAt.slice(0,9)}`}</Typography>
+                        <Typography variant="body1">{`${debt.createdAt.slice(0,10)}`}</Typography>
                     </Grid>
                     <Grid item md={2}>
                         <Typography variant="body1">{`$${debt.amountDebt ? debt.amountDebt : (debt.amount - debt.amountPaid)}`}</Typography>
