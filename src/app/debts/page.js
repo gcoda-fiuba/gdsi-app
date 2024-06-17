@@ -40,6 +40,7 @@ const DebtListView = () => {
             await getUsers();
 
         } catch (error) {
+            console.log(error)
             setHasError(true)
         } finally {
             setIsLoading(false);
