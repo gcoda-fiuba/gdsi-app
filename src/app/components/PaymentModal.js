@@ -21,7 +21,7 @@ export default function PaymentModal({ debt, open, onClose, refreshDebts }) {
 
     useEffect(() => {
         setAmountToPay(debt.amount);
-    }, []);
+    }, [debt]);
 
     const handleChangeAmountToPay = (event) => {
         setAmountToPay(event.target.value)
@@ -58,7 +58,6 @@ export default function PaymentModal({ debt, open, onClose, refreshDebts }) {
                             value={amountToPay}
                             onChange={handleChangeAmountToPay}
                             label="Amount to pay"
-                            autoFocus={true}
                         />
                     </FormControl>
                 </DialogContent>
