@@ -148,8 +148,8 @@ const GroupView = ({ params: {id} }) => {
     return (
         isLoading ? <Loading /> :
             hasError ? errorView :
-            <Grid container alignItems="start" justifyContent="center" style={{ marginTop: 20 }}>
-                <Grid item style={{width: '100vh'}}>
+            <Grid container alignItems="start" justifyContent="center" style={{ display: 'flex', justifyContent: 'center', marginTop: 20, padding: 20 }}>
+                <Grid item style={{width: '100%'}}>
                     <Box style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
                         <h2>{current.name}</h2>
                         <IconButton edge="end" onClick={handleFavorite}>
@@ -186,7 +186,7 @@ const GroupView = ({ params: {id} }) => {
                         </Card>
                     </CustomTabPanel>
                     <CustomTabPanel index={tab} value={2}>
-                        <div id="reports-dashboard-box" style={{ width: '100vh', height: '100vh', overflow: 'hidden'}}></div>
+                        <div id="reports-dashboard-box" style={{ width: '100%', height: '100vh', overflow: 'hidden'}}></div>
                     </CustomTabPanel>
                 </Grid>
             </Grid>
