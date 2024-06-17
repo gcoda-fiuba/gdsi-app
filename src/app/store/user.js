@@ -70,10 +70,8 @@ const useUserStore = create((set) => ({
   },
   getFile: async () => {
     try{
-      //const response = await axios.get(`/debts`);
-      //return response.data;
-      const data ="bmFtZSxhZ2UsY2l0eQpKb2huIERvZSwyOSxOZXcgWW9yawpKYW5lIFNtaXRoLDM0LExvcyBBbmdlbGVzCkVtaWx5IEpvaG5zb24sMjIsQ2hpY2FnbwpNaWNoYWVsIEJyb3duLDQ1LEhvdXN0b24K";
-      return data;
+      const response = await axios.get('/reports/groups');
+      return response.data.data.replace(/=+$/, '');
     }catch (error) {
       throw error;
     }
