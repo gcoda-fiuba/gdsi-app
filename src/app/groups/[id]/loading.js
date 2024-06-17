@@ -17,11 +17,11 @@ export default function Loading() {
     const expenses = Array.from({ length: 5 });
 
     return (
-        <Grid container alignItems="start" justifyContent="center" style={{ marginTop: 20 }}>
-            <Grid item style={{width: '100vh'}}>
+        <Grid container alignItems="start" justifyContent="center" style={{ display: 'flex', justifyContent: 'center', marginTop: 20, padding: 20 }}>
+            <Grid item style={{width: '100%'}}>
                 <Skeleton variant="text" width={100} height={30} />
 
-                <Box sx={{borderBottom: 1, borderColor: 'divider'}}>
+                <Box style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
                     <Tabs value={0}>
                         <Tab sx={{ display: 'flex', alignItems: 'start' }} label={<Skeleton variant="text" width={80} height={25} />} />
                         <Tab sx={{ display: 'flex', alignItems: 'start' }} label={<Skeleton variant="text" width={80} height={25} />} />
