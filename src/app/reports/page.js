@@ -9,7 +9,6 @@ import {useSnackbar} from "@/app/context/SnackbarContext";
 import {
     Button
 } from "@mui/material";
-import useGroupStore from "@/app/store/groups";
 
 const Reports = () => {
     const {showSnackbar} = useSnackbar();
@@ -84,9 +83,9 @@ const Reports = () => {
 
     return (
         <>
+            <Button onClick={downloadButtonClickHandler} variant="outlined">Download csv</Button>
             <div id="reports-dashboard-box" style={{ height: '100%', overflow: 'hidden'}}>
             </div>
-            <Button onClick={downloadButtonClickHandler} variant="outlined">Download csv</Button>
         </>
     );
 }
